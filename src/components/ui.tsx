@@ -1,0 +1,91 @@
+import { motion } from 'framer-motion'
+import type { ReactNode } from 'react'
+import { EASE } from '../lib/motion'
+
+export function Badge({ children, tone = 'dark', className = '' }: { children: ReactNode; tone?: 'dark' | 'light'; className?: string }) {
+  const toneCls =
+    tone === 'dark'
+      ? 'border-white/12 bg-white/[0.04] text-brand-cyan'
+      : 'border-brand-blue/15 bg-brand-blue/[0.06] text-brand-blue'
+  return (
+    <span
+      className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 font-mono text-xs font-medium tracking-[0.22em] uppercase ${toneCls} ${className}`}
+    >
+      <span className="relative flex size-1.5">
+        <span className="pulse-ring absolute inset-0 rounded-full bg-current" />
+        <span className="relative size-1.5 rounded-full bg-current" />
+      </span>
+      {children}
+    </span>
+  )
+}
+
+export function Reveal({
+  children,
+  delay = 0,
+  y = 28,
+  x = 0,
+  className = '',
+}: {
+  children: ReactNode
+  delay?: number
+  y?: number
+  x?: number
+  className?: string
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y, x }}
+      whileInView={{ opacity: 1, y: 0, x: 0 }}
+      viewport={{ once: true, margin: '-12% 0px' }}
+      transition={{ duration: 1, ease: EASE, delay }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+export function SectionHeader({
+  badge,
+  title,
+  lead,
+  tone = 'dark',
+  align = 'center',
+}: {
+  badge: string
+  title: ReactNode
+  lead?: ReactNode
+  tone?: 'dark' | 'light'
+  align?: 'center' | 'left'
+}) {
+  const alignCls = align === 'center' ? 'mx-auto items-center text-center' : 'items-start text-left'
+  return (
+    <Reveal className={`flex max-w-3xl flex-col gap-6 ${alignCls}`}>
+      <Badge tone={tone}>{badge}</Badge>
+      <h2
+        className={`font-display text-4xl leading-[1.02] font-semibold tracking-tight text-balance md:text-6xl ${
+          tone === 'dark' ? 'text-white' : 'text-brand-black'
+        }`}
+      >
+        {title}
+      </h2>
+      {lead && (
+        <p className={`max-w-2xl text-base leading-relaxed md:text-lg ${tone === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>{lead}</p>
+      )}
+    </Reveal>
+  )
+}
+
+export function PrimaryButton({ children, onClick, className = '' }: { children: ReactNode; onClick?: () => void; className?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-blue px-7 py-3.5 text-sm font-semibold text-white shadow-glow-blue transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98] ${className}`}
+    >
+      <span className="absolute inset-0 bg-linear-to-r from-brand-blue via-[#1a7dff] to-brand-cyan opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <span className="relative flex items-center gap-2">{children}</span>
+    </button>
+  )
+}

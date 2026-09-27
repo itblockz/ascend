@@ -1,0 +1,8 @@
+node_modules
+dist
+*.local
+.vite
+*.log
+.DS_Store
+# raw source videos for frame extraction
+scripts/input/
