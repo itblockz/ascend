@@ -7,7 +7,6 @@ import { ChevronStage, type StageApi } from '../components/ChevronStage'
 import { Badge, PrimaryButton } from '../components/ui'
 import { HERO, UI } from '../content'
 import { useLang } from '../i18n/LangContext'
-import { heroFrames } from '../lib/assets'
 import { scrollToId } from '../lib/lenis'
 import { extLink, LINKS } from '../lib/links'
 import { EASE } from '../lib/motion'
@@ -67,7 +66,7 @@ export function HeroSection() {
 
   return (
     <section id="top" ref={sectionRef} className="relative h-[100svh] w-full overflow-hidden bg-brand-black">
-      <ChevronStage scene="hero" frames={heroFrames} apiRef={stageRef} />
+      <ChevronStage scene="hero" apiRef={stageRef} />
 
       {/* legibility vignettes */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgb(6_11_20/0.78)_100%)]" />

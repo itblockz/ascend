@@ -1,18 +1,15 @@
-/** Size a canvas to its CSS box at device pixel ratio. Returns CSS size. */
-export function fitCanvas(canvas: HTMLCanvasElement) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2)
-  const w = canvas.clientWidth
-  const h = canvas.clientHeight
-  const bw = Math.max(1, Math.round(w * dpr))
-  const bh = Math.max(1, Math.round(h * dpr))
-  if (canvas.width !== bw || canvas.height !== bh) {
-    canvas.width = bw
-    canvas.height = bh
-  }
-  const ctx = canvas.getContext('2d')!
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-  return { ctx, w, h }
-}
+/** The "^" mark in unit space (height 1, centred on 0,0, y down). */
+export const CHEVRON: [number, number][] = [
+  [0, -0.5],
+  [0.56, 0.4],
+  [0.33, 0.4],
+  [0, -0.1],
+  [-0.33, 0.4],
+  [-0.56, 0.4],
+]
+
+/** Final vertical centre of each Inside ASCEND layer, as a fraction of stage height — labels align to these. */
+export const LAYER_Y = [0.41, 0.55, 0.69, 0.86]
 
 export const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
 
@@ -25,7 +22,7 @@ export const lerp = (a: number, b: number, t: number) => a + (b - a) * t
 
 export const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t))
 
-/** Deterministic PRNG so every frame of a scrubbed scene is reproducible. */
+/** Deterministic PRNG so every scrub position renders the same scene. */
 export function mulberry32(seed: number) {
   let a = seed >>> 0
   return () => {

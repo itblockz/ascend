@@ -5,8 +5,7 @@ import { ChevronStage, type StageApi } from '../components/ChevronStage'
 import { Badge } from '../components/ui'
 import { INSIDE } from '../content'
 import { useLang } from '../i18n/LangContext'
-import { layerFrames } from '../lib/assets'
-import { LAYER_Y } from '../lib/chevronRenderer'
+import { LAYER_Y } from '../lib/chevron'
 
 const ICONS: LucideIcon[] = [Bot, Globe2, Sparkles, Layers]
 /** progress (0..1 of the separation) at which each label appears */
@@ -48,7 +47,7 @@ export function InsideAscendSection() {
 
   return (
     <section id="inside" ref={sectionRef} className="relative h-[100svh] w-full overflow-hidden bg-brand-black">
-      <ChevronStage scene="layers" frames={layerFrames} apiRef={stageRef} />
+      <ChevronStage scene="layers" apiRef={stageRef} />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgb(6_11_20/0.8)_100%)]" />
 
       <div className="section-shell relative flex flex-col items-center pt-24 text-center md:pt-28">

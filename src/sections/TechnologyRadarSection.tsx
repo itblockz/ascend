@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Bot, Boxes, Gamepad2, Glasses, Globe2, MessagesSquare, ScanLine, ShoppingBag, type LucideIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import { LoopStage } from '../components/LoopStage'
+import { ChevronStage } from '../components/ChevronStage'
 import { SectionHeader } from '../components/ui'
 import { TECH } from '../content'
 import { useLang } from '../i18n/LangContext'
@@ -108,7 +108,7 @@ export function TechnologyRadarSection() {
 
             {/* central video stage */}
             <div className="absolute top-1/2 left-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-slate-50 shadow-[0_40px_100px_-40px_rgb(6_11_20/0.15)] ring-1 ring-slate-200 md:size-[52%]">
-              <LoopStage theme="light" />
+              <ChevronStage scene="loop" className="" />
             </div>
 
             {/* nodes (tablet/desktop) */}

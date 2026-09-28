@@ -1,22 +1,19 @@
 /**
- * Three.js rendering of the ASCEND "^" mark — the alternative to the 2D
- * canvas renderer, selected with `?hero=three`. Same contract: a pure
- * function of scroll progress, so it can be scrubbed or recorded to frames.
+ * Three.js rendering of the ASCEND "^" mark, the site's only renderer.
+ * hero / layers are pure functions of scroll progress (scrubbed by GSAP);
+ * loop is time-driven: the mark turning on the light sections.
  */
 import * as THREE from 'three'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
-import { CHEVRON, LAYER_Y } from '../lib/chevronRenderer'
-import { clamp01, easeOutExpo, lerp, mulberry32, smoothstep } from '../lib/canvas'
+import { CHEVRON, clamp01, easeOutExpo, lerp, LAYER_Y, mulberry32, smoothstep } from '../lib/chevron'
 
-export type SceneKind = 'hero' | 'layers'
+export type SceneKind = 'hero' | 'layers' | 'loop'
 
 export interface ChevronSceneApi {
   setProgress: (p: number) => void
-  /** Render one frame at progress p into an offscreen size and return it as a blob. */
-  capture: (p: number, width: number, height: number, type?: string) => Promise<Blob | null>
   dispose: () => void
 }
 
@@ -56,20 +53,20 @@ function dotTexture() {
   const ctx = c.getContext('2d')!
   const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
   g.addColorStop(0, 'rgba(255,255,255,1)')
-  g.addColorStop(0.35, 'rgba(160,250,255,0.8)')
-  g.addColorStop(1, 'rgba(0,229,255,0)')
+  g.addColorStop(0.35, 'rgba(230,237,245,0.8)')
+  g.addColorStop(1, 'rgba(230,237,245,0)')
   ctx.fillStyle = g
   ctx.fillRect(0, 0, 64, 64)
   return new THREE.CanvasTexture(c)
 }
 
-function makeChevronMesh(geometry: THREE.ExtrudeGeometry, stops: [number, string][], side: number) {
+function makeChevronMesh(geometry: THREE.ExtrudeGeometry, stops: [number, string][], side: number, glow = 0.38, edgeColor = 0xffffff) {
   const tex = gradientTexture(stops)
   const caps = new THREE.MeshPhysicalMaterial({
     map: tex,
     emissive: 0xffffff,
     emissiveMap: tex,
-    emissiveIntensity: 0.38,
+    emissiveIntensity: glow,
     metalness: 0.2,
     roughness: 0.18,
     clearcoat: 1,
@@ -79,7 +76,7 @@ function makeChevronMesh(geometry: THREE.ExtrudeGeometry, stops: [number, string
   const mesh = new THREE.Mesh(geometry, [caps, sides])
   const edges = new THREE.LineSegments(
     new THREE.EdgesGeometry(geometry, 25),
-    new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 }),
+    new THREE.LineBasicMaterial({ color: edgeColor, transparent: true, opacity: 0.8 }),
   )
   const group = new THREE.Group()
   group.add(mesh, edges)
@@ -93,21 +90,25 @@ function makeChevronMesh(geometry: THREE.ExtrudeGeometry, stops: [number, string
 }
 
 export function createChevronScene(container: HTMLElement, kind: SceneKind): ChevronSceneApi {
-  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: false })
+  // the loop sits on the light sections: transparent canvas, no bloom, no grid
+  const light = kind === 'loop'
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: light, powerPreference: 'high-performance' })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75))
-  renderer.setClearColor(BG, 1)
+  renderer.setClearColor(BG, light ? 0 : 1)
   renderer.toneMapping = THREE.AgXToneMapping
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block'
   container.appendChild(renderer.domElement)
 
   const scene = new THREE.Scene()
-  scene.background = new THREE.Color(BG)
-  scene.fog = new THREE.FogExp2(BG, 0.09)
+  if (!light) {
+    scene.background = new THREE.Color(BG)
+    scene.fog = new THREE.FogExp2(BG, 0.09)
+  }
   const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100)
   camera.position.set(0, 0, CAM_Z)
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.45))
+  scene.add(new THREE.AmbientLight(0xffffff, light ? 1.1 : 0.45))
   const key = new THREE.DirectionalLight(0xffffff, 2.2)
   key.position.set(-2, 3, 4)
   scene.add(key)
@@ -120,7 +121,8 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
 
   const composer = new EffectComposer(renderer)
   composer.addPass(new RenderPass(scene, camera))
-  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.5, 0.5, 0.45)
+  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.25, 0.35, 0.72)
+  bloom.enabled = !light
   composer.addPass(bloom)
   composer.addPass(new OutputPass())
 
@@ -145,6 +147,7 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
   gridMat.transparent = true
   gridMat.opacity = 0.16
   grid.position.y = -1.35
+  grid.visible = !light
   scene.add(grid)
   disposables.push(grid.geometry, gridMat)
 
@@ -159,6 +162,7 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
         [1, '#94A3B8'],
       ],
       0x1c2536,
+      0.12,
     )
     root.add(mark.group)
     disposables.push(...mark.materials, ...mark.textures)
@@ -275,10 +279,10 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
       orbitGroup.visible = settle > 0.002
       rings.forEach((r) => (r.pivot.rotation.y = time * 0.5 * r.speed + p * 4 * r.speed))
 
-      bloom.strength = 0.3 + ignite * 0.35
+      bloom.strength = 0.12 + ignite * 0.14
       camera.position.z = CAM_Z - rise * 0.3
     }
-  } else {
+  } else if (kind === 'layers') {
     const palettes: { stops: [number, string][]; side: number }[] = [
       { stops: [[0, '#FFFFFF'], [0.5, '#F1F5F9'], [1, '#CBD5E1']], side: 0x334155 },
       { stops: [[0, '#E2E8F0'], [0.5, '#CBD5E1'], [1, '#94A3B8']], side: 0x1e293b },
@@ -335,7 +339,72 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
       spineMat.opacity = 0.5 * sep
       grid.position.y = -1.9
       gridMat.opacity = 0.08
-      bloom.strength = 0.35
+      bloom.strength = 0.15
+    }
+  } else {
+    // obsidian mark turning on pearl, two thin orbits, a soft contact shadow
+    const mark = makeChevronMesh(
+      geometry,
+      [
+        [0, '#1C2536'],
+        [0.5, '#0B1426'],
+        [1, '#060B14'],
+      ],
+      0x334155,
+      0,
+      0x475569,
+    )
+    mark.group.scale.setScalar(1.35)
+    root.add(mark.group)
+    disposables.push(...mark.materials, ...mark.textures)
+
+    const shadowTex = (() => {
+      const c = document.createElement('canvas')
+      c.width = c.height = 64
+      const ctx = c.getContext('2d')!
+      const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
+      g.addColorStop(0, 'rgba(6,11,20,0.35)')
+      g.addColorStop(1, 'rgba(6,11,20,0)')
+      ctx.fillStyle = g
+      ctx.fillRect(0, 0, 64, 64)
+      return new THREE.CanvasTexture(c)
+    })()
+    const shadowMat = new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false })
+    const shadow = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 0.35), shadowMat)
+    shadow.position.set(0, -0.95, -0.2)
+    root.add(shadow)
+    disposables.push(shadowTex, shadowMat, shadow.geometry)
+
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x060b14, transparent: true, opacity: 0.28 })
+    const dotMat = new THREE.MeshBasicMaterial({ color: 0x060b14 })
+    const ringGeo = new THREE.TorusGeometry(1.15, 0.004, 6, 160)
+    const moonGeo = new THREE.SphereGeometry(0.03, 12, 12)
+    const rings: { pivot: THREE.Group; speed: number }[] = []
+    ;[
+      { rx: 1.3, tilt: 0.3, speed: 1 },
+      { rx: -1.15, tilt: -0.4, speed: -1.3 },
+    ].forEach(({ rx, tilt, speed }) => {
+      const pivot = new THREE.Group()
+      pivot.rotation.set(rx, 0, tilt)
+      pivot.add(new THREE.Mesh(ringGeo, ringMat))
+      for (let d = 0; d < 3; d++) {
+        const m = new THREE.Mesh(moonGeo, dotMat)
+        const a = (d * Math.PI * 2) / 3
+        m.position.set(Math.cos(a) * 1.15, Math.sin(a) * 1.15, 0)
+        pivot.add(m)
+      }
+      root.add(pivot)
+      rings.push({ pivot, speed })
+    })
+    disposables.push(ringMat, dotMat, ringGeo, moonGeo)
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    update = (_p, time) => {
+      const t = reduce ? 0.6 : time
+      mark.setOpacity(1)
+      mark.group.rotation.y = t * 0.9
+      mark.group.position.y = Math.sin(t * 1.2) * 0.04
+      rings.forEach((r) => (r.pivot.rotation.y = t * 0.5 * r.speed))
     }
   }
 
@@ -354,7 +423,7 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
     camera.aspect = w / h
     camera.updateProjectionMatrix()
     // keep the mark inside narrow portrait viewports
-    root.scale.setScalar(Math.min(1, (w / h) * (kind === 'hero' ? 1.15 : 1.5)))
+    root.scale.setScalar(light ? 1 : Math.min(1, (w / h) * (kind === 'hero' ? 1.15 : 1.5)))
   }
 
   const frame = () => {
@@ -379,25 +448,6 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
     setProgress(p) {
       progress = clamp01(p)
       if (!raf) raf = requestAnimationFrame(frame)
-    },
-    async capture(p, width, height, type = 'image/webp') {
-      const prevSize = new THREE.Vector2()
-      renderer.getSize(prevSize)
-      const prevRatio = renderer.getPixelRatio()
-      renderer.setPixelRatio(1)
-      renderer.setSize(width, height, false)
-      composer.setPixelRatio(1)
-      composer.setSize(width, height)
-      camera.aspect = width / height
-      camera.updateProjectionMatrix()
-      root.scale.setScalar(1)
-      update(p, p * 10)
-      composer.render()
-      const blob = await new Promise<Blob | null>((res) => renderer.domElement.toBlob(res, type, 0.9))
-      renderer.setPixelRatio(prevRatio)
-      composer.setPixelRatio(prevRatio)
-      resize()
-      return blob
     },
     dispose() {
       disposed = true

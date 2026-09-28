@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { LoopStage } from '../components/LoopStage'
+import { ChevronStage } from '../components/ChevronStage'
 import { Badge, PrimaryButton } from '../components/ui'
 import { JOIN, UI } from '../content'
 import { useLang } from '../i18n/LangContext'
@@ -22,7 +22,7 @@ export function JoinCTASection({ onJoin }: { onJoin: () => void }) {
           <span className="absolute inset-0 rounded-full border border-slate-200" />
           <span className="absolute inset-[8%] rounded-full border border-dashed border-slate-200" />
           <div className="absolute inset-[14%] overflow-hidden rounded-full bg-brand-pearl shadow-[0_40px_100px_-40px_rgb(6_11_20/0.18)] ring-1 ring-slate-200">
-            <LoopStage theme="light" />
+            <ChevronStage scene="loop" className="" />
           </div>
         </motion.div>
 

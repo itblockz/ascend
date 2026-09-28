@@ -3,7 +3,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import { useCallback, useEffect, useState } from 'react'
 import { AboutModal } from './components/AboutModal'
-import { DevTools } from './components/DevTools'
 import { Footer } from './components/Footer'
 import { JoinModal } from './components/JoinModal'
 import { Navbar } from './components/Navbar'
@@ -88,7 +87,6 @@ export default function App() {
       <Footer />
       <AboutModal open={aboutOpen} onClose={closeAbout} />
       <JoinModal open={joinOpen} onClose={closeJoin} />
-      <DevTools />
     </LangProvider>
   )
 }
