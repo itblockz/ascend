@@ -101,7 +101,7 @@ function KruMuayThaiScreen() {
           ))}
           <circle cx="26" cy="11" r="3.5" fill="none" stroke="#E6EDF5" strokeWidth="1" />
         </svg>
-        <span className="absolute top-2 left-2 rounded bg-brand-black/70 px-1.5 py-0.5 font-mono text-[0.5rem] text-slate-300">● LIVE</span>
+        <span className="absolute top-2 left-2 rounded bg-brand-black/70 px-1.5 py-0.5 text-[0.5rem] text-slate-300">● LIVE</span>
       </div>
       <div className="mt-3 flex items-center justify-between rounded-lg bg-white/5 px-2 py-1.5 text-[0.6rem]">
         <span className="text-slate-400">Pose match</span>

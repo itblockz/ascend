@@ -105,7 +105,7 @@ export function HeroSection() {
           transition={{ delay: 1.2, duration: 1 }}
           className="flex flex-col items-center gap-2 text-slate-400"
         >
-          <span className="font-mono text-xs tracking-[0.3em] uppercase">{t(UI.scroll)}</span>
+          <span className="text-xs tracking-[0.12em] uppercase">{t(UI.scroll)}</span>
           <motion.span animate={{ y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}>
             <ChevronDown size={18} />
           </motion.span>
@@ -145,7 +145,7 @@ export function HeroSection() {
                 </PrimaryButton>
                 <a
                   {...extLink(LINKS.virtualOffice)}
-                  className="rounded-full border border-white/15 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-white/5"
+                  className="rounded-md border border-white/15 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-white/5"
                 >
                   {t(UI.visitVirtualOffice)}
                 </a>
@@ -185,7 +185,7 @@ export function HeroSection() {
       </AnimatePresence>
 
       {/* scrub HUD */}
-      <div className="pointer-events-none absolute bottom-6 left-6 hidden items-center gap-3 font-mono text-xs text-slate-500 md:flex md:left-12">
+      <div className="pointer-events-none absolute bottom-6 left-6 hidden items-center gap-3 tabular-nums text-xs text-slate-500 md:flex md:left-12">
         <span>
           ASCEND <span ref={counterRef}>000</span>%
         </span>

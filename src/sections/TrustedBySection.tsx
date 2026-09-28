@@ -64,7 +64,7 @@ export function TrustedBySection() {
                 exit={{ opacity: 0, x: -40 }}
                 transition={{ duration: 0.55, ease: EASE }}
               >
-                <p className="font-mono text-xs tracking-[0.22em] text-slate-500 uppercase">{t(current.tag)}</p>
+                <p className="text-xs tracking-[0.12em] text-slate-500 uppercase">{t(current.tag)}</p>
                 <h3 className="mt-4 font-display text-2xl font-semibold text-white text-balance md:text-3xl">{t(current.title)}</h3>
                 <p className="mt-4 text-base leading-relaxed text-slate-300">{t(current.body)}</p>
                 <p className="mt-6 text-sm font-medium text-slate-500">{t(current.meta)}</p>
@@ -81,7 +81,7 @@ export function TrustedBySection() {
                   onClick={() => setIndex(i)}
                   aria-label={t(c.title)}
                   aria-current={i === index}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${i === index ? 'w-10 bg-white' : 'w-4 bg-white/20 hover:bg-white/40'}`}
+                  className={`h-0.5 transition-all duration-500 ${i === index ? 'w-10 bg-white' : 'w-4 bg-white/20 hover:bg-white/40'}`}
                 />
               ))}
             </div>
@@ -90,7 +90,7 @@ export function TrustedBySection() {
                 type="button"
                 onClick={() => setIndex((i) => (i - 1 + n) % n)}
                 aria-label="Previous"
-                className="grid size-11 place-items-center rounded-full border border-white/15 text-white transition-colors hover:bg-white/10"
+                className="grid size-11 place-items-center rounded-md border border-white/15 text-white transition-colors hover:bg-white/10"
               >
                 <ChevronLeft size={18} />
               </button>
@@ -98,7 +98,7 @@ export function TrustedBySection() {
                 type="button"
                 onClick={() => setIndex((i) => (i + 1) % n)}
                 aria-label="Next"
-                className="grid size-11 place-items-center rounded-full border border-white/15 text-white transition-colors hover:bg-white/10"
+                className="grid size-11 place-items-center rounded-md border border-white/15 text-white transition-colors hover:bg-white/10"
               >
                 <ChevronRight size={18} />
               </button>

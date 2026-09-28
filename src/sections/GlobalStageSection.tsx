@@ -25,7 +25,7 @@ export function GlobalStageSection() {
       <ImageSlot src={ASSETS[c.key]} alt={t(c.title)} tone={TONES[i]} className="group size-full rounded-[2rem]">
         <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-brand-black/90 via-brand-black/20 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 p-7 md:p-9">
-          <p className="flex items-center gap-1.5 font-mono text-xs tracking-[0.22em] text-slate-300">
+          <p className="flex items-center gap-1.5 text-xs tracking-[0.12em] text-slate-300">
             <MapPin size={13} />
             {c.kicker}
           </p>

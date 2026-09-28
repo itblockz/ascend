@@ -15,12 +15,12 @@ export function LangToggle({ className = '' }: { className?: string }) {
       type="button"
       onClick={() => setLang(lang === 'th' ? 'en' : 'th')}
       aria-label={t(UI.langSwitch)}
-      className={`relative grid h-10 grid-cols-2 items-center rounded-full border border-white/15 p-1 font-mono text-xs font-medium ${className}`}
+      className={`relative grid h-10 grid-cols-2 items-center rounded-md border border-white/15 p-1 text-xs font-medium ${className}`}
     >
       <motion.span
         layout
         transition={{ duration: 0.35, ease: EASE }}
-        className={`absolute inset-y-1 w-[calc(50%-4px)] rounded-full bg-white/12 ${lang === 'th' ? 'left-1' : 'left-1/2'}`}
+        className={`absolute inset-y-1 w-[calc(50%-4px)] rounded bg-white/12 ${lang === 'th' ? 'left-1' : 'left-1/2'}`}
       />
       <span className={`relative px-2.5 transition-colors ${lang === 'th' ? 'text-white' : 'text-slate-500'}`}>TH</span>
       <span className={`relative px-2.5 transition-colors ${lang === 'en' ? 'text-white' : 'text-slate-500'}`}>EN</span>
@@ -62,7 +62,7 @@ export function Navbar({ onAbout }: { onAbout: () => void }) {
               <button
                 type="button"
                 onClick={() => go(l.id)}
-                className="rounded-full px-3.5 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
+                className="rounded-md px-3.5 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
               >
                 {t(l.label)}
               </button>
@@ -75,13 +75,13 @@ export function Navbar({ onAbout }: { onAbout: () => void }) {
           <button
             type="button"
             onClick={onAbout}
-            className="hidden rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:border-white/40 hover:bg-white/5 md:inline-flex"
+            className="hidden rounded-md border border-white/15 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:border-white/40 hover:bg-white/5 md:inline-flex"
           >
             {t(UI.about)}
           </button>
           <a
             {...extLink(LINKS.virtualOffice)}
-            className="rounded-full bg-brand-cyan px-3.5 py-2.5 text-xs font-semibold whitespace-nowrap text-brand-black transition-opacity hover:opacity-85 sm:px-5 sm:text-sm"
+            className="rounded-md bg-brand-cyan px-3.5 py-2.5 text-xs font-semibold whitespace-nowrap text-brand-black transition-opacity hover:opacity-85 sm:px-5 sm:text-sm"
           >
             {t(UI.virtualOffice)}
           </a>
@@ -90,7 +90,7 @@ export function Navbar({ onAbout }: { onAbout: () => void }) {
             onClick={() => setOpen((o) => !o)}
             aria-label={open ? t(UI.menuClose) : t(UI.menuOpen)}
             aria-expanded={open}
-            className="ml-1 grid size-11 place-items-center rounded-full border border-white/15 text-white xl:hidden"
+            className="ml-1 grid size-11 place-items-center rounded-md border border-white/15 text-white xl:hidden"
           >
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -121,7 +121,6 @@ export function Navbar({ onAbout }: { onAbout: () => void }) {
                     className="flex w-full items-center justify-between border-b border-white/5 py-4 font-display text-2xl font-medium text-white"
                   >
                     {t(l.label)}
-                    <span className="font-mono text-xs text-slate-500">0{i + 1}</span>
                   </button>
                 </motion.li>
               ))}
@@ -133,7 +132,7 @@ export function Navbar({ onAbout }: { onAbout: () => void }) {
                     setOpen(false)
                     onAbout()
                   }}
-                  className="flex-1 rounded-full border border-white/15 py-3 text-sm font-medium text-white md:hidden"
+                  className="flex-1 rounded-md border border-white/15 py-3 text-sm font-medium text-white md:hidden"
                 >
                   {t(UI.about)}
                 </button>

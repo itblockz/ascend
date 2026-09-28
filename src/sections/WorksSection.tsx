@@ -37,12 +37,12 @@ export function WorksSection() {
                   setFilter(f.id)
                   setExpanded(false)
                 }}
-                className={`rounded-full border px-4 py-2 text-sm transition-colors ${
+                className={`rounded-md border px-4 py-2 text-sm transition-colors ${
                   on ? 'border-white bg-white text-brand-black' : 'border-white/15 text-slate-300 hover:border-white/40 hover:text-white'
                 }`}
               >
                 {t(f.label)}
-                <span className={`ml-2 font-mono text-xs ${on ? 'text-slate-500' : 'text-slate-600'}`}>{count}</span>
+                <span className={`ml-2 text-xs tabular-nums ${on ? 'text-slate-500' : 'text-slate-600'}`}>{count}</span>
               </button>
             )
           })}
@@ -61,15 +61,14 @@ export function WorksSection() {
                 className="glass flex flex-col rounded-3xl p-6"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <p className="font-mono text-xs tracking-[0.14em] text-slate-500 uppercase">{w.cats.map((c) => t(CAT_LABEL[c])).join(' · ')}</p>
-                  {'year' in w && w.year && <span className="shrink-0 font-mono text-xs text-slate-500">{w.year}</span>}
+                  <p className="text-xs tracking-[0.14em] text-slate-500 uppercase">{w.cats.map((c) => t(CAT_LABEL[c])).join(' · ')}</p>
+                  {'year' in w && w.year && <span className="shrink-0 text-xs tabular-nums text-slate-500">{w.year}</span>}
                 </div>
                 <h3 className="mt-4 font-display text-lg leading-snug font-semibold text-white">{w.title}</h3>
                 <p className="mt-1 text-sm text-slate-400">{t(w.client)}</p>
                 <p className="mt-4 text-sm leading-relaxed text-slate-400">{t(w.body)}</p>
                 {'ongoing' in w && w.ongoing && (
-                  <span className="mt-5 inline-flex w-fit items-center gap-1.5 rounded-full border border-white/15 px-2.5 py-1 font-mono text-[11px] tracking-[0.1em] text-slate-300 uppercase">
-                    <span className="size-1.5 rounded-full bg-white/70" />
+                  <span className="mt-5 text-xs font-semibold tracking-[0.12em] text-slate-300 uppercase">
                     {t(WORKS.ongoing)}
                   </span>
                 )}
@@ -84,7 +83,7 @@ export function WorksSection() {
               type="button"
               onClick={() => setExpanded((e) => !e)}
               aria-expanded={expanded}
-              className="rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/5"
+              className="rounded-md border border-white/15 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/5"
             >
               {expanded ? t(WORKS.showLess) : `${t(WORKS.showAll)} (${matching.length})`}
             </button>

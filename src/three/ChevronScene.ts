@@ -1,7 +1,7 @@
 /**
  * Three.js rendering of the ASCEND "^" mark, the site's only renderer.
  * hero / layers are pure functions of scroll progress (scrubbed by GSAP);
- * loop is time-driven: the mark turning on the light sections.
+ * loop is time-driven: the mark turning on the white sections.
  */
 import * as THREE from 'three'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
@@ -342,7 +342,7 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
       bloom.strength = 0.15
     }
   } else {
-    // obsidian mark turning on pearl, two thin orbits, a soft contact shadow
+    // obsidian mark turning on white, two thin orbits, a soft contact shadow
     const mark = makeChevronMesh(
       geometry,
       [

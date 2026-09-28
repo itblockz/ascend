@@ -51,7 +51,7 @@ export function InsideAscendSection() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgb(6_11_20/0.8)_100%)]" />
 
       <div className="section-shell relative flex flex-col items-center pt-24 text-center md:pt-28">
-        <Badge>02 — {t(INSIDE.badge)}</Badge>
+        <Badge>{t(INSIDE.badge)}</Badge>
         <h2 className="mt-5 font-display text-3xl font-semibold tracking-tight text-balance md:text-5xl">
           <span className="text-gradient-brand">{t(INSIDE.title)}</span>
         </h2>
@@ -77,7 +77,6 @@ export function InsideAscendSection() {
                 </span>
               </span>
               <div className="glass rounded-2xl px-3.5 py-2.5 md:px-4 md:py-3">
-                <p className="font-mono text-[11px] tracking-[0.18em] text-slate-500">{layer.no}</p>
                 <p className="text-xs leading-snug font-semibold text-white md:text-sm">{t(layer.name)}</p>
                 <p className="mt-1 hidden text-xs leading-relaxed text-slate-400 md:block">{t(layer.body)}</p>
               </div>

@@ -52,7 +52,7 @@ function AvatarVisual({ color }: { color: string }) {
           />
         ))}
       </div>
-      <p className="absolute top-[10%] font-mono text-xs tracking-[0.22em] text-slate-400">REAL-TIME · RAG · MULTILINGUAL</p>
+      <p className="absolute top-[10%] text-xs tracking-[0.12em] text-slate-400">REAL-TIME · RAG · MULTILINGUAL</p>
     </div>
   )
 }
@@ -97,7 +97,7 @@ function WorldVisual({ color }: { color: string }) {
           )
         })}
       </svg>
-      <p className="absolute top-[6%] w-full text-center font-mono text-xs tracking-[0.22em] text-slate-400">SOCIAL · LEARNING · ENTERPRISE</p>
+      <p className="absolute top-[6%] w-full text-center text-xs tracking-[0.12em] text-slate-400">SOCIAL · LEARNING · ENTERPRISE</p>
     </div>
   )
 }
@@ -165,7 +165,7 @@ function PoseVisual({ color }: { color: string }) {
         ))}
         <circle cx="120" cy="70" r="14" fill="none" stroke={color} strokeWidth="2" />
       </svg>
-      <div className="absolute top-[6%] right-[6%] rounded-lg border border-white/10 bg-brand-black/70 px-3 py-2 font-mono text-xs">
+      <div className="absolute top-[6%] right-[6%] rounded-lg border border-white/10 bg-brand-black/70 px-3 py-2 text-xs">
         <p className="text-slate-500">POSE MATCH</p>
         <p className="text-lg" style={{ color }}>
           &gt;90%
@@ -188,7 +188,6 @@ export function PillarSection({ pillar, flip = false }: { pillar: Pillar; flip?:
         <motion.div {...slide(flip ? 80 : -80)} className={`lg:col-span-6 ${flip ? 'lg:order-2' : ''}`}>
           <Badge>{t(pillar.badge)}</Badge>
           <h2 className="mt-6 font-display text-4xl leading-[1.05] font-semibold tracking-tight text-balance md:text-5xl">
-            <span className="mr-3 font-mono text-2xl align-top text-slate-600 md:text-3xl">{pillar.no}</span>
             {t(pillar.title)}
           </h2>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-slate-400 md:text-lg">{t(pillar.lead)}</p>
@@ -206,7 +205,7 @@ export function PillarSection({ pillar, flip = false }: { pillar: Pillar; flip?:
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="font-display text-lg font-semibold text-white">{item.name}</p>
-                    <p className={`mt-0.5 font-mono text-xs tracking-wide ${a.text}`}>{t(item.tag)}</p>
+                    <p className={`mt-0.5 text-xs tracking-wide ${a.text}`}>{t(item.tag)}</p>
                   </div>
                   <ArrowUpRight size={18} className="shrink-0 text-slate-600 transition-colors group-hover:text-white" />
                 </div>

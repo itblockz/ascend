@@ -5,13 +5,12 @@ import { EASE } from '../lib/motion'
 export function Badge({ children, tone = 'dark', className = '' }: { children: ReactNode; tone?: 'dark' | 'light'; className?: string }) {
   const toneCls =
     tone === 'dark'
-      ? 'border-white/12 text-slate-300'
-      : 'border-brand-black/12 text-slate-600'
+      ? 'text-slate-400'
+      : 'text-slate-500'
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 font-mono text-xs font-medium tracking-[0.22em] uppercase ${toneCls} ${className}`}
+      className={`inline-block text-xs font-semibold tracking-[0.16em] uppercase ${toneCls} ${className}`}
     >
-      <span className="size-1.5 rounded-full bg-current opacity-60" />
       {children}
     </span>
   )
@@ -90,7 +89,7 @@ export function PrimaryButton({
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition-opacity ${tone === 'dark' ? 'bg-white text-brand-black' : 'bg-brand-black text-white'} duration-300 hover:opacity-85 ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-md px-7 py-3.5 text-sm font-semibold transition-opacity ${tone === 'dark' ? 'bg-white text-brand-black' : 'bg-brand-black text-white'} duration-300 hover:opacity-85 ${className}`}
     >
       {children}
     </button>

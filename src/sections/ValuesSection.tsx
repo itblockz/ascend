@@ -48,7 +48,7 @@ export function ValuesSection() {
                   {lang === 'th' && <p className="text-sm text-slate-400">{v.th}</p>}
                   <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">{t(v.body)}</p>
                 </motion.div>
-                {!on && <span className="mt-auto font-mono text-xs tracking-[0.2em] text-slate-600 [writing-mode:vertical-rl]">{v.name.toUpperCase()}</span>}
+                {!on && <span className="mt-auto text-xs tracking-[0.12em] text-slate-600 [writing-mode:vertical-rl]">{v.name.toUpperCase()}</span>}
               </motion.button>
             )
           })}

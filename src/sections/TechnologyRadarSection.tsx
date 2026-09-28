@@ -59,9 +59,8 @@ export function TechnologyRadarSection() {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.45, ease: EASE }}
               >
-                <p className="font-mono text-xs tracking-[0.22em] text-brand-blue">0{active + 1} / 08</p>
-                <p className="mt-3 font-display text-2xl font-semibold">{t(current.name)}</p>
-                <p className="mt-1 font-mono text-sm text-slate-500">{current.spec}</p>
+                                <p className="mt-3 font-display text-2xl font-semibold">{t(current.name)}</p>
+                <p className="mt-1 text-sm text-slate-500">{current.spec}</p>
                 <p className="mt-4 text-sm leading-relaxed text-slate-500">{t(current.body)}</p>
               </motion.div>
             </AnimatePresence>
@@ -107,7 +106,7 @@ export function TechnologyRadarSection() {
             </svg>
 
             {/* central video stage */}
-            <div className="absolute top-1/2 left-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-slate-50 shadow-[0_40px_100px_-40px_rgb(6_11_20/0.15)] ring-1 ring-slate-200 md:size-[52%]">
+            <div className="absolute top-1/2 left-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-white shadow-[0_40px_100px_-40px_rgb(6_11_20/0.15)] ring-1 ring-slate-200 md:size-[52%]">
               <ChevronStage scene="loop" className="" />
             </div>
 
@@ -163,7 +162,6 @@ export function TechnologyRadarSection() {
                     i === active ? 'bg-brand-blue/8 font-semibold text-brand-blue' : 'text-slate-500 hover:text-brand-black'
                   }`}
                 >
-                  <span className="font-mono text-xs opacity-60">0{i + 1}</span>
                   {t(s.name)}
                 </button>
               </li>
@@ -174,8 +172,8 @@ export function TechnologyRadarSection() {
         {/* touch grid (mobile) + detail (tablet) */}
         <div className="mt-12 lg:hidden">
           <div className="glass-light rounded-2xl p-5" aria-live="polite">
-            <p className="font-mono text-xs tracking-[0.2em] text-brand-blue">
-              0{active + 1} / 08 · {current.spec}
+            <p className="text-xs tracking-[0.12em] text-brand-blue">
+              {current.spec}
             </p>
             <p className="mt-2 font-display text-lg font-semibold">{t(current.name)}</p>
             <p className="mt-2 text-sm leading-relaxed text-slate-500">{t(current.body)}</p>

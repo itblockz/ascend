@@ -43,7 +43,7 @@ export function ImageSlot({
           <svg viewBox="0 0 100 100" className="absolute top-1/2 left-1/2 w-1/3 max-w-40 -translate-x-1/2 -translate-y-1/2 opacity-25" aria-hidden>
             <path d="M50 8 L94 88 L76 88 L50 40 L24 88 L6 88 Z" fill="none" stroke="#E6EDF5" strokeWidth="1.2" />
           </svg>
-          <p className="absolute right-3 bottom-3 left-3 flex items-center gap-1.5 font-mono text-[11px] leading-tight text-slate-400/80">
+          <p className="absolute right-3 bottom-3 left-3 flex items-center gap-1.5 text-[11px] leading-tight text-slate-400/80">
             <ImageIcon size={12} className="shrink-0" />
             <span className="truncate">
               {t(UI.placeholder)} {src.replace('/assets/', '')}

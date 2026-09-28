@@ -2,7 +2,7 @@
 @import "lenis/dist/lenis.css";
 
 @theme {
-  /* Minimal: obsidian + white/pearl carry the page; cyan appears only on the
+  /* Minimal: obsidian + pure white carry the page; cyan appears only on the
      Virtual Office CTA and the keyboard focus ring */
   --color-brand-black: #060b14;
   --color-brand-navy: #0b1426;
@@ -10,11 +10,9 @@
   --color-brand-blue: #060b14;
   --color-brand-cyan: #00e5ff;
   --color-brand-teal: #00e5ff;
-  --color-brand-pearl: #eef2f6;
 
   --font-sans: "Inter", "Prompt", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Sora", "Prompt", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
   /* brand lockup only (matches the logo's light geometric caps) */
   --font-brand: "Montserrat", ui-sans-serif, system-ui, sans-serif;
 

@@ -51,10 +51,10 @@ export const INSIDE = {
     "We don't see AI, games and the Metaverse as mere entertainment — they are infrastructure linking innovation with government, business, education and human development.",
   ),
   layers: [
-    { no: '01', name: b('AI & Conversational Avatars', 'AI & Conversational Avatars'), body: b('มนุษย์เสมือนที่สนทนาได้แบบเรียลไทม์', 'Digital humans that converse in real time') },
-    { no: '02', name: b('Game-driven Metaverse', 'Game-driven Metaverse'), body: b('โลกเสมือนเชิงสังคมเพื่อการเรียนรู้และชุมชน', 'Social virtual worlds for learning and community') },
-    { no: '03', name: b('Interactive Soft Power', 'Interactive Soft Power'), body: b('นำวัฒนธรรมไทยสู่เวทีโลกด้วยสื่อปฏิสัมพันธ์', 'Interactive media carrying Thai culture worldwide') },
-    { no: '∞', name: b('Digital Social Infrastructure', 'Digital Social Infrastructure'), body: b('ฐานที่เชื่อมภาครัฐ ธุรกิจ การศึกษา และเวทีสากล', 'The base connecting government, business, education and the world') },
+    { name: b('AI & Conversational Avatars', 'AI & Conversational Avatars'), body: b('มนุษย์เสมือนที่สนทนาได้แบบเรียลไทม์', 'Digital humans that converse in real time') },
+    { name: b('Game-driven Metaverse', 'Game-driven Metaverse'), body: b('โลกเสมือนเชิงสังคมเพื่อการเรียนรู้และชุมชน', 'Social virtual worlds for learning and community') },
+    { name: b('Interactive Soft Power', 'Interactive Soft Power'), body: b('นำวัฒนธรรมไทยสู่เวทีโลกด้วยสื่อปฏิสัมพันธ์', 'Interactive media carrying Thai culture worldwide') },
+    { name: b('Digital Social Infrastructure', 'Digital Social Infrastructure'), body: b('ฐานที่เชื่อมภาครัฐ ธุรกิจ การศึกษา และเวทีสากล', 'The base connecting government, business, education and the world') },
   ],
 }
 
@@ -75,12 +75,11 @@ export interface PillarItem {
   body: Bi
 }
 
-export const PILLARS: { id: string; no: string; badge: Bi; title: Bi; lead: Bi; items: PillarItem[]; accent: 'cyan' | 'blue' | 'teal' }[] = [
+export const PILLARS: { id: string; badge: Bi; title: Bi; lead: Bi; items: PillarItem[]; accent: 'cyan' | 'blue' | 'teal' }[] = [
   {
     id: 'pillars',
-    no: '01',
     accent: 'cyan',
-    badge: b('PILLAR 01 · AI', 'PILLAR 01 · AI'),
+    badge: b('AI', 'AI'),
     title: b('AI & Conversational Avatars', 'AI & Conversational Avatars'),
     lead: b('นวัตกรรมปัญญาประดิษฐ์และมนุษย์เสมือนที่พูดคุย แนะนำ และให้บริการได้แบบเรียลไทม์', 'AI and digital humans that converse, recommend and serve in real time.'),
     items: [
@@ -91,9 +90,8 @@ export const PILLARS: { id: string; no: string; badge: Bi; title: Bi; lead: Bi; 
   },
   {
     id: 'metaverse',
-    no: '02',
     accent: 'blue',
-    badge: b('PILLAR 02 · METAVERSE', 'PILLAR 02 · METAVERSE'),
+    badge: b('METAVERSE', 'METAVERSE'),
     title: b('Game-driven Metaverse & Immersive Space', 'Game-driven Metaverse & Immersive Space'),
     lead: b('โลกเสมือนเชิงสังคมสำหรับการเรียนรู้ ชุมชน และองค์กร', 'Social virtual worlds for learning, community and organisations.'),
     items: [
@@ -104,9 +102,8 @@ export const PILLARS: { id: string; no: string; badge: Bi; title: Bi; lead: Bi; 
   },
   {
     id: 'softpower',
-    no: '03',
     accent: 'teal',
-    badge: b('PILLAR 03 · SOFT POWER', 'PILLAR 03 · SOFT POWER'),
+    badge: b('SOFT POWER', 'SOFT POWER'),
     title: b('Interactive Soft Power & Gamification', 'Interactive Soft Power & Gamification'),
     lead: b('สื่อปฏิสัมพันธ์และการเผยแพร่วัฒนธรรมไทยสู่เวทีโลก', 'Interactive media that carries Thai culture to the world.'),
     items: [

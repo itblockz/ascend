@@ -21,7 +21,7 @@ export function JoinCTASection({ onJoin }: { onJoin: () => void }) {
         >
           <span className="absolute inset-0 rounded-full border border-slate-200" />
           <span className="absolute inset-[8%] rounded-full border border-dashed border-slate-200" />
-          <div className="absolute inset-[14%] overflow-hidden rounded-full bg-brand-pearl shadow-[0_40px_100px_-40px_rgb(6_11_20/0.18)] ring-1 ring-slate-200">
+          <div className="absolute inset-[14%] overflow-hidden rounded-full bg-white shadow-[0_40px_100px_-40px_rgb(6_11_20/0.18)] ring-1 ring-slate-200">
             <ChevronStage scene="loop" className="" />
           </div>
         </motion.div>
@@ -53,7 +53,7 @@ export function JoinCTASection({ onJoin }: { onJoin: () => void }) {
             </PrimaryButton>
             <a
               {...extLink(LINKS.virtualOffice)}
-              className="rounded-full border border-slate-300 px-6 py-3.5 text-sm font-medium text-brand-black transition-colors hover:bg-slate-100"
+              className="rounded-md border border-slate-300 px-6 py-3.5 text-sm font-medium text-brand-black transition-colors hover:bg-slate-100"
             >
               {t(UI.visitVirtualOffice)}
             </a>
