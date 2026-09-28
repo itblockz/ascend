@@ -40,10 +40,10 @@ function gradientTexture(stops: [number, string][]) {
   ctx.fillRect(0, 0, 4, 256)
   const tex = new THREE.CanvasTexture(c)
   tex.colorSpace = THREE.SRGBColorSpace
-  // cap UVs are shape-space xy; map y ∈ [-0.4, 0.5] onto the texture
+  // cap UVs are shape-space xy; map y ∈ [-0.5, 0.5] onto the texture
   tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping
-  tex.repeat.set(1, 1 / 0.9)
-  tex.offset.set(0, 0.4 / 0.9)
+  tex.repeat.set(1, 1)
+  tex.offset.set(0, 0.5)
   return tex
 }
 
@@ -188,8 +188,8 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
       let x: number
       let y: number
       do {
-        x = rnd() * 1.12 - 0.56
-        y = rnd() * 0.9 - 0.5
+        x = rnd() * 0.8 - 0.4
+        y = rnd() - 0.5
       } while (!inside(x, y))
       target[i * 3] = x
       target[i * 3 + 1] = -y

@@ -38,7 +38,7 @@ function AvatarVisual({ color }: { color: string }) {
       ))}
       <div className="relative grid size-[34%] place-items-center rounded-full bg-white/5 ring-1 ring-white/15">
         <svg viewBox="0 0 64 64" className="w-1/2" aria-hidden>
-          <path d="M32 8 L58 52 L47.5 52 L32 26 L16.5 52 L6 52 Z" fill={color} opacity="0.9" />
+          <path d="M32 6 L57.6 58 L53.8 58 L31.5 13.3 L9.5 58 L6.4 58 Z" fill={color} opacity="0.9" />
         </svg>
       </div>
       <div className="absolute bottom-[12%] flex h-10 items-end gap-[3px]">

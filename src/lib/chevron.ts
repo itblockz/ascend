@@ -1,11 +1,14 @@
-/** The "^" mark in unit space (height 1, centred on 0,0, y down). */
+/**
+ * The mark in unit space (height 1, centred on 0,0, y down): the real logo Λ
+ * from Brand.tsx `Mark` (viewBox 80×100), right stroke slightly heavier.
+ */
 export const CHEVRON: [number, number][] = [
   [0, -0.5],
-  [0.56, 0.4],
-  [0.33, 0.4],
-  [0, -0.1],
-  [-0.33, 0.4],
-  [-0.56, 0.4],
+  [0.4, 0.5],
+  [0.34, 0.5],
+  [-0.008, -0.36],
+  [-0.352, 0.5],
+  [-0.4, 0.5],
 ]
 
 /** Final vertical centre of each Inside ASCEND layer, as a fraction of stage height — labels align to these. */

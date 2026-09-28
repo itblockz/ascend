@@ -41,7 +41,7 @@ export function ImageSlot({
             }}
           />
           <svg viewBox="0 0 100 100" className="absolute top-1/2 left-1/2 w-1/3 max-w-40 -translate-x-1/2 -translate-y-1/2 opacity-25" aria-hidden>
-            <path d="M50 8 L94 88 L76 88 L50 40 L24 88 L6 88 Z" fill="none" stroke="#E6EDF5" strokeWidth="1.2" />
+            <path d="M50 6 L82 94 L77 94 L49.4 18 L21.8 94 L18 94 Z" fill="none" stroke="#E6EDF5" strokeWidth="1.2" />
           </svg>
           <p className="absolute right-3 bottom-3 left-3 flex items-center gap-1.5 text-[11px] leading-tight text-slate-400/80">
             <ImageIcon size={12} className="shrink-0" />
