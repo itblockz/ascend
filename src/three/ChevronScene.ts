@@ -215,7 +215,7 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
     // orbit rings — the metaverse around the mark
     const orbitGroup = new THREE.Group()
     const ringMat = new THREE.MeshBasicMaterial({ color: 0xe6edf5, transparent: true, opacity: 0 })
-    const dotMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0 })
+    const dotMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 })
     const ringGeo = new THREE.TorusGeometry(1.05, 0.004, 6, 160)
     const moonGeo = new THREE.SphereGeometry(0.028, 12, 12)
     const rings: { pivot: THREE.Group; speed: number }[] = []

@@ -14,7 +14,7 @@ export function JoinModal({ open, onClose }: { open: boolean; onClose: () => voi
       <ol className="mt-8 grid gap-3 sm:grid-cols-2">
         {JOIN_MODAL.steps.map((s, i) => (
           <li key={s.title.en} className="flex gap-4 rounded-2xl border border-white/8 bg-white/[0.03] p-5">
-            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-brand-cyan/10 font-mono text-sm text-brand-cyan">{i + 1}</span>
+            <span className="grid size-9 shrink-0 place-items-center rounded-full border border-white/15 font-mono text-sm text-white">{i + 1}</span>
             <div>
               <p className="text-sm font-semibold text-white">{t(s.title)}</p>
               <p className="mt-1 text-sm leading-relaxed text-slate-400">{t(s.body)}</p>
@@ -26,7 +26,7 @@ export function JoinModal({ open, onClose }: { open: boolean; onClose: () => voi
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <a
           {...extLink(LINKS.coWorkingForm)}
-          className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-brand-cyan px-6 py-3.5 text-sm font-semibold text-brand-black transition-transform hover:scale-[1.02]"
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-brand-black transition-opacity hover:opacity-85"
         >
           {t(JOIN_MODAL.apply)}
           <ArrowUpRight size={16} />

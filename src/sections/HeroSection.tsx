@@ -165,7 +165,7 @@ export function HeroSection() {
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-xs leading-tight font-medium text-slate-400">{t(c.label)}</span>
-                      <Icon size={18} className="hidden shrink-0 text-brand-cyan sm:block" />
+                      <Icon size={18} className="hidden shrink-0 text-slate-500 sm:block" />
                     </div>
                     <p className="mt-2 font-display text-lg font-semibold text-white sm:text-2xl lg:mt-3 lg:text-4xl">{c.value}</p>
                     <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/10">
@@ -191,7 +191,7 @@ export function HeroSection() {
           ASCEND <span ref={counterRef}>000</span>%
         </span>
         <span className="h-px w-24 overflow-hidden bg-white/10">
-          <span ref={barRef} className="block h-full origin-left scale-x-0 bg-brand-cyan" />
+          <span ref={barRef} className="block h-full origin-left scale-x-0 bg-white" />
         </span>
       </div>
     </section>

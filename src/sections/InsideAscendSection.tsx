@@ -73,13 +73,12 @@ export function InsideAscendSection() {
           >
             <div className={`flex items-center gap-3 ${left ? '' : 'flex-row-reverse text-right'}`}>
               <span className="relative hidden shrink-0 sm:block">
-                <span className="pulse-ring absolute inset-0 rounded-full bg-brand-cyan/60" />
-                <span className="relative grid size-9 place-items-center rounded-full border border-brand-cyan/40 bg-brand-black/70 text-brand-cyan">
+                <span className="relative grid size-9 place-items-center rounded-full border border-white/20 bg-brand-black/70 text-white">
                   <Icon size={16} />
                 </span>
               </span>
               <div className="glass rounded-2xl px-3.5 py-2.5 md:px-4 md:py-3">
-                <p className="font-mono text-[11px] tracking-[0.18em] text-brand-cyan">{layer.no}</p>
+                <p className="font-mono text-[11px] tracking-[0.18em] text-slate-500">{layer.no}</p>
                 <p className="text-xs leading-snug font-semibold text-white md:text-sm">{t(layer.name)}</p>
                 <p className="mt-1 hidden text-xs leading-relaxed text-slate-400 md:block">{t(layer.body)}</p>
               </div>

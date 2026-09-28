@@ -23,7 +23,7 @@ function CountUp({ value, prefix = '', suffix }: { value: number; prefix?: strin
     <span ref={ref} className="tabular-nums">
       {prefix}
       {Math.round(v).toLocaleString('en-US')}
-      <span className="text-brand-cyan">{suffix}</span>
+      <span className="text-slate-500">{suffix}</span>
     </span>
   )
 }

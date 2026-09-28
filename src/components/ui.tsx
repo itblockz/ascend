@@ -11,7 +11,7 @@ export function Badge({ children, tone = 'dark', className = '' }: { children: R
     <span
       className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 font-mono text-xs font-medium tracking-[0.22em] uppercase ${toneCls} ${className}`}
     >
-      <span className="size-1.5 rounded-full bg-brand-cyan" />
+      <span className="size-1.5 rounded-full bg-current opacity-60" />
       {children}
     </span>
   )
@@ -74,12 +74,23 @@ export function SectionHeader({
   )
 }
 
-export function PrimaryButton({ children, onClick, className = '' }: { children: ReactNode; onClick?: () => void; className?: string }) {
+export function PrimaryButton({
+  children,
+  onClick,
+  tone = 'dark',
+  className = '',
+}: {
+  children: ReactNode
+  onClick?: () => void
+  /** background it sits on: white button on dark, obsidian button on light */
+  tone?: 'dark' | 'light'
+  className?: string
+}) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex items-center justify-center gap-2 rounded-full bg-brand-cyan px-7 py-3.5 text-sm font-semibold text-brand-black transition-opacity duration-300 hover:opacity-85 ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold transition-opacity ${tone === 'dark' ? 'bg-white text-brand-black' : 'bg-brand-black text-white'} duration-300 hover:opacity-85 ${className}`}
     >
       {children}
     </button>

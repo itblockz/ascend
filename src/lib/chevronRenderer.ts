@@ -21,11 +21,10 @@ export const CHEVRON: Pt[] = [
 const C = {
   bg: '#060B14',
   navy: '#0B1426',
-  // minimal monochrome: white → pearl → slate, cyan kept as a pin-point accent
+  // minimal monochrome: white → pearl → slate
   blue: '#94A3B8',
   cyan: '#E6EDF5',
   teal: '#FFFFFF',
-  accent: '#00E5FF',
 }
 
 export function chevronPath(ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number, sx = 1, sy = 1, poly: Pt[] = CHEVRON) {
@@ -148,7 +147,7 @@ function stars(ctx: CanvasRenderingContext2D, w: number, h: number, drift: numbe
 }
 
 /** Perspective floor grid — the "infrastructure" the mark rises from. */
-function floorGrid(ctx: CanvasRenderingContext2D, w: number, h: number, horizon: number, scroll: number, alpha: number, color = '0, 229, 255') {
+function floorGrid(ctx: CanvasRenderingContext2D, w: number, h: number, horizon: number, scroll: number, alpha: number, color = '230, 237, 245') {
   if (alpha <= 0.001) return
   const vx = w / 2
   ctx.save()
@@ -266,7 +265,7 @@ function orbits(ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number
       if (front !== na < Math.PI) continue
       const px = Math.cos(a) * r.rx * s
       const py = Math.sin(a) * r.ry * s
-      ctx.fillStyle = d === 0 ? `rgba(0, 229, 255, ${alpha})` : light ? `rgba(6, 11, 20, ${alpha})` : `rgba(230, 237, 245, ${alpha})`
+      ctx.fillStyle = light ? `rgba(6, 11, 20, ${alpha})` : `rgba(230, 237, 245, ${alpha})`
       ctx.beginPath()
       ctx.arc(px, py, d === 0 ? 3 : 2, 0, Math.PI * 2)
       ctx.fill()
@@ -351,7 +350,7 @@ export function drawHeroChevron(ctx: CanvasRenderingContext2D, w: number, h: num
     const tw = 0.6 + 0.4 * Math.sin(q.twinkle + p * 40)
     const a = (0.25 + 0.75 * t) * (1 - ignite * 0.7) * tw + settle * 0.12 * tw
     if (a <= 0.01) continue
-    ctx.fillStyle = q.hue < 0.9 ? `rgba(230, 237, 245, ${a})` : `rgba(0, 229, 255, ${a})`
+    ctx.fillStyle = `rgba(230, 237, 245, ${a})`
     const sz = q.size * (1 + (1 - t) * 0.8)
     ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz)
   }
@@ -438,7 +437,7 @@ export function drawLayers(ctx: CanvasRenderingContext2D, w: number, h: number, 
     if (sep > 0.3) {
       ctx.save()
       ctx.globalCompositeOperation = 'lighter'
-      ctx.fillStyle = `rgba(0, 229, 255, ${sep})`
+      ctx.fillStyle = `rgba(230, 237, 245, ${sep})`
       ctx.beginPath()
       ctx.arc(cx, y + s * 0.42 * tilt, 3, 0, Math.PI * 2)
       ctx.fill()

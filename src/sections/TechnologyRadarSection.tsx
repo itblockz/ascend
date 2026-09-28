@@ -87,7 +87,7 @@ export function TechnologyRadarSection() {
               <defs>
                 <linearGradient id="laser" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="50" y2={50 - RADIUS}>
                   <stop offset="0" stopColor="#060B14" stopOpacity="0.1" />
-                  <stop offset="1" stopColor="#00E5FF" />
+                  <stop offset="1" stopColor="#060B14" />
                 </linearGradient>
               </defs>
               {SENSORS.map((_, i) => {
@@ -102,7 +102,7 @@ export function TechnologyRadarSection() {
                 }}
               >
                 <line x1="50" y1="50" x2="50" y2={50 - RADIUS} stroke="url(#laser)" strokeWidth="0.55" strokeDasharray="2 1" className="dash-flow" />
-                <circle cx="50" cy={50 - RADIUS} r="1.2" fill="#00E5FF" />
+                <circle cx="50" cy={50 - RADIUS} r="1.2" fill="#060B14" />
               </g>
             </svg>
 
@@ -140,7 +140,6 @@ export function TechnologyRadarSection() {
                       on ? 'border-brand-blue text-brand-blue shadow-glow-blue' : 'border-slate-200 text-slate-500 shadow-lg shadow-slate-200/60'
                     }`}
                   >
-                    {on && <span className="pulse-ring absolute inset-0 rounded-full bg-brand-cyan/40" />}
                     <s.icon size={22} className="relative" />
                   </motion.button>
                 </div>

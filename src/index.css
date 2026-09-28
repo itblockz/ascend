@@ -2,7 +2,8 @@
 @import "lenis/dist/lenis.css";
 
 @theme {
-  /* Minimal: obsidian + white/pearl carry the page; cyan is the one accent, used sparingly */
+  /* Minimal: obsidian + white/pearl carry the page; cyan appears only on the
+     Virtual Office CTA and the keyboard focus ring */
   --color-brand-black: #060b14;
   --color-brand-navy: #0b1426;
   /* ink for light sections (kept under the old name so components need no rename) */
@@ -36,7 +37,7 @@
     overflow-x: clip;
   }
   ::selection {
-    background: rgb(0 229 255 / 0.35);
+    background: rgb(255 255 255 / 0.25);
     color: #fff;
   }
   :focus-visible {
@@ -106,15 +107,6 @@ html[lang="th"] p {
     transform: translateX(-50%);
   }
 }
-@keyframes glow-breathe {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgb(0 229 255 / 0), 0 0 24px -6px rgb(0 229 255 / 0.55);
-  }
-  50% {
-    box-shadow: 0 0 0 4px rgb(0 229 255 / 0.12), 0 0 36px -4px rgb(0 229 255 / 0.8);
-  }
-}
 
 .radar-sweep {
   animation: radar-sweep 6s linear infinite;
@@ -127,9 +119,6 @@ html[lang="th"] p {
 }
 .marquee {
   animation: marquee 38s linear infinite;
-}
-.glow-breathe {
-  animation: glow-breathe 2.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

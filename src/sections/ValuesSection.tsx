@@ -29,7 +29,7 @@ export function ValuesSection() {
                 aria-expanded={on}
                 transition={{ duration: 0.6, ease: EASE }}
                 style={{ flex: on ? 4 : 1 }}
-                className={`glass relative flex flex-col overflow-hidden rounded-3xl p-6 text-left transition-colors ${on ? 'border-brand-cyan/40' : ''}`}
+                className={`glass relative flex flex-col overflow-hidden rounded-3xl p-6 text-left transition-colors ${on ? 'border-white/25' : ''}`}
               >
                 {/* ascending step: each letter sits a little higher than the last */}
                 <span
@@ -45,7 +45,7 @@ export function ValuesSection() {
                   className="mt-auto min-w-[16rem]"
                 >
                   <p className="font-display text-2xl font-semibold text-white">{v.name}</p>
-                  {lang === 'th' && <p className="text-sm text-brand-cyan">{v.th}</p>}
+                  {lang === 'th' && <p className="text-sm text-slate-400">{v.th}</p>}
                   <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">{t(v.body)}</p>
                 </motion.div>
                 {!on && <span className="mt-auto font-mono text-xs tracking-[0.2em] text-slate-600 [writing-mode:vertical-rl]">{v.name.toUpperCase()}</span>}
@@ -68,7 +68,7 @@ export function ValuesSection() {
               <span className="font-display text-5xl leading-none font-bold text-gradient-brand">{v.letter}</span>
               <div>
                 <p className="font-display text-lg font-semibold text-white">{v.name}</p>
-                {lang === 'th' && <p className="text-sm text-brand-cyan">{v.th}</p>}
+                {lang === 'th' && <p className="text-sm text-slate-400">{v.th}</p>}
                 <p className="mt-2 text-sm leading-relaxed text-slate-400">{t(v.body)}</p>
               </div>
             </motion.li>

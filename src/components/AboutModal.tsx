@@ -17,7 +17,7 @@ export function AboutModal({ open, onClose }: { open: boolean; onClose: () => vo
         ))}
       </dl>
 
-      <h3 className="mt-10 font-mono text-xs tracking-[0.22em] text-brand-cyan uppercase">{t(ABOUT.leadersTitle)}</h3>
+      <h3 className="mt-10 font-mono text-xs tracking-[0.22em] text-slate-500 uppercase">{t(ABOUT.leadersTitle)}</h3>
       <ul className="mt-4 grid gap-3 sm:grid-cols-3">
         {ABOUT.leaders.map((l) => (
           <li key={l.role} className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">

@@ -64,7 +64,7 @@ export function TrustedBySection() {
                 exit={{ opacity: 0, x: -40 }}
                 transition={{ duration: 0.55, ease: EASE }}
               >
-                <p className="font-mono text-xs tracking-[0.22em] text-brand-cyan uppercase">{t(current.tag)}</p>
+                <p className="font-mono text-xs tracking-[0.22em] text-slate-500 uppercase">{t(current.tag)}</p>
                 <h3 className="mt-4 font-display text-2xl font-semibold text-white text-balance md:text-3xl">{t(current.title)}</h3>
                 <p className="mt-4 text-base leading-relaxed text-slate-300">{t(current.body)}</p>
                 <p className="mt-6 text-sm font-medium text-slate-500">{t(current.meta)}</p>
@@ -81,7 +81,7 @@ export function TrustedBySection() {
                   onClick={() => setIndex(i)}
                   aria-label={t(c.title)}
                   aria-current={i === index}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${i === index ? 'w-10 bg-brand-cyan' : 'w-4 bg-white/20 hover:bg-white/40'}`}
+                  className={`h-1.5 rounded-full transition-all duration-500 ${i === index ? 'w-10 bg-white' : 'w-4 bg-white/20 hover:bg-white/40'}`}
                 />
               ))}
             </div>

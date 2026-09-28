@@ -15,10 +15,10 @@ const slide = (x: number) => ({
 })
 
 const ACCENT = {
-  // minimal: one ink for every pillar's line art, cyan only for the small tags
-  cyan: { text: 'text-brand-cyan', hex: '#E6EDF5' },
-  blue: { text: 'text-brand-cyan', hex: '#E6EDF5' },
-  teal: { text: 'text-brand-cyan', hex: '#E6EDF5' },
+  // minimal: one neutral ink for every pillar
+  cyan: { text: 'text-slate-500', hex: '#E6EDF5' },
+  blue: { text: 'text-slate-500', hex: '#E6EDF5' },
+  teal: { text: 'text-slate-500', hex: '#E6EDF5' },
 }
 
 /* ---------- coded visuals, one per pillar ---------- */

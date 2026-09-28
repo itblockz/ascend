@@ -48,7 +48,7 @@ export function JoinCTASection({ onJoin }: { onJoin: () => void }) {
           </dl>
 
           <div className="mt-10 flex flex-wrap items-center gap-3">
-            <PrimaryButton onClick={onJoin}>
+            <PrimaryButton tone="light" onClick={onJoin}>
               {t(JOIN.cta)} <ArrowUpRight size={16} />
             </PrimaryButton>
             <a

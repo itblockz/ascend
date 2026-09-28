@@ -16,14 +16,14 @@ export function Footer() {
         <div>
           <p className="font-mono text-xs tracking-[0.2em] text-slate-500 uppercase">{t(FOOTER.addressTitle)}</p>
           <p className="mt-4 flex gap-2 text-sm leading-relaxed text-slate-300">
-            <MapPin size={16} className="mt-0.5 shrink-0 text-brand-cyan" />
+            <MapPin size={16} className="mt-0.5 shrink-0 text-slate-500" />
             {t(FOOTER.address)}
           </p>
         </div>
         <div>
           <p className="font-mono text-xs tracking-[0.2em] text-slate-500 uppercase">{t(FOOTER.virtualTitle)}</p>
-          <a {...extLink(LINKS.virtualOffice)} className="mt-4 inline-flex items-center gap-2 text-sm text-slate-300 transition-colors hover:text-brand-cyan">
-            <MonitorSmartphone size={16} className="text-brand-cyan" />
+          <a {...extLink(LINKS.virtualOffice)} className="mt-4 inline-flex items-center gap-2 text-sm text-slate-300 transition-colors hover:text-white">
+            <MonitorSmartphone size={16} className="text-slate-500" />
             {t(UI.visitVirtualOffice)} (Gather.town)
           </a>
         </div>

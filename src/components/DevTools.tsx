@@ -52,7 +52,7 @@ function FrameRecorder() {
 
   return (
     <div className="flex items-center gap-2">
-      <button type="button" onClick={run} className="rounded-full bg-brand-cyan px-3 py-1.5 font-semibold text-brand-black">
+      <button type="button" onClick={run} className="rounded-full bg-white px-3 py-1.5 font-semibold text-brand-black">
         Record frames
       </button>
       {status && <span className="max-w-56 truncate text-slate-300">{status}</span>}

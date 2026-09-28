@@ -15,7 +15,7 @@ function ScreenShell({ brand, children }: { brand: string; children: ReactNode }
     <div className="flex h-full flex-col bg-brand-black px-[7%] pt-[16%] text-white">
       <div className="flex items-center justify-between text-[0.6rem] text-slate-400">
         <span>9:41</span>
-        <span className="font-semibold tracking-widest text-brand-cyan">{brand}</span>
+        <span className="font-semibold tracking-widest text-slate-300">{brand}</span>
       </div>
       {children}
     </div>
@@ -33,8 +33,8 @@ function QuantumSoulScreen() {
           <span className="block h-1 w-16 rounded bg-white/30" />
           <span className="mt-1 block h-1 w-10 rounded bg-white/20" />
         </span>
-        <span className="ml-auto max-w-[70%] rounded-lg rounded-br-sm bg-brand-cyan/20 px-2 py-1.5">
-          <span className="block h-1 w-12 rounded bg-brand-cyan/60" />
+        <span className="ml-auto max-w-[70%] rounded-lg rounded-br-sm bg-white/15 px-2 py-1.5">
+          <span className="block h-1 w-12 rounded bg-white/60" />
         </span>
         <span className="max-w-[85%] rounded-lg rounded-bl-sm bg-white/8 px-2 py-1.5">
           <span className="block h-1 w-20 rounded bg-white/30" />
@@ -43,7 +43,7 @@ function QuantumSoulScreen() {
       </div>
       <div className="mt-auto mb-[12%] flex h-6 items-center justify-center gap-[2px]">
         {Array.from({ length: 18 }, (_, i) => (
-          <span key={i} className="w-[2px] rounded-full bg-brand-cyan" style={{ height: `${25 + Math.abs(Math.sin(i * 1.3)) * 75}%` }} />
+          <span key={i} className="w-[2px] rounded-full bg-white/80" style={{ height: `${25 + Math.abs(Math.sin(i * 1.3)) * 75}%` }} />
         ))}
       </div>
     </ScreenShell>
@@ -71,7 +71,7 @@ function EdenVerdenScreen() {
         })}
       </svg>
       <div className="mt-3 flex -space-x-1.5">
-        {['#E6EDF5', '#94A3B8', '#475569', '#00E5FF'].map((c) => (
+        {['#E6EDF5', '#94A3B8', '#475569', '#1E293B'].map((c) => (
           <span key={c} className="size-4 rounded-full ring-2 ring-brand-black" style={{ background: c }} />
         ))}
         <span className="ml-3 self-center text-[0.55rem] text-slate-400">+ online</span>
@@ -101,11 +101,11 @@ function KruMuayThaiScreen() {
           ))}
           <circle cx="26" cy="11" r="3.5" fill="none" stroke="#E6EDF5" strokeWidth="1" />
         </svg>
-        <span className="absolute top-2 left-2 rounded bg-brand-black/70 px-1.5 py-0.5 font-mono text-[0.5rem] text-brand-teal">● LIVE</span>
+        <span className="absolute top-2 left-2 rounded bg-brand-black/70 px-1.5 py-0.5 font-mono text-[0.5rem] text-slate-300">● LIVE</span>
       </div>
       <div className="mt-3 flex items-center justify-between rounded-lg bg-white/5 px-2 py-1.5 text-[0.6rem]">
         <span className="text-slate-400">Pose match</span>
-        <span className="font-semibold text-brand-teal">&gt;90%</span>
+        <span className="font-semibold text-white">&gt;90%</span>
       </div>
     </ScreenShell>
   )
@@ -169,7 +169,7 @@ export function PlatformShowcaseSection() {
                   <span className="block font-display text-base font-semibold text-white">{s.name}</span>
                   <span className="block text-xs text-slate-400">{href === '#' ? t(UI.comingSoon) : t(s.caption)}</span>
                 </span>
-                <ArrowUpRight size={18} className="shrink-0 text-brand-cyan transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight size={18} className="shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             )
           })}
