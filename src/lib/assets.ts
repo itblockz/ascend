@@ -4,7 +4,7 @@
 
 const pad = (n: number) => String(n).padStart(3, '0')
 
-export const HERO_FRAME_COUNT = 240
+export const HERO_FRAME_COUNT = 192
 export const LAYERS_FRAME_COUNT = 24
 
 export const heroFrames = Array.from({ length: HERO_FRAME_COUNT }, (_, i) => `/assets/frames_hero/frame-${pad(i + 1)}.webp`)
