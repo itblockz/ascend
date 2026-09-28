@@ -272,8 +272,8 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
       mark.group.rotation.x = lerp(0.25, 0, ignite)
 
       // settle: the mark lifts and shrinks into the upper third, clearing the centred copy below
-      root.position.y = rise * 0.34 + settle * 0.46
-      root.scale.setScalar(baseScale * lerp(1, 0.48, settle))
+      root.position.y = rise * 0.34 + settle * 0.00
+      root.scale.setScalar(lerp(baseScale, 0.6, settle)) // settled size is the same on every screen
       grid.position.y = -1.35 - rise * 0.9
       gridMat.opacity = 0.16 * smoothstep(0.08, 0.35, p) * (1 - settle * 0.4)
       grid.position.z = (p * 6) % 0.5
