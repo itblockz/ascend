@@ -10,14 +10,7 @@ import { EASE } from '../lib/motion'
 export function Mark({ className = 'size-7' }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" className={className} aria-hidden>
-      <defs>
-        <linearGradient id="mark-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#14F1C6" />
-          <stop offset="0.5" stopColor="#00E5FF" />
-          <stop offset="1" stopColor="#2F6BFF" />
-        </linearGradient>
-      </defs>
-      <path d="M32 8 L58 52 L47.5 52 L32 26 L16.5 52 L6 52 Z" fill="url(#mark-g)" />
+      <path d="M32 8 L58 52 L47.5 52 L32 26 L16.5 52 L6 52 Z" fill="currentColor" />
     </svg>
   )
 }
@@ -25,7 +18,7 @@ export function Mark({ className = 'size-7' }: { className?: string }) {
 export function Logo() {
   return (
     <span className="flex items-center gap-2.5">
-      <Mark />
+      <Mark className="size-7 text-white" />
       <span className="flex flex-col leading-none">
         <span className="font-display text-lg font-bold tracking-[0.2em] text-white">ASCEND</span>
         <span className="mt-1 hidden font-mono text-[11px] tracking-[0.22em] whitespace-nowrap text-slate-500 sm:block">DEEP-TECH · SOCIAL</span>
@@ -107,7 +100,7 @@ export function Navbar({ onAbout }: { onAbout: () => void }) {
           </button>
           <a
             {...extLink(LINKS.virtualOffice)}
-            className="glow-breathe rounded-full bg-brand-cyan px-3.5 py-2.5 text-xs font-semibold whitespace-nowrap text-brand-black transition-transform hover:scale-[1.04] active:scale-[0.98] sm:px-5 sm:text-sm"
+            className="rounded-full bg-brand-cyan px-3.5 py-2.5 text-xs font-semibold whitespace-nowrap text-brand-black transition-opacity hover:opacity-85 sm:px-5 sm:text-sm"
           >
             {t(UI.virtualOffice)}
           </a>

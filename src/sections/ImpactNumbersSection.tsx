@@ -7,7 +7,6 @@ import { useLang } from '../i18n/LangContext'
 import { EASE } from '../lib/motion'
 
 const ICONS: LucideIcon[] = [Users, Landmark, ScanLine, Clock]
-const GLOWS = ['from-brand-cyan/25', 'from-brand-blue/30', 'from-brand-teal/25', 'from-brand-blue/25']
 
 function CountUp({ value, prefix = '', suffix }: { value: number; prefix?: string; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null)
@@ -33,7 +32,7 @@ export function ImpactNumbersSection() {
   const { t } = useLang()
   return (
     <section id="impact" className="relative overflow-hidden bg-brand-black py-36">
-      <div className="pointer-events-none absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-linear-to-r from-transparent via-brand-cyan/40 to-transparent" />
+      <div className="pointer-events-none absolute top-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-white/10" />
       <div className="section-shell">
         <SectionHeader badge={t(IMPACT.badge)} title={<span className="text-gradient-brand">{t(IMPACT.title)}</span>} />
 
@@ -47,12 +46,9 @@ export function ImpactNumbersSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-10% 0px' }}
                 transition={{ duration: 0.9, ease: EASE, delay: i * 0.1 }}
-                className="group glass relative overflow-hidden rounded-3xl p-7 transition-transform duration-500 hover:-translate-y-1.5"
+                className="glass relative overflow-hidden rounded-3xl p-7"
               >
-                <div
-                  className={`pointer-events-none absolute -top-20 -right-20 size-56 rounded-full bg-radial ${GLOWS[i]} to-transparent opacity-60 blur-2xl transition-opacity duration-500 group-hover:opacity-100`}
-                />
-                <Icon size={22} className="relative text-brand-cyan" />
+                <Icon size={22} className="relative text-slate-500" />
                 <p className="relative mt-10 font-display text-5xl font-semibold tracking-tight text-white md:text-6xl">
                   <CountUp value={m.value} prefix={m.prefix} suffix={m.suffix} />
                 </p>

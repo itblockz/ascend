@@ -5,16 +5,13 @@ import { EASE } from '../lib/motion'
 export function Badge({ children, tone = 'dark', className = '' }: { children: ReactNode; tone?: 'dark' | 'light'; className?: string }) {
   const toneCls =
     tone === 'dark'
-      ? 'border-white/12 bg-white/[0.04] text-brand-cyan'
-      : 'border-brand-blue/15 bg-brand-blue/[0.06] text-brand-blue'
+      ? 'border-white/12 text-slate-300'
+      : 'border-brand-black/12 text-slate-600'
   return (
     <span
       className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 font-mono text-xs font-medium tracking-[0.22em] uppercase ${toneCls} ${className}`}
     >
-      <span className="relative flex size-1.5">
-        <span className="pulse-ring absolute inset-0 rounded-full bg-current" />
-        <span className="relative size-1.5 rounded-full bg-current" />
-      </span>
+      <span className="size-1.5 rounded-full bg-brand-cyan" />
       {children}
     </span>
   )
@@ -82,10 +79,9 @@ export function PrimaryButton({ children, onClick, className = '' }: { children:
     <button
       type="button"
       onClick={onClick}
-      className={`group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-blue px-7 py-3.5 text-sm font-semibold text-white shadow-glow-blue transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98] ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-full bg-brand-cyan px-7 py-3.5 text-sm font-semibold text-brand-black transition-opacity duration-300 hover:opacity-85 ${className}`}
     >
-      <span className="absolute inset-0 bg-linear-to-r from-brand-blue via-[#1a7dff] to-brand-cyan opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-      <span className="relative flex items-center gap-2">{children}</span>
+      {children}
     </button>
   )
 }

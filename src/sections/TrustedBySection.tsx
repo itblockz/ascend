@@ -55,7 +55,6 @@ export function TrustedBySection() {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          <div className="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full bg-radial from-brand-cyan/20 to-transparent blur-2xl" />
           <div className="relative min-h-64 md:min-h-56" aria-live="polite">
             <AnimatePresence mode="wait">
               <motion.article

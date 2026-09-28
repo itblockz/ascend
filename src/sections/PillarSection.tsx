@@ -15,9 +15,10 @@ const slide = (x: number) => ({
 })
 
 const ACCENT = {
-  cyan: { text: 'text-brand-cyan', glow: 'rgb(0 229 255 / 0.14)', hex: '#00E5FF' },
-  blue: { text: 'text-[#7ea2ff]', glow: 'rgb(47 107 255 / 0.18)', hex: '#2F6BFF' },
-  teal: { text: 'text-brand-teal', glow: 'rgb(20 241 198 / 0.14)', hex: '#14F1C6' },
+  // minimal: one ink for every pillar's line art, cyan only for the small tags
+  cyan: { text: 'text-brand-cyan', hex: '#E6EDF5' },
+  blue: { text: 'text-brand-cyan', hex: '#E6EDF5' },
+  teal: { text: 'text-brand-cyan', hex: '#E6EDF5' },
 }
 
 /* ---------- coded visuals, one per pillar ---------- */
@@ -35,7 +36,7 @@ function AvatarVisual({ color }: { color: string }) {
           transition={{ duration: 3.2, repeat: Infinity, delay: i * 0.4, ease: 'easeInOut' }}
         />
       ))}
-      <div className="relative grid size-[34%] place-items-center rounded-full bg-radial from-brand-cyan/40 via-brand-blue/20 to-transparent">
+      <div className="relative grid size-[34%] place-items-center rounded-full bg-white/5 ring-1 ring-white/15">
         <svg viewBox="0 0 64 64" className="w-1/2" aria-hidden>
           <path d="M32 8 L58 52 L47.5 52 L32 26 L16.5 52 L6 52 Z" fill={color} opacity="0.9" />
         </svg>
@@ -75,9 +76,9 @@ function WorldVisual({ color }: { color: string }) {
               viewport={{ once: true }}
               transition={{ delay: 0.02 * i, duration: 0.6, ease: EASE }}
             >
-              <polygon points={`${cx - 20},${cy + 11.5 - h} ${cx},${cy + 23 - h} ${cx},${cy + 23} ${cx - 20},${cy + 11.5}`} fill="#0d1f4a" />
-              <polygon points={`${cx + 20},${cy + 11.5 - h} ${cx},${cy + 23 - h} ${cx},${cy + 23} ${cx + 20},${cy + 11.5}`} fill="#0a1838" />
-              <polygon points={top} fill={h > 10 ? `${color}55` : '#12295e'} stroke={`${color}66`} strokeWidth="0.6" />
+              <polygon points={`${cx - 20},${cy + 11.5 - h} ${cx},${cy + 23 - h} ${cx},${cy + 23} ${cx - 20},${cy + 11.5}`} fill="#141b28" />
+              <polygon points={`${cx + 20},${cy + 11.5 - h} ${cx},${cy + 23 - h} ${cx},${cy + 23} ${cx + 20},${cy + 11.5}`} fill="#0e141f" />
+              <polygon points={top} fill={h > 10 ? `${color}55` : '#1c2536'} stroke={`${color}66`} strokeWidth="0.6" />
             </motion.g>
           )
         })}
@@ -183,10 +184,6 @@ export function PillarSection({ pillar, flip = false }: { pillar: Pillar; flip?:
 
   return (
     <section id={pillar.id} className="relative overflow-hidden bg-brand-black py-36">
-      <div
-        className={`pointer-events-none absolute top-1/3 size-[36rem] ${flip ? '-right-40' : '-left-40'}`}
-        style={{ background: `radial-gradient(closest-side, ${a.glow}, transparent)` }}
-      />
       <div className="section-shell grid items-center gap-16 lg:grid-cols-12">
         <motion.div {...slide(flip ? 80 : -80)} className={`lg:col-span-6 ${flip ? 'lg:order-2' : ''}`}>
           <Badge>{t(pillar.badge)}</Badge>

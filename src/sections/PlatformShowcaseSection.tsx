@@ -12,7 +12,7 @@ import { EASE } from '../lib/motion'
 
 function ScreenShell({ brand, children }: { brand: string; children: ReactNode }) {
   return (
-    <div className="flex h-full flex-col bg-linear-to-b from-brand-navy to-brand-black px-[7%] pt-[16%] text-white">
+    <div className="flex h-full flex-col bg-brand-black px-[7%] pt-[16%] text-white">
       <div className="flex items-center justify-between text-[0.6rem] text-slate-400">
         <span>9:41</span>
         <span className="font-semibold tracking-widest text-brand-cyan">{brand}</span>
@@ -25,8 +25,8 @@ function ScreenShell({ brand, children }: { brand: string; children: ReactNode }
 function QuantumSoulScreen() {
   return (
     <ScreenShell brand="QUANTUMSOUL">
-      <div className="mx-auto mt-[10%] grid aspect-square w-[46%] place-items-center rounded-full bg-radial from-brand-cyan/50 via-brand-blue/25 to-transparent ring-1 ring-brand-cyan/40">
-        <span className="size-1/2 rounded-full bg-linear-to-b from-brand-teal to-brand-blue opacity-80" />
+      <div className="mx-auto mt-[10%] grid aspect-square w-[46%] place-items-center rounded-full bg-white/5 ring-1 ring-white/20">
+        <span className="size-1/2 rounded-full bg-white/80" />
       </div>
       <div className="mt-[10%] grid gap-1.5 text-[0.55rem] leading-snug">
         <span className="max-w-[80%] rounded-lg rounded-bl-sm bg-white/8 px-2 py-1.5 text-slate-200">
@@ -63,15 +63,15 @@ function EdenVerdenScreen() {
           const h = ((x * 3 + y * 5) % 4) * 2.5
           return (
             <g key={i}>
-              <polygon points={`${cx - 9},${cy + 5.2 - h} ${cx},${cy + 10.4 - h} ${cx},${cy + 10.4} ${cx - 9},${cy + 5.2}`} fill="#0d1f4a" />
-              <polygon points={`${cx + 9},${cy + 5.2 - h} ${cx},${cy + 10.4 - h} ${cx},${cy + 10.4} ${cx + 9},${cy + 5.2}`} fill="#0a1838" />
-              <polygon points={`${cx},${cy - h} ${cx + 9},${cy + 5.2 - h} ${cx},${cy + 10.4 - h} ${cx - 9},${cy + 5.2 - h}`} fill={h > 4 ? '#2F6BFF' : '#12295e'} stroke="#00E5FF55" strokeWidth="0.3" />
+              <polygon points={`${cx - 9},${cy + 5.2 - h} ${cx},${cy + 10.4 - h} ${cx},${cy + 10.4} ${cx - 9},${cy + 5.2}`} fill="#141b28" />
+              <polygon points={`${cx + 9},${cy + 5.2 - h} ${cx},${cy + 10.4 - h} ${cx},${cy + 10.4} ${cx + 9},${cy + 5.2}`} fill="#0e141f" />
+              <polygon points={`${cx},${cy - h} ${cx + 9},${cy + 5.2 - h} ${cx},${cy + 10.4 - h} ${cx - 9},${cy + 5.2 - h}`} fill={h > 4 ? '#E6EDF5' : '#1c2536'} stroke="#ffffff33" strokeWidth="0.3" />
             </g>
           )
         })}
       </svg>
       <div className="mt-3 flex -space-x-1.5">
-        {['#00E5FF', '#14F1C6', '#2F6BFF', '#8fb1ff'].map((c) => (
+        {['#E6EDF5', '#94A3B8', '#475569', '#00E5FF'].map((c) => (
           <span key={c} className="size-4 rounded-full ring-2 ring-brand-black" style={{ background: c }} />
         ))}
         <span className="ml-3 self-center text-[0.55rem] text-slate-400">+ online</span>
@@ -97,9 +97,9 @@ function KruMuayThaiScreen() {
             [29, 44, 42, 38],
             [42, 38, 54, 32],
           ].map(([x1, y1, x2, y2], i) => (
-            <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#14F1C6" strokeWidth="1.2" strokeLinecap="round" />
+            <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#E6EDF5" strokeWidth="1.2" strokeLinecap="round" />
           ))}
-          <circle cx="26" cy="11" r="3.5" fill="none" stroke="#14F1C6" strokeWidth="1" />
+          <circle cx="26" cy="11" r="3.5" fill="none" stroke="#E6EDF5" strokeWidth="1" />
         </svg>
         <span className="absolute top-2 left-2 rounded bg-brand-black/70 px-1.5 py-0.5 font-mono text-[0.5rem] text-brand-teal">● LIVE</span>
       </div>
@@ -134,7 +134,6 @@ export function PlatformShowcaseSection() {
   const { t } = useLang()
   return (
     <section id="platforms" className="relative overflow-hidden bg-brand-black py-36">
-      <div className="pointer-events-none absolute top-1/2 left-1/2 size-[50rem] -translate-x-1/2 -translate-y-1/4 bg-[radial-gradient(closest-side,rgb(47_107_255/0.16),transparent)]" />
       <div className="section-shell relative">
         <SectionHeader badge={t(PLATFORMS.badge)} title={<span className="text-gradient-brand">{t(PLATFORMS.title)}</span>} lead={t(PLATFORMS.lead)} />
 

@@ -11,7 +11,6 @@ export function ValuesSection() {
 
   return (
     <section id="values" className="relative overflow-hidden bg-brand-black py-36">
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-[radial-gradient(ellipse_at_bottom,rgb(0_229_255/0.1),transparent_70%)]" />
       <div className="section-shell relative">
         <SectionHeader badge={t(VALUES.badge)} title={<span className="text-gradient-brand">{t(VALUES.title)}</span>} />
 

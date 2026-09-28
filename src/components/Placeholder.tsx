@@ -23,9 +23,9 @@ export function ImageSlot({
   const { t } = useLang()
   const [failed, setFailed] = useState(false)
   const grad = {
-    cyan: 'from-[#0a3350] via-[#0b1426] to-[#060b14]',
-    blue: 'from-[#14286b] via-[#0b1426] to-[#060b14]',
-    teal: 'from-[#0a4a44] via-[#0b1426] to-[#060b14]',
+    cyan: 'from-[#1c2536] to-[#060b14]',
+    blue: 'from-[#141b28] to-[#060b14]',
+    teal: 'from-[#1e293b] to-[#060b14]',
   }[tone]
 
   return (
@@ -36,12 +36,12 @@ export function ImageSlot({
             className="absolute inset-0 opacity-40"
             style={{
               backgroundImage:
-                'linear-gradient(rgb(0 229 255 / 0.12) 1px, transparent 1px), linear-gradient(90deg, rgb(0 229 255 / 0.12) 1px, transparent 1px)',
+                'linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px)',
               backgroundSize: '32px 32px',
             }}
           />
           <svg viewBox="0 0 100 100" className="absolute top-1/2 left-1/2 w-1/3 max-w-40 -translate-x-1/2 -translate-y-1/2 opacity-25" aria-hidden>
-            <path d="M50 8 L94 88 L76 88 L50 40 L24 88 L6 88 Z" fill="none" stroke="#00E5FF" strokeWidth="1.2" />
+            <path d="M50 8 L94 88 L76 88 L50 40 L24 88 L6 88 Z" fill="none" stroke="#E6EDF5" strokeWidth="1.2" />
           </svg>
           <p className="absolute right-3 bottom-3 left-3 flex items-center gap-1.5 font-mono text-[11px] leading-tight text-slate-400/80">
             <ImageIcon size={12} className="shrink-0" />

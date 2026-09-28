@@ -79,14 +79,14 @@ export function TechnologyRadarSection() {
             ))}
             <span
               className="radar-sweep absolute inset-[4%] rounded-full opacity-70"
-              style={{ background: 'conic-gradient(from 0deg, rgb(47 107 255 / 0.14), transparent 22%)' }}
+              style={{ background: 'conic-gradient(from 0deg, rgb(6 11 20 / 0.06), transparent 22%)' }}
             />
 
             {/* laser lines */}
             <svg viewBox="0 0 100 100" className="pointer-events-none absolute inset-0 hidden size-full md:block" aria-hidden>
               <defs>
                 <linearGradient id="laser" gradientUnits="userSpaceOnUse" x1="50" y1="50" x2="50" y2={50 - RADIUS}>
-                  <stop offset="0" stopColor="#2F6BFF" stopOpacity="0.1" />
+                  <stop offset="0" stopColor="#060B14" stopOpacity="0.1" />
                   <stop offset="1" stopColor="#00E5FF" />
                 </linearGradient>
               </defs>
@@ -107,7 +107,7 @@ export function TechnologyRadarSection() {
             </svg>
 
             {/* central video stage */}
-            <div className="absolute top-1/2 left-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-slate-50 shadow-[0_40px_100px_-40px_rgb(47_107_255/0.45)] ring-1 ring-slate-200 md:size-[52%]">
+            <div className="absolute top-1/2 left-1/2 size-[62%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-slate-50 shadow-[0_40px_100px_-40px_rgb(6_11_20/0.15)] ring-1 ring-slate-200 md:size-[52%]">
               <LoopStage theme="light" />
             </div>
 

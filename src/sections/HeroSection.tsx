@@ -110,6 +110,13 @@ export function HeroSection() {
         </motion.div>
       </div>
 
+      {/* keeps the motto legible over the settled mark */}
+      <div
+        className={`pointer-events-none absolute inset-0 bg-linear-to-b from-brand-black/85 via-brand-black/40 to-transparent transition-opacity duration-700 lg:bg-linear-to-r lg:from-brand-black/90 lg:via-brand-black/45 lg:to-transparent ${
+          revealed ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+
       {/* Final reveal */}
       <AnimatePresence>
         {revealed && (
@@ -160,7 +167,7 @@ export function HeroSection() {
                     <p className="mt-2 font-display text-lg font-semibold text-white sm:text-2xl lg:mt-3 lg:text-4xl">{c.value}</p>
                     <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/10">
                       <motion.div
-                        className="h-full origin-left rounded-full bg-linear-to-r from-brand-teal via-brand-cyan to-brand-blue"
+                        className="h-full origin-left rounded-full bg-white/70"
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: 1 }}
                         transition={{ duration: 1.4, ease: EASE, delay: 0.4 + 0.12 * i }}

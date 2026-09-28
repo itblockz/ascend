@@ -79,7 +79,7 @@ function makeChevronMesh(geometry: THREE.ExtrudeGeometry, stops: [number, string
   const mesh = new THREE.Mesh(geometry, [caps, sides])
   const edges = new THREE.LineSegments(
     new THREE.EdgesGeometry(geometry, 25),
-    new THREE.LineBasicMaterial({ color: 0xbff8ff, transparent: true, opacity: 0.8 }),
+    new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 }),
   )
   const group = new THREE.Group()
   group.add(mesh, edges)
@@ -107,14 +107,14 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
   const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100)
   camera.position.set(0, 0, CAM_Z)
 
-  scene.add(new THREE.AmbientLight(0x6fa8ff, 0.5))
+  scene.add(new THREE.AmbientLight(0xffffff, 0.45))
   const key = new THREE.DirectionalLight(0xffffff, 2.2)
   key.position.set(-2, 3, 4)
   scene.add(key)
-  const rim = new THREE.PointLight(0x00e5ff, 18, 12)
+  const rim = new THREE.PointLight(0xffffff, 12, 12)
   rim.position.set(0, 0.4, -1.6)
   scene.add(rim)
-  const fill = new THREE.PointLight(0x2f6bff, 10, 12)
+  const fill = new THREE.PointLight(0x94a3b8, 8, 12)
   fill.position.set(2.5, -1, 2)
   scene.add(fill)
 
@@ -140,7 +140,7 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
   scene.add(root)
 
   // floor grid — the infrastructure beneath
-  const grid = new THREE.GridHelper(40, 80, 0x00e5ff, 0x00e5ff)
+  const grid = new THREE.GridHelper(40, 80, 0xe6edf5, 0xe6edf5)
   const gridMat = grid.material as THREE.LineBasicMaterial
   gridMat.transparent = true
   gridMat.opacity = 0.16
@@ -154,11 +154,11 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
     const mark = makeChevronMesh(
       geometry,
       [
-        [0, '#14F1C6'],
-        [0.5, '#00E5FF'],
-        [1, '#2F6BFF'],
+        [0, '#FFFFFF'],
+        [0.5, '#E6EDF5'],
+        [1, '#94A3B8'],
       ],
-      0x0d2a5c,
+      0x1c2536,
     )
     root.add(mark.group)
     disposables.push(...mark.materials, ...mark.textures)
@@ -206,7 +206,7 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
-      color: 0x9ff6ff,
+      color: 0xe6edf5,
     })
     const points = new THREE.Points(pGeo, pMat)
     root.add(points)
@@ -214,8 +214,8 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
 
     // orbit rings — the metaverse around the mark
     const orbitGroup = new THREE.Group()
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0 })
-    const dotMat = new THREE.MeshBasicMaterial({ color: 0xc8fbff, transparent: true, opacity: 0 })
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0xe6edf5, transparent: true, opacity: 0 })
+    const dotMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0 })
     const ringGeo = new THREE.TorusGeometry(1.05, 0.004, 6, 160)
     const moonGeo = new THREE.SphereGeometry(0.028, 12, 12)
     const rings: { pivot: THREE.Group; speed: number }[] = []
@@ -280,9 +280,9 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
     }
   } else {
     const palettes: { stops: [number, string][]; side: number }[] = [
-      { stops: [[0, '#7ff8ff'], [0.5, '#00E5FF'], [1, '#0aa6c9']], side: 0x08405a },
-      { stops: [[0, '#8fb1ff'], [0.5, '#2F6BFF'], [1, '#1d3fb8']], side: 0x101f55 },
-      { stops: [[0, '#8dffe6'], [0.5, '#14F1C6'], [1, '#0b9c86']], side: 0x073f3c },
+      { stops: [[0, '#FFFFFF'], [0.5, '#F1F5F9'], [1, '#CBD5E1']], side: 0x334155 },
+      { stops: [[0, '#E2E8F0'], [0.5, '#CBD5E1'], [1, '#94A3B8']], side: 0x1e293b },
+      { stops: [[0, '#94A3B8'], [0.5, '#64748B'], [1, '#475569']], side: 0x0f172a },
     ]
     const visibleH = 2 * CAM_Z * Math.tan(THREE.MathUtils.degToRad(FOV / 2))
     const finalY = LAYER_Y.map((fy) => (0.5 - fy) * visibleH)
@@ -295,9 +295,9 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
     })
 
     const base = new THREE.Group()
-    const discMat = new THREE.MeshBasicMaterial({ color: 0x14f1c6, transparent: true, opacity: 0.12, side: THREE.DoubleSide })
+    const discMat = new THREE.MeshBasicMaterial({ color: 0xe6edf5, transparent: true, opacity: 0.06, side: THREE.DoubleSide })
     const disc = new THREE.Mesh(new THREE.CircleGeometry(0.62, 64), discMat)
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x14f1c6, transparent: true, opacity: 0.5 })
+    const lineMat = new THREE.LineBasicMaterial({ color: 0xe6edf5, transparent: true, opacity: 0.4 })
     base.add(disc)
     for (let r = 1; r <= 4; r++) {
       const ring = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(new THREE.Path().absarc(0, 0, (0.62 * r) / 4, 0, Math.PI * 2, false).getPoints(64)), lineMat)
@@ -314,7 +314,7 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
     root.add(base)
     disposables.push(discMat, disc.geometry, lineMat, spokeGeo)
 
-    const spineMat = new THREE.LineDashedMaterial({ color: 0x00e5ff, dashSize: 0.05, gapSize: 0.07, transparent: true, opacity: 0 })
+    const spineMat = new THREE.LineDashedMaterial({ color: 0xe6edf5, dashSize: 0.05, gapSize: 0.07, transparent: true, opacity: 0 })
     const spineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, finalY[0], -0.05), new THREE.Vector3(0, finalY[3], -0.05)])
     const spine = new THREE.Line(spineGeo, spineMat)
     spine.computeLineDistances()

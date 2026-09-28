@@ -21,9 +21,11 @@ export const CHEVRON: Pt[] = [
 const C = {
   bg: '#060B14',
   navy: '#0B1426',
-  blue: '#2F6BFF',
-  cyan: '#00E5FF',
-  teal: '#14F1C6',
+  // minimal monochrome: white → pearl → slate, cyan kept as a pin-point accent
+  blue: '#94A3B8',
+  cyan: '#E6EDF5',
+  teal: '#FFFFFF',
+  accent: '#00E5FF',
 }
 
 export function chevronPath(ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number, sx = 1, sy = 1, poly: Pt[] = CHEVRON) {
@@ -126,15 +128,15 @@ function backdrop(ctx: CanvasRenderingContext2D, w: number, h: number, glow: num
   ctx.fillRect(0, 0, w, h)
   const r = Math.max(w, h) * 0.7
   const g = ctx.createRadialGradient(w / 2, h * glowY, 0, w / 2, h * glowY, r)
-  g.addColorStop(0, `rgba(0, 229, 255, ${0.16 * glow})`)
-  g.addColorStop(0.35, `rgba(47, 107, 255, ${0.1 * glow})`)
+  g.addColorStop(0, `rgba(230, 237, 245, ${0.07 * glow})`)
+  g.addColorStop(0.35, `rgba(148, 163, 184, ${0.04 * glow})`)
   g.addColorStop(1, 'rgba(6, 11, 20, 0)')
   ctx.fillStyle = g
   ctx.fillRect(0, 0, w, h)
 }
 
 function stars(ctx: CanvasRenderingContext2D, w: number, h: number, drift: number, alpha: number) {
-  ctx.fillStyle = '#cfefff'
+  ctx.fillStyle = '#e6edf5'
   for (let i = 0; i < starCache.length; i++) {
     const [x, y] = starCache[i]
     const yy = (((y + drift * (0.3 + (i % 3) * 0.25)) % 1) + 1) % 1
@@ -190,7 +192,7 @@ function solidChevron(
   opts: { depth?: number; sy?: number; sx?: number; top?: string; mid?: string; bottom?: string; side?: string; rim?: number; poly?: Pt[] } = {},
 ) {
   if (alpha <= 0.001) return
-  const { depth = s * 0.07, sy = 1, sx = 1, top = C.teal, mid = C.cyan, bottom = C.blue, side = '#0d2a5c', rim = 1, poly = CHEVRON } = opts
+  const { depth = s * 0.07, sy = 1, sx = 1, top = C.teal, mid = C.cyan, bottom = C.blue, side = '#1c2536', rim = 1, poly = CHEVRON } = opts
   ctx.save()
   ctx.globalAlpha = alpha
   const steps = Math.max(1, Math.round(depth / 1.5))
@@ -212,7 +214,7 @@ function solidChevron(
 
   if (rim > 0) {
     ctx.globalCompositeOperation = 'lighter'
-    ctx.strokeStyle = `rgba(0, 229, 255, ${0.08 * rim})`
+    ctx.strokeStyle = `rgba(255, 255, 255, ${0.05 * rim})`
     ctx.lineWidth = 16
     ctx.lineJoin = 'round'
     ctx.stroke()
@@ -252,7 +254,7 @@ function orbits(ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number
     ctx.save()
     ctx.translate(cx, cy + s * 0.02)
     ctx.rotate(r.tilt)
-    ctx.strokeStyle = light ? `rgba(47, 107, 255, ${0.35 * alpha})` : `rgba(0, 229, 255, ${0.3 * alpha})`
+    ctx.strokeStyle = light ? `rgba(6, 11, 20, ${0.25 * alpha})` : `rgba(230, 237, 245, ${0.25 * alpha})`
     ctx.beginPath()
     // back half behind the mark, front half over it
     if (front) ctx.ellipse(0, 0, r.rx * s, r.ry * s, 0, 0, Math.PI)
@@ -264,7 +266,7 @@ function orbits(ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number
       if (front !== na < Math.PI) continue
       const px = Math.cos(a) * r.rx * s
       const py = Math.sin(a) * r.ry * s
-      ctx.fillStyle = light ? `rgba(47, 107, 255, ${alpha})` : `rgba(160, 250, 255, ${alpha})`
+      ctx.fillStyle = d === 0 ? `rgba(0, 229, 255, ${alpha})` : light ? `rgba(6, 11, 20, ${alpha})` : `rgba(230, 237, 245, ${alpha})`
       ctx.beginPath()
       ctx.arc(px, py, d === 0 ? 3 : 2, 0, Math.PI * 2)
       ctx.fill()
@@ -305,8 +307,8 @@ export function drawHeroChevron(ctx: CanvasRenderingContext2D, w: number, h: num
       const x = cx + fx * s
       const top = cy + s * (fx === 0 ? 0 : 0.4)
       const g = ctx.createLinearGradient(x, top, x, top + h * 0.5)
-      g.addColorStop(0, `rgba(0, 229, 255, ${0.35 * trail})`)
-      g.addColorStop(1, 'rgba(0, 229, 255, 0)')
+      g.addColorStop(0, `rgba(230, 237, 245, ${0.25 * trail})`)
+      g.addColorStop(1, 'rgba(230, 237, 245, 0)')
       ctx.fillStyle = g
       ctx.fillRect(x - s * 0.05, top, s * 0.1, h * 0.5)
     }
@@ -349,7 +351,7 @@ export function drawHeroChevron(ctx: CanvasRenderingContext2D, w: number, h: num
     const tw = 0.6 + 0.4 * Math.sin(q.twinkle + p * 40)
     const a = (0.25 + 0.75 * t) * (1 - ignite * 0.7) * tw + settle * 0.12 * tw
     if (a <= 0.01) continue
-    ctx.fillStyle = q.hue < 0.5 ? `rgba(0, 229, 255, ${a})` : q.hue < 0.8 ? `rgba(20, 241, 198, ${a})` : `rgba(230, 250, 255, ${a})`
+    ctx.fillStyle = q.hue < 0.9 ? `rgba(230, 237, 245, ${a})` : `rgba(0, 229, 255, ${a})`
     const sz = q.size * (1 + (1 - t) * 0.8)
     ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz)
   }
@@ -366,9 +368,9 @@ export function drawHeroChevron(ctx: CanvasRenderingContext2D, w: number, h: num
 export const LAYER_Y = [0.41, 0.55, 0.69, 0.86]
 
 const LAYER_COLORS = [
-  { top: '#7ff8ff', mid: C.cyan, bottom: '#0aa6c9', side: '#08405a' },
-  { top: '#8fb1ff', mid: C.blue, bottom: '#1d3fb8', side: '#101f55' },
-  { top: '#8dffe6', mid: C.teal, bottom: '#0b9c86', side: '#073f3c' },
+  { top: '#FFFFFF', mid: '#F1F5F9', bottom: '#CBD5E1', side: '#334155' },
+  { top: '#E2E8F0', mid: '#CBD5E1', bottom: '#94A3B8', side: '#1E293B' },
+  { top: '#94A3B8', mid: '#64748B', bottom: '#475569', side: '#0F172A' },
 ]
 
 export function drawLayers(ctx: CanvasRenderingContext2D, w: number, h: number, p: number) {
@@ -387,7 +389,7 @@ export function drawLayers(ctx: CanvasRenderingContext2D, w: number, h: number, 
   if (sep > 0.02) {
     ctx.save()
     ctx.setLineDash([4, 6])
-    ctx.strokeStyle = `rgba(0, 229, 255, ${0.35 * sep})`
+    ctx.strokeStyle = `rgba(230, 237, 245, ${0.3 * sep})`
     ctx.lineWidth = 1
     ctx.beginPath()
     ctx.moveTo(cx, ys[0])
@@ -403,17 +405,17 @@ export function drawLayers(ctx: CanvasRenderingContext2D, w: number, h: number, 
   ctx.translate(cx, by)
   ctx.scale(1, lerp(0.35, 0.32, sep))
   const disc = ctx.createRadialGradient(0, 0, 0, 0, 0, br)
-  disc.addColorStop(0, 'rgba(20, 241, 198, 0.28)')
-  disc.addColorStop(1, 'rgba(20, 241, 198, 0.02)')
+  disc.addColorStop(0, 'rgba(230, 237, 245, 0.12)')
+  disc.addColorStop(1, 'rgba(230, 237, 245, 0.01)')
   ctx.fillStyle = disc
   ctx.beginPath()
   ctx.arc(0, 0, br, 0, Math.PI * 2)
   ctx.fill()
-  ctx.strokeStyle = 'rgba(20, 241, 198, 0.55)'
+  ctx.strokeStyle = 'rgba(230, 237, 245, 0.45)'
   ctx.lineWidth = 1.5
   ctx.stroke()
   ctx.lineWidth = 1
-  ctx.strokeStyle = 'rgba(20, 241, 198, 0.18)'
+  ctx.strokeStyle = 'rgba(230, 237, 245, 0.14)'
   for (let r = 1; r <= 3; r++) {
     ctx.beginPath()
     ctx.arc(0, 0, (br * r) / 4, 0, Math.PI * 2)
@@ -457,7 +459,7 @@ export function drawLayers(ctx: CanvasRenderingContext2D, w: number, h: number, 
   if (sep > 0.6) {
     const a = smoothstep(0.6, 0.95, p)
     ctx.save()
-    ctx.strokeStyle = `rgba(0, 229, 255, ${0.4 * a})`
+    ctx.strokeStyle = `rgba(230, 237, 245, ${0.35 * a})`
     ctx.lineWidth = 1
     ys.forEach((y, i) => {
       if (mobile) return
@@ -489,8 +491,8 @@ export function drawLoop(ctx: CanvasRenderingContext2D, w: number, h: number, ti
 
   // floor shadow
   const sh = ctx.createRadialGradient(cx, cy + s * 0.62, 0, cx, cy + s * 0.62, s * 0.7)
-  sh.addColorStop(0, light ? 'rgba(47, 107, 255, 0.22)' : 'rgba(0, 229, 255, 0.25)')
-  sh.addColorStop(1, 'rgba(47, 107, 255, 0)')
+  sh.addColorStop(0, light ? 'rgba(6, 11, 20, 0.18)' : 'rgba(230, 237, 245, 0.15)')
+  sh.addColorStop(1, 'rgba(6, 11, 20, 0)')
   ctx.fillStyle = sh
   ctx.save()
   ctx.translate(0, cy + s * 0.62)
@@ -504,7 +506,7 @@ export function drawLoop(ctx: CanvasRenderingContext2D, w: number, h: number, ti
   // side wall, stacked copies offset along x
   const steps = 14
   for (let k = steps; k >= 1; k--) {
-    ctx.fillStyle = light ? '#1d3fb8' : '#0d2a5c'
+    ctx.fillStyle = light ? '#334155' : '#1c2536'
     ctx.globalAlpha = 0.9
     chevronPath(ctx, cx + (thick * k) / steps, cy, s, Math.max(0.02, Math.abs(sx)) * Math.sign(sx || 1))
     ctx.fill()
@@ -514,9 +516,10 @@ export function drawLoop(ctx: CanvasRenderingContext2D, w: number, h: number, ti
   solidChevron(ctx, cx, cy, s, 1, {
     sx: Math.max(0.02, Math.abs(sx)),
     depth: 0,
-    top: front ? C.teal : '#5aa9ff',
-    mid: front ? C.cyan : C.blue,
-    bottom: front ? C.blue : '#1d3fb8',
+    // light theme: an obsidian mark on pearl; dark theme: a white mark on obsidian
+    top: light ? (front ? '#1C2536' : '#475569') : front ? C.teal : '#CBD5E1',
+    mid: light ? (front ? '#0B1426' : '#334155') : front ? C.cyan : C.blue,
+    bottom: light ? (front ? '#060B14' : '#1E293B') : front ? C.blue : '#64748B',
     rim: light ? 0.5 : 1,
   })
 
