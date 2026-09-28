@@ -140,6 +140,8 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
 
   const root = new THREE.Group()
   scene.add(root)
+  // fit-to-viewport scale from resize(); the hero multiplies its settle shrink onto it
+  let baseScale = 1
 
   // floor grid — the infrastructure beneath
   const grid = new THREE.GridHelper(40, 80, 0xe6edf5, 0xe6edf5)
@@ -269,7 +271,9 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
       mark.group.rotation.y = lerp(-1.1, 0, smoothstep(0.2, 0.62, p)) + Math.sin(time * 0.6) * 0.06 * settle
       mark.group.rotation.x = lerp(0.25, 0, ignite)
 
-      root.position.y = rise * 0.34
+      // settle: the mark lifts and shrinks into the upper third, clearing the centred copy below
+      root.position.y = rise * 0.34 + settle * 0.46
+      root.scale.setScalar(baseScale * lerp(1, 0.48, settle))
       grid.position.y = -1.35 - rise * 0.9
       gridMat.opacity = 0.16 * smoothstep(0.08, 0.35, p) * (1 - settle * 0.4)
       grid.position.z = (p * 6) % 0.5
@@ -423,7 +427,8 @@ export function createChevronScene(container: HTMLElement, kind: SceneKind): Che
     camera.aspect = w / h
     camera.updateProjectionMatrix()
     // keep the mark inside narrow portrait viewports
-    root.scale.setScalar(light ? 1 : Math.min(1, (w / h) * (kind === 'hero' ? 1.15 : 1.5)))
+    baseScale = light ? 1 : Math.min(1, (w / h) * (kind === 'hero' ? 1.15 : 1.5))
+    root.scale.setScalar(baseScale)
   }
 
   const frame = () => {

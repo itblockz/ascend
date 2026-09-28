@@ -31,16 +31,10 @@ export const UI = {
 export const HERO = {
   badge: b('DEEP-TECH SOCIAL INNOVATOR', 'DEEP-TECH SOCIAL INNOVATOR'),
   sub: b('โครงสร้างพื้นฐานทางสังคมดิจิทัล ผ่าน AI, Game และ Metaverse', 'Digital social infrastructure through AI, Games and the Metaverse'),
-  finalKicker: b('Deep-Tech Social Innovator & Immersive Experience Creator', 'Deep-Tech Social Innovator & Immersive Experience Creator'),
   motto: b(
     'เรานำเทคโนโลยี จิตวิทยา ความงาม และความเพลิดเพลิน มารวมกันเพื่อคุณค่าต่อการเติบโตของผู้คน และการสร้างชุมชนที่ยั่งยืน',
     'We bring together technology, psychology, beauty and enjoyment to create value for human growth and sustainable communities.',
   ),
-  cards: [
-    { value: '20,000+', label: b('ผู้เข้าชมงาน', 'Festival visitors'), note: b('Namaste Thailand 2026 · นิวเดลี', 'Namaste Thailand 2026 · New Delhi') },
-    { value: '>90%', label: b('ความแม่นยำ AI', 'AI pose accuracy'), note: b('AI Kru Muay Thai · Pose Estimation', 'AI Kru Muay Thai · Pose Estimation') },
-    { value: 'Award', label: b('Innovation Cooperation', 'Innovation Cooperation'), note: b('AI Avatar "Ananya" & Foody AI', 'AI Avatar "Ananya" & Foody AI') },
-  ],
 }
 
 export const INSIDE = {

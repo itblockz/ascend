@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import gsap from 'gsap'
-import { ArrowUpRight, Award, ChevronDown, ScanLine, Users } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { ArrowUpRight, ChevronDown } from 'lucide-react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { Wordmark } from '../components/Brand'
 import { ChevronStage, type StageApi } from '../components/ChevronStage'
 import { Badge, PrimaryButton } from '../components/ui'
@@ -15,8 +15,6 @@ const FADE_AT = 0.07 // opening tagline leaves as soon as scrubbing starts
 const REVEAL_AT = 0.9 // final composition once the mark has settled
 const PLAY = 3 // timeline units spent scrubbing
 const HOLD = 2 // timeline units of static hold after the last frame
-
-const CARD_ICONS = [Users, ScanLine, Award]
 
 export function HeroSection() {
   const { t } = useLang()
@@ -112,73 +110,46 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      {/* keeps the motto legible over the settled mark */}
+      {/* keeps the centred copy legible over the lower half of the scene */}
       <div
-        className={`pointer-events-none absolute inset-0 bg-linear-to-b from-brand-black/85 via-brand-black/40 to-transparent transition-opacity duration-700 lg:bg-linear-to-r lg:from-brand-black/90 lg:via-brand-black/45 lg:to-transparent ${
+        className={`pointer-events-none absolute inset-x-0 bottom-0 h-[70%] bg-linear-to-t from-brand-black via-brand-black/70 to-transparent transition-opacity duration-700 ${
           revealed ? 'opacity-100' : 'opacity-0'
         }`}
       />
 
-      {/* Final reveal */}
+      {/* Final reveal: the mark settles above, the motto sits centred beneath it */}
       <AnimatePresence>
         {revealed && (
           <motion.div
             key="reveal"
-            className="section-shell absolute inset-0 flex flex-col justify-between gap-6 pt-28 pb-16 lg:flex-row lg:items-center lg:pt-24 lg:pb-12"
-            initial="hidden"
-            animate="show"
-            exit="hidden"
+            className="section-shell absolute inset-0 flex flex-col items-center justify-end pb-16 text-center md:pb-20"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.9, ease: EASE }}
           >
-            <motion.div
-              className="max-w-xl"
-              variants={{ hidden: { opacity: 0, x: -60 }, show: { opacity: 1, x: 0 } }}
-              transition={{ duration: 0.9, ease: EASE }}
-            >
-              <Badge>ASCEND CO., LTD. · SINCE 2019</Badge>
-              <h2 className="mt-5 font-display text-[clamp(1.75rem,3.9vw,3.4rem)] leading-[1.12] font-semibold tracking-tight text-balance">
-                <span className="text-gradient-brand">{t(HERO.motto)}</span>
-              </h2>
-              <p className="mt-5 hidden max-w-md text-sm leading-relaxed text-slate-400 md:block">{t(HERO.finalKicker)}</p>
-              <div className="mt-7 hidden items-center gap-3 md:flex">
-                <PrimaryButton onClick={() => scrollToId('inside')}>
-                  {t(UI.explore)} <ArrowUpRight size={16} />
-                </PrimaryButton>
-                <a
-                  {...extLink(LINKS.virtualOffice)}
-                  className="rounded-md border border-white/15 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-white/5"
-                >
-                  {t(UI.visitVirtualOffice)}
-                </a>
-              </div>
-            </motion.div>
-
-            <div className="grid grid-cols-3 gap-2.5 lg:w-80 lg:grid-cols-1 lg:gap-3">
-              {HERO.cards.map((c, i) => {
-                const Icon = CARD_ICONS[i]
-                return (
-                  <motion.div
-                    key={c.value}
-                    variants={{ hidden: { opacity: 0, x: 60 }, show: { opacity: 1, x: 0 } }}
-                    transition={{ duration: 0.8, ease: EASE, delay: 0.12 * i + 0.1 }}
-                    className="glass rounded-2xl p-3.5 lg:rounded-3xl lg:p-4 [@media(min-height:820px)]:lg:p-5"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs leading-tight font-medium text-slate-400">{t(c.label)}</span>
-                      <Icon size={18} className="hidden shrink-0 text-slate-500 sm:block" />
-                    </div>
-                    <p className="mt-2 font-display text-lg font-semibold text-white sm:text-2xl lg:mt-3 lg:text-4xl">{c.value}</p>
-                    <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/10">
-                      <motion.div
-                        className="h-full origin-left rounded-full bg-white/70"
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{ duration: 1.4, ease: EASE, delay: 0.4 + 0.12 * i }}
-                      />
-                    </div>
-                    <p className="mt-2.5 hidden text-xs text-slate-500 [@media(min-height:820px)]:lg:block">{t(c.note)}</p>
-                  </motion.div>
-                )
-              })}
+            <Badge>ASCEND CO., LTD. · SINCE 2019</Badge>
+            <h2 className="mt-4 max-w-2xl font-display text-[clamp(1.3rem,2.1vw,1.9rem)] leading-[1.35] font-medium tracking-tight text-balance text-white">
+              {/* keep each phrase whole on wider screens: Thai otherwise breaks mid-compound (ความ/งาม) */}
+              {t(HERO.motto)
+                .split(' ')
+                .map((phrase, i) => (
+                  <Fragment key={i}>
+                    {i > 0 && ' '}
+                    <span className="md:inline-block md:whitespace-nowrap">{phrase}</span>
+                  </Fragment>
+                ))}
+            </h2>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <PrimaryButton onClick={() => scrollToId('inside')}>
+                {t(UI.explore)} <ArrowUpRight size={16} />
+              </PrimaryButton>
+              <a
+                {...extLink(LINKS.virtualOffice)}
+                className="rounded-md border border-white/15 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-white/5"
+              >
+                {t(UI.visitVirtualOffice)}
+              </a>
             </div>
           </motion.div>
         )}
