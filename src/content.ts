@@ -29,7 +29,6 @@ export const UI = {
 
 export const HERO = {
   badge: b('DEEP-TECH SOCIAL INNOVATOR', 'DEEP-TECH SOCIAL INNOVATOR'),
-  headline: 'ASCEND.',
   sub: b('โครงสร้างพื้นฐานทางสังคมดิจิทัล ผ่าน AI, Game และ Metaverse', 'Digital social infrastructure through AI, Games and the Metaverse'),
   finalKicker: b('Deep-Tech Social Innovator & Immersive Experience Creator', 'Deep-Tech Social Innovator & Immersive Experience Creator'),
   motto: b(

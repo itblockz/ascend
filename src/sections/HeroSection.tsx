@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ArrowUpRight, Award, ChevronDown, ScanLine, Users } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { Wordmark } from '../components/Brand'
 import { ChevronStage, type StageApi } from '../components/ChevronStage'
 import { Badge, PrimaryButton } from '../components/ui'
 import { HERO, UI } from '../content'
@@ -74,7 +75,9 @@ export function HeroSection() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-brand-black to-transparent" />
 
       {/* Opening tagline */}
-      <div ref={taglineRef} className="absolute inset-x-0 top-0 flex flex-col items-center px-6 pt-32 text-center md:pt-36">
+      <div ref={taglineRef} className="isolate absolute inset-x-0 top-0 flex flex-col items-center px-6 pt-32 text-center md:pt-36">
+        {/* dims the particle cloud behind the opening lockup; leaves with it */}
+        <div className="pointer-events-none absolute inset-x-0 top-10 -z-10 h-[30rem] bg-[radial-gradient(ellipse_45%_50%_at_center,rgb(6_11_20/0.85),transparent)]" />
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: EASE, delay: 0.2 }}>
           <Badge>{t(HERO.badge)}</Badge>
         </motion.div>
@@ -82,9 +85,9 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: EASE, delay: 0.35 }}
-          className="mt-6 font-display text-[clamp(3.5rem,13vw,11rem)] leading-[0.9]! font-bold tracking-[0.04em]"
+          className="mt-8 leading-none! text-white"
         >
-          <span className="text-gradient-brand">{HERO.headline}</span>
+          <Wordmark className="text-[clamp(3rem,11vw,9rem)]" />
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}

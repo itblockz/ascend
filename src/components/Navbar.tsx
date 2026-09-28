@@ -6,26 +6,7 @@ import { useLang } from '../i18n/LangContext'
 import { scrollToId } from '../lib/lenis'
 import { extLink, LINKS } from '../lib/links'
 import { EASE } from '../lib/motion'
-
-export function Mark({ className = 'size-7' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden>
-      <path d="M32 8 L58 52 L47.5 52 L32 26 L16.5 52 L6 52 Z" fill="currentColor" />
-    </svg>
-  )
-}
-
-export function Logo() {
-  return (
-    <span className="flex items-center gap-2.5">
-      <Mark className="size-7 text-white" />
-      <span className="flex flex-col leading-none">
-        <span className="font-display text-lg font-bold tracking-[0.2em] text-white">ASCEND</span>
-        <span className="mt-1 hidden font-mono text-[11px] tracking-[0.22em] whitespace-nowrap text-slate-500 sm:block">DEEP-TECH · SOCIAL</span>
-      </span>
-    </span>
-  )
-}
+import { Logo } from './Brand'
 
 export function LangToggle({ className = '' }: { className?: string }) {
   const { lang, setLang, t } = useLang()

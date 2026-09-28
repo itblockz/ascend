@@ -14,6 +14,8 @@
   --font-sans: "Inter", "Prompt", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Sora", "Prompt", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* brand lockup only (matches the logo's light geometric caps) */
+  --font-brand: "Montserrat", ui-sans-serif, system-ui, sans-serif;
 
   --scale-120: 1.2;
 

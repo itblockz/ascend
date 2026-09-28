@@ -2,7 +2,7 @@ import { ArrowUpRight, MapPin, MonitorSmartphone } from 'lucide-react'
 import { FOOTER, UI } from '../content'
 import { useLang } from '../i18n/LangContext'
 import { extLink, LINKS } from '../lib/links'
-import { Logo } from './Navbar'
+import { LogoLockup } from './Brand'
 
 export function Footer() {
   const { t } = useLang()
@@ -10,7 +10,7 @@ export function Footer() {
     <footer className="border-t border-white/8 bg-brand-black py-16">
       <div className="section-shell grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <Logo />
+          <LogoLockup className="text-white" />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-slate-400">{t(FOOTER.tagline)}</p>
         </div>
         <div>
