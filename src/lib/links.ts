@@ -2,6 +2,7 @@
 // links but they go nowhere until a real URL is filled in.
 
 export const LINKS = {
+  website: 'https://www.ascendgroup.asia',
   // TODO: Gather.town virtual office URL
   virtualOffice: '#',
   // TODO: Google Form for the Ascend Co-Working Challenge
@@ -18,11 +19,11 @@ export const LINKS = {
   // TODO: Facebook page URLs
   social: [
     { name: 'Ascend Group Asia', href: '#' },
-    { name: 'V360', href: '#' },
+    { name: 'V360 Metaverse', href: '#' },
     { name: 'Eden Arts Studio', href: '#' },
     { name: 'LifeHack360', href: '#' },
     { name: 'Quantum Soul AI', href: '#' },
-    { name: 'MysteryJars', href: '#' },
+    { name: 'Mystery Jars', href: '#' },
   ],
 } as const
 

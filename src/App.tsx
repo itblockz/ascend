@@ -19,6 +19,7 @@ import { PlatformShowcaseSection } from './sections/PlatformShowcaseSection'
 import { TechnologyRadarSection } from './sections/TechnologyRadarSection'
 import { TrustedBySection } from './sections/TrustedBySection'
 import { ValuesSection } from './sections/ValuesSection'
+import { WorksSection } from './sections/WorksSection'
 
 gsap.registerPlugin(ScrollTrigger)
 ScrollTrigger.config({ ignoreMobileResize: true })
@@ -71,17 +72,19 @@ export default function App() {
     <LangProvider>
       <Navbar onAbout={openAbout} />
       <main>
+        {/* order follows the IA brief: credibility right after the hero */}
         <HeroSection />
-        <InsideAscendSection />
+        <TrustedBySection />
         <ImpactNumbersSection />
+        <InsideAscendSection />
         {PILLARS.map((p, i) => (
           <PillarSection key={p.id} pillar={p} flip={i % 2 === 1} />
         ))}
         <PlatformShowcaseSection />
         <TechnologyRadarSection />
-        <TrustedBySection />
-        <ValuesSection />
+        <WorksSection />
         <GlobalStageSection />
+        <ValuesSection />
         <JoinCTASection onJoin={openJoin} />
       </main>
       <Footer />

@@ -45,7 +45,9 @@ export function Footer() {
         <p>
           © {new Date().getFullYear()} {t(FOOTER.company)} {t(FOOTER.rights)}
         </p>
-        <p className="font-mono tracking-[0.16em]">AI · GAME · METAVERSE</p>
+        <a {...extLink(LINKS.website)} className="font-mono tracking-[0.16em] transition-colors hover:text-white">
+          WWW.ASCENDGROUP.ASIA
+        </a>
       </div>
     </footer>
   )

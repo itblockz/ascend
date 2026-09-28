@@ -1,12 +1,13 @@
-// All site copy, Thai + English. Sourced from the v1 site and the ASCEND
-// IA / Mood & Tone brief. Edit wording here; components only render it.
+// All site copy, Thai + English. Sourced from the ASCEND IA / Mood & Tone
+// brief, the Brand Strategy Blueprint and the Company Experience & Project
+// Portfolio. Edit wording here; components only render it.
 import type { Bi } from './i18n/LangContext'
 
 const b = (th: string, en: string): Bi => ({ th, en })
 
 export const NAV = [
   { id: 'pillars', label: b('เสาหลัก', 'Pillars') },
-  { id: 'impact', label: b('ผลงาน', 'Impact') },
+  { id: 'works', label: b('ผลงาน', 'Works') },
   { id: 'platforms', label: b('แพลตฟอร์ม', 'Platforms') },
   { id: 'technology', label: b('เทคโนโลยี', 'Technology') },
   { id: 'values', label: b('ค่านิยม', 'Values') },
@@ -32,8 +33,8 @@ export const HERO = {
   sub: b('โครงสร้างพื้นฐานทางสังคมดิจิทัล ผ่าน AI, Game และ Metaverse', 'Digital social infrastructure through AI, Games and the Metaverse'),
   finalKicker: b('Deep-Tech Social Innovator & Immersive Experience Creator', 'Deep-Tech Social Innovator & Immersive Experience Creator'),
   motto: b(
-    'เรานำเทคโนโลยี จิตวิทยา ความงาม และความเพลิดเพลิน มารวมกันเพื่อคุณค่าต่อการเติบโตของผู้คน',
-    'We bring together technology, psychology, beauty and enjoyment to create value for human growth.',
+    'เรานำเทคโนโลยี จิตวิทยา ความงาม และความเพลิดเพลิน มารวมกันเพื่อคุณค่าต่อการเติบโตของผู้คน และการสร้างชุมชนที่ยั่งยืน',
+    'We bring together technology, psychology, beauty and enjoyment to create value for human growth and sustainable communities.',
   ),
   cards: [
     { value: '20,000+', label: b('ผู้เข้าชมงาน', 'Festival visitors'), note: b('Namaste Thailand 2026 · นิวเดลี', 'Namaste Thailand 2026 · New Delhi') },
@@ -133,7 +134,7 @@ export const TECH = {
   lead: b('ชุดเทคโนโลยีที่เราพัฒนาเองและนำไปใช้ในงานจริง เลือกแต่ละจุดเพื่อดูรายละเอียด', 'The stack we build and ship in real projects. Select a node to trace it.'),
   nodes: [
     { name: b('Conversational AI (RAG)', 'Conversational AI (RAG)'), spec: 'QuantumSoul.ai', body: b('ระบบสนทนาที่ตอบจากฐานความรู้ขององค์กร สำหรับบริการสาธารณะ การแพทย์ และการศึกษา', 'Dialogue grounded in an organisation’s own knowledge, for public service, healthcare and education.') },
-    { name: b('MetaHuman Avatar', 'MetaHuman Avatar'), spec: 'Ananya · Foody', body: b('มนุษย์เสมือนที่พูดได้หลายภาษา เช่น ฮินดีและอังกฤษ ทำหน้าที่เป็นทูตวัฒนธรรม', 'Multilingual digital humans — Hindi, English and more — serving as cultural ambassadors.') },
+    { name: b('MetaHuman & AI Avatars', 'MetaHuman & AI Avatars'), spec: 'Foody AI · Ananya', body: b('Foody AI Avatar พัฒนาด้วย MetaHuman และ AI Avatar "Ananya" ที่สนทนาภาษาฮินดีและอังกฤษ ทำหน้าที่ทูตวัฒนธรรมอาหารไทยในรูปแบบดิจิทัล', 'Foody AI Avatar built on MetaHuman, and AI Avatar "Ananya" conversing in Hindi and English, serving as digital Thai food cultural ambassadors.') },
     { name: b('AI Pose Estimation', 'AI Pose Estimation'), spec: '>90% accuracy', body: b('วิเคราะห์ท่าทางร่างกายแบบเรียลไทม์ หัวใจของ AI Kru Muay Thai', 'Real-time body-pose analysis at the heart of AI Kru Muay Thai.') },
     { name: b('Metaverse Worlds', 'Metaverse Worlds'), spec: 'EdenVerden · Aomunity', body: b('โลกเสมือนเชิงสังคมที่ผู้คนเข้ามาเรียนรู้ ทำงาน และสร้างชุมชนร่วมกัน', 'Social virtual worlds where people learn, work and build community together.') },
     { name: b('Gamification Engine', 'Gamification Engine'), spec: 'MysteryJars · Wasty', body: b('กลไกเกมที่เปลี่ยนพฤติกรรม ตั้งแต่การเรียนรู้จนถึงการบริจาคอาหาร', 'Game mechanics that shift behaviour — from learning to food donation.') },
@@ -151,6 +152,7 @@ export const TRUSTED = {
     { id: 'thai-embassy', name: 'Royal Thai Embassy' },
     { id: 'gsb', name: 'Government Savings Bank' },
     { id: 'etda', name: 'ETDA' },
+    { id: 'moe', name: 'Ministry of Education' },
     { id: 'sos', name: 'SOS Thailand' },
     { id: 'scb-academy', name: 'SCB Academy' },
     { id: 'spu', name: 'Sripatum University' },
@@ -177,8 +179,8 @@ export const TRUSTED = {
     {
       tag: b('Community · Finance', 'Community · Finance'),
       title: b('Aomunity — Government Savings Bank', 'Aomunity — Government Savings Bank'),
-      body: b('โลกเสมือนเพื่อชุมชนและการเงิน พัฒนาร่วมกับธนาคารออมสิน เชื่อมความรู้ทางการเงินเข้ากับประสบการณ์แบบเกม', 'A community and finance metaverse built with the Government Savings Bank, connecting financial literacy with game-driven experiences.'),
-      meta: b('Game-driven Metaverse', 'Game-driven Metaverse'),
+      body: b('ได้รับความไว้วางใจจากธนาคารออมสินให้พัฒนาโลกเสมือน "Aomunity" สร้างกิจกรรมและเกมภายในแพลตฟอร์ม และวางกลยุทธ์การตลาดและประชาสัมพันธ์แบบครบวงจร', 'Commissioned by the Government Savings Bank to build the "Aomunity" virtual world, create in-platform activities and games, and plan and run its marketing and PR.'),
+      meta: b('Metaverse · Interactive Content · Strategic Marketing', 'Metaverse · Interactive Content · Strategic Marketing'),
     },
   ],
 }
@@ -261,8 +263,203 @@ export const FOOTER = {
   tagline: b('Deep-Tech Social Innovator & Immersive Experience Creator', 'Deep-Tech Social Innovator & Immersive Experience Creator'),
   company: b('บริษัท อะเซนด์ จำกัด', 'ASCEND Co., Ltd.'),
   addressTitle: b('ออฟฟิศ', 'Office'),
-  address: b('264 ซอยอุดมสุข 58 แขวงบางนา เขตบางนา กรุงเทพฯ 10260', '264 Soi Udomsuk 58, Bang Na, Bangkok 10260, Thailand'),
+  address: b('264 ซอยอุดมสุข 58 แขวงบางนา เขตบางนา กรุงเทพฯ 10260', '264 Soi Udomsuk 58, Bangna Subdistrict, Bangna District, Bangkok 10260'),
   virtualTitle: b('ออฟฟิศเสมือน', 'Virtual office'),
   socialTitle: b('ช่องทางโซเชียล', 'Social'),
   rights: b('สงวนลิขสิทธิ์', 'All rights reserved.'),
+}
+
+export type WorkCategory = 'ai' | 'metaverse' | 'game' | 'vrar' | 'softpower'
+
+export interface Work {
+  title: string
+  /** client or context, as named in the portfolio */
+  client: Bi
+  year?: string
+  ongoing?: boolean
+  cats: WorkCategory[]
+  body: Bi
+}
+
+// Every project in the Company Experience & Project Portfolio. "ongoing" marks
+// the items listed under its "Ongoing Projects" heading.
+export const WORKS = {
+  badge: b('PORTFOLIO', 'PORTFOLIO'),
+  title: b('ผลงานและโครงการสำคัญ', 'Selected Works & Projects'),
+  lead: b(
+    'ผลงานที่เราทำร่วมกับองค์กรระหว่างประเทศ สถานทูต ภาครัฐ สถาบันการศึกษา และภาคธุรกิจ',
+    'Work delivered with international organisations, embassies, government, academia and business.',
+  ),
+  filters: [
+    { id: 'all', label: b('ทั้งหมด', 'All') },
+    { id: 'ai', label: b('AI Avatar', 'AI Avatar') },
+    { id: 'metaverse', label: b('Metaverse', 'Metaverse') },
+    { id: 'game', label: b('เกม', 'Games') },
+    { id: 'vrar', label: b('VR/AR', 'VR/AR') },
+    { id: 'softpower', label: b('Soft Power', 'Soft Power') },
+  ] as const,
+  ongoing: b('กำลังดำเนินการ', 'Ongoing'),
+  showAll: b('ดูผลงานทั้งหมด', 'Show all works'),
+  showLess: b('แสดงน้อยลง', 'Show fewer'),
+  items: [
+    {
+      title: 'Sustaining Our Oceans',
+      client: b('UNESCO Regional Office in Bangkok', 'UNESCO Regional Office in Bangkok'),
+      year: '2025–2026',
+      cats: ['vrar', 'game'],
+      body: b(
+        'ออกแบบและผลิตนิทรรศการการเรียนรู้เชิงโต้ตอบ 3 ชุด ผสาน VR/AR คอนเทนต์มัลติมีเดีย และ Gamified Learning ติดตั้งที่ UNESCO กรุงเทพฯ เขตสงวนชีวมณฑลระนอง และพิพิธภัณฑ์เด็กกรุงเทพมหานคร พร้อมรับประกัน 24 เดือน',
+        'Three interactive learning exhibition sets combining VR/AR, multimedia and gamified learning, installed at UNESCO Bangkok, Ranong Biosphere Reserve and the Children’s Discovery Museum Bangkok, with a 24-month warranty.',
+      ),
+    },
+    {
+      title: 'Namaste Thailand Festival 2026 — "Ananya"',
+      client: b('สถานเอกอัครราชทูตไทย ณ กรุงนิวเดลี', 'Royal Thai Embassy, New Delhi'),
+      year: '2026',
+      cats: ['ai', 'softpower'],
+      body: b(
+        'AI Avatar "Ananya" สนทนาเรียลไทม์ภาษาฮินดีและอังกฤษ เป็นทูตวัฒนธรรมอาหารไทย–อินเดียในรูปแบบดิจิทัล ในงานที่มีผู้เข้าร่วมกว่า 20,000 คน ได้รับรางวัล Innovation Cooperation Award',
+        'Real-time conversational AI Avatar "Ananya", speaking Hindi and English as the Thai–Indian digital food cultural ambassador at a festival of 20,000+ visitors. Winner of the Innovation Cooperation Award.',
+      ),
+    },
+    {
+      title: 'Thai Festival Canberra & Grand Festival Sydney 2026',
+      client: b('สถานเอกอัครราชทูตไทย ณ กรุงแคนเบอร์รา · สถานกงสุลใหญ่ ณ นครซิดนีย์', 'Royal Thai Embassy, Canberra · Royal Thai Consulate-General, Sydney'),
+      year: '2026',
+      cats: ['ai', 'softpower'],
+      body: b(
+        'Foody AI Avatar (MetaHuman) เป็นทูตวัฒนธรรมอาหารดิจิทัล ร่วมออกแบบ Opening Animation ที่ AI Avatar กล่าวต้อนรับร่วมกับคณะนักการทูต และ AI Muay Thai (Digital Immortality) ให้ผู้ชมฝึกมวยไทยกับครูมวยเสมือนด้วย AI Pose Estimation ความแม่นยำมากกว่า 90%',
+        'Foody AI Avatar (MetaHuman) as digital food ambassador, a co-created Opening Animation with the AI Avatar greeting alongside diplomats, and AI Muay Thai (Digital Immortality): practise with virtual masters via AI Pose Estimation at >90% accuracy.',
+      ),
+    },
+    {
+      title: 'Aomunity',
+      client: b('ธนาคารออมสิน (GSB)', 'Government Savings Bank (GSB)'),
+      cats: ['metaverse', 'game'],
+      body: b(
+        'พัฒนาโลกเสมือน "Aomunity" ด้วย Game-driven Metaverse สร้างกิจกรรมและเกมภายในแพลตฟอร์ม และวางกลยุทธ์การตลาดและประชาสัมพันธ์แบบครบวงจร',
+        'Built the "Aomunity" virtual world with Game-driven Metaverse technology, created in-platform activities and games, and planned and ran its marketing and PR.',
+      ),
+    },
+    {
+      title: 'Hybrid Events Metaverse — DGT2023',
+      client: b('ETDA ร่วมกับ V360', 'ETDA with V360'),
+      year: '2023',
+      cats: ['metaverse'],
+      body: b(
+        'แพลตฟอร์ม Hybrid Event บน Metaverse เพื่อยกระดับการมีส่วนร่วมและการเปลี่ยนผ่านสู่ดิจิทัล',
+        'A Metaverse-based hybrid event platform to enhance digital transformation and virtual engagement.',
+      ),
+    },
+    {
+      title: 'EdenVerden Metaverse Platform',
+      client: b('แพลตฟอร์มของ ASCEND', 'ASCEND platform'),
+      cats: ['metaverse'],
+      body: b(
+        'แพลตฟอร์มจำลองสถานการณ์บน Metaverse สำหรับการเรียนรู้แบบ Immersive รองรับ PC และ Mobile',
+        'A Metaverse-based simulation platform for immersive learning, on PC and mobile.',
+      ),
+    },
+    {
+      title: 'QuantumSoul AI',
+      client: b('บริการสาธารณะ · การแพทย์ · การศึกษา', 'Public service · Healthcare · Education'),
+      cats: ['ai'],
+      body: b(
+        'แพลตฟอร์ม Conversational AI Avatar แบบเรียลไทม์ (RAG) ลดภาระบุคลากรและเพิ่มการเข้าถึงข้อมูลสำคัญของประชาชน',
+        'A real-time conversational AI Avatar platform (RAG) that reduces staff workload and widens public access to essential information.',
+      ),
+    },
+    {
+      title: 'Foody AI Avatar for Smart Restaurants',
+      client: b('ธุรกิจอาหารและเครื่องดื่ม', 'Food & beverage'),
+      cats: ['ai'],
+      body: b(
+        'AI Live Commerce แนะนำเมนูเฉพาะบุคคล วิเคราะห์พฤติกรรมผู้บริโภค เชื่อม POS บน Cloud แบบเรียลไทม์ ได้รับรางวัล Innovation Cooperation Award',
+        'AI Live Commerce with personalised menus and consumer-behaviour analysis, integrated with cloud POS in real time. Winner of the Innovation Cooperation Award.',
+      ),
+    },
+    {
+      title: 'AI Avatar "Spark" — Zero Food Waste',
+      client: b('มูลนิธิ SOS Thailand', 'SOS Thailand Foundation'),
+      cats: ['ai', 'game'],
+      body: b(
+        'AI Avatar "Wasty" บนแพลตฟอร์ม Game × Crowdfunding เชื่อมร้านอาหารกับเครือข่าย SOS Thailand เพื่อบริจาคอาหารส่วนเกินแบบเรียลไทม์ให้โรงเรียนและเด็กในพื้นที่ห่างไกล พร้อมรายงานผลโปร่งใส',
+        'The "Wasty" AI Avatar on a Game × Crowdfunding platform, linking restaurants with the SOS Thailand network to donate surplus food in real time to remote schools, with transparent reporting.',
+      ),
+    },
+    {
+      title: 'AI Avatar for Education',
+      client: b('SCB Academy', 'SCB Academy'),
+      ongoing: true,
+      cats: ['ai'],
+      body: b('AI Avatar เพื่อการศึกษา รองรับการเรียนรู้เฉพาะบุคคลและการมีส่วนร่วมของผู้เรียน', 'An AI-powered Avatar for education, enabling personalised learning and student engagement.'),
+    },
+    {
+      title: 'Muay Thai Wellness',
+      client: b('AI & Game-Based Fitness', 'AI & Game-Based Fitness'),
+      ongoing: true,
+      cats: ['ai', 'game', 'softpower'],
+      body: b('ผสาน AI และ Game-Based Learning เพื่อการฝึกมวยไทย ส่งเสริมสุขภาพ และเผยแพร่ศิลปะการต่อสู้ไทย', 'AI and game-based learning for Muay Thai training, fitness and the promotion of Thai martial arts.'),
+    },
+    {
+      title: 'Mistertel’s Mystery Jars',
+      client: b('เกม Interactive Mystery', 'Interactive mystery game'),
+      ongoing: true,
+      cats: ['game'],
+      body: b('เกมแนว Interactive Mystery ที่ผสมผสาน Puzzle Solving และ Storytelling', 'A narrative-driven mystery game blending puzzle-solving and storytelling.'),
+    },
+    {
+      title: 'AI Specialist for Electrical & Air Conditioning Services',
+      client: b('Link Service & Starservice and Management Co., Ltd.', 'Link Service & Starservice and Management Co., Ltd.'),
+      ongoing: true,
+      cats: ['ai'],
+      body: b('ระบบ AI Expert System สำหรับช่างไฟฟ้าและเครื่องปรับอากาศ เพิ่มประสิทธิภาพการบริการและการฝึกอบรม', 'An AI expert system for electrical and air-conditioning technicians, improving service efficiency and training.'),
+    },
+    {
+      title: '"Tai Kong" — Game-Based Learning (POC)',
+      client: b('สำนักงานศึกษาธิการจังหวัดสมุทรสาคร', 'Samut Sakhon Provincial Education Office'),
+      ongoing: true,
+      cats: ['game'],
+      body: b('Game-Based Learning ส่งเสริมอาชีพ การท่องเที่ยวเชิงวัฒนธรรม และอัตลักษณ์ท้องถิ่น', 'Game-based learning promoting careers, cultural tourism and local identity.'),
+    },
+    {
+      title: 'Metaverse & Game for Health Literacy',
+      client: b('โรงเรียนเอกชน', 'A private school'),
+      ongoing: true,
+      cats: ['metaverse', 'game'],
+      body: b('Metaverse เพื่อส่งเสริมความรู้ด้านสุขภาพผ่านการเรียนรู้เชิงโต้ตอบ', 'A Metaverse learning experience to improve health literacy through interaction.'),
+    },
+    {
+      title: 'GlowSpace',
+      client: b('Mindfulness · VR & AI', 'Mindfulness · VR & AI'),
+      ongoing: true,
+      cats: ['vrar', 'ai'],
+      body: b('ประสบการณ์ Mindfulness ที่ผสาน VR และ AI พาผู้ใช้สำรวจจิตใจภายในผ่านเวิร์กช็อปแบบ Immersive', 'A mindfulness experience fusing VR and AI, taking people on an inner journey through immersive workshops.'),
+    },
+    {
+      title: 'VR-Based First Aid Learning System (POC)',
+      client: b('การฝึกอบรมปฐมพยาบาล', 'First-aid training'),
+      cats: ['vrar'],
+      body: b('ระบบฝึกอบรมปฐมพยาบาลด้วย VR เพื่อยกระดับประสบการณ์การเรียนรู้เชิงปฏิบัติ', 'A VR training system for first-aid education, enhancing hands-on learning.'),
+    },
+    {
+      title: 'Himmaphan Beast Online',
+      client: b('เทศกาลประติมากรรมทรายนานาชาติ 2024', 'International Sand Sculpture Festival 2024'),
+      year: '2024',
+      cats: ['game'],
+      body: b('เกมแฟนตาซีสำหรับเทศกาล เพื่อสร้างการมีส่วนร่วมของผู้เข้าชม', 'A fantasy-themed game built to engage festival visitors.'),
+    },
+    {
+      title: 'Christmas Give with Love',
+      client: b('องค์กรคริสเตียน', 'Christian organisations'),
+      cats: ['metaverse', 'game'],
+      body: b('กิจกรรมคริสต์มาสบน Metaverse 2D ที่มี Interactive Missions และ Storytelling', 'A 2D Metaverse Christmas event with interactive missions and storytelling.'),
+    },
+    {
+      title: 'Cartoon & Game 3D Animation',
+      client: b('แอนิเมชันและเกม', 'Animation & games'),
+      cats: ['game'],
+      body: b('งานแอนิเมชัน 3D สำหรับการ์ตูนและเกม', '3D animation for cartoons and games.'),
+    },
+  ] satisfies Work[],
 }
