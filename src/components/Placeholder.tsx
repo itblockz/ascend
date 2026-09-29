@@ -46,7 +46,7 @@ export function ImageSlot({
           <p className="absolute right-3 bottom-3 left-3 flex items-center gap-1.5 text-[11px] leading-tight text-slate-400/80">
             <ImageIcon size={12} className="shrink-0" />
             <span className="truncate">
-              {t(UI.placeholder)} {src.replace('/assets/', '')}
+              {t(UI.placeholder)} {src.split('/assets/').pop()}
             </span>
           </p>
         </div>
