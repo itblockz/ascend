@@ -4,6 +4,7 @@
   --color-bg: #e3dfd9;
   --color-ink: #18191c;
   --color-muted: #6b6761;
+  --color-accent: #ef5224;
   /* logo + headings */
   --font-brand: "Montserrat", ui-sans-serif, system-ui, sans-serif;
 }
@@ -11,4 +12,14 @@
 body {
   @apply bg-bg;
   min-height: 100dvh;
+}
+
+/* small uppercase label: "THE FUTURE OF…", pillar names, FEATURED PROJECT */
+@utility eyebrow {
+  font-family: var(--font-brand);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
 }

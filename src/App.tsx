@@ -9,7 +9,10 @@ export default function App() {
         </a>
       </header>
 
-      <main className="px-5 pt-24 md:px-40 md:pt-[13.8rem]">
+      <main className="px-5 pt-24 md:px-40 md:pt-48">
+        <p className="eyebrow mb-4 text-accent">
+          The future of digital experiences
+        </p>
         <h1 className="font-brand text-[2.5rem] leading-[1.05] font-light tracking-[-0.02em] text-ink md:text-[3.65rem]">
           Build Worlds.
           <br />
