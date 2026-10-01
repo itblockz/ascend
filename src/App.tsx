@@ -13,12 +13,12 @@ export default function App() {
         <p className="eyebrow mb-4 text-accent">
           The future of digital experiences
         </p>
-        <h1 className="font-brand text-[2.5rem] leading-[1.05] font-light tracking-[-0.02em] text-ink md:text-[3.65rem]">
+        <h1 className="font-brand text-[clamp(2.25rem,4vw+0.5rem,3.75rem)] leading-[1.1] font-light tracking-tight text-ink">
           Build Worlds.
           <br />
           Shape Experiences.
         </h1>
-        <p className="mt-7 max-w-[21rem] font-brand text-[0.97rem] leading-[1.5] font-light text-muted">
+        <p className="mt-8 max-w-sm font-brand text-base leading-relaxed text-muted">
           We create immersive digital experiences where AI, games, learning and technology converge.
         </p>
       </main>
