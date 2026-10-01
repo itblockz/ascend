@@ -15,6 +15,9 @@ export default function App() {
           <br />
           Shape Experiences.
         </h1>
+        <p className="mt-7 max-w-[21rem] font-brand text-[0.97rem] leading-[1.5] font-light text-muted">
+          We create immersive digital experiences where AI, games, learning and technology converge.
+        </p>
       </main>
     </>
   )
