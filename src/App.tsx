@@ -21,6 +21,14 @@ export default function App() {
         <p className="mt-8 max-w-sm font-brand text-base leading-relaxed text-muted">
           We create immersive digital experiences where AI, games, learning and technology converge.
         </p>
+        {/* destination section doesn't exist yet */}
+        <a href="#explore" className="group mt-12 inline-flex items-center gap-6 text-ink">
+          <span className="h-px w-10 bg-ink" aria-hidden />
+          <span className="eyebrow">Explore our universe</span>
+          <svg viewBox="0 0 16 16" className="ml-2 size-3 text-accent transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+            <path d="M1 8h13M9 3l5 5-5 5" />
+          </svg>
+        </a>
       </main>
     </>
   )
