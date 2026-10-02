@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { orbHaloMaterial, orbSurfaceMaterial } from './orbMaterials'
 
 // Where the orb sits on screen, as fractions of the viewport (from the mock at 1672px wide).
 const CENTER_X = 0.64
@@ -13,6 +14,7 @@ const MOBILE_BREAKPOINT = 768
 const MOBILE_CENTER_BELOW_EDGE = 0.1 // × radius
 const MOBILE_RADIUS_OF_WIDTH = 0.4
 
+const HALO_SCALE = 1.14
 
 const FOV = 35
 const CAMERA_Z = 10
@@ -22,6 +24,7 @@ export class OrbScene {
   private scene = new THREE.Scene()
   private camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100)
   private orb: THREE.Mesh
+  private halo: THREE.Mesh
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
@@ -29,14 +32,11 @@ export class OrbScene {
     this.camera.position.z = CAMERA_Z
 
     // smooth milky surface; the dust (dispersedSphere) comes back once the surface dissolves
-    this.orb = new THREE.Mesh(
-      new THREE.SphereGeometry(1, 96, 64),
-      new THREE.MeshStandardMaterial({ color: 0xf1ede7, roughness: 0.95, metalness: 0 }),
-    )
-    this.scene.add(new THREE.AmbientLight(0xffffff, 1.6))
-    const key = new THREE.DirectionalLight(0xffffff, 1.4)
-    key.position.set(-1, 0.6, 1) // soft light from the upper left, as in the mock
-    this.scene.add(key)
+    const geometry = new THREE.SphereGeometry(1, 96, 64)
+    this.orb = new THREE.Mesh(geometry, orbSurfaceMaterial())
+    this.halo = new THREE.Mesh(geometry, orbHaloMaterial())
+    this.halo.scale.setScalar(HALO_SCALE)
+    this.orb.add(this.halo)
     this.scene.add(this.orb)
 
     this.resize()
@@ -67,6 +67,7 @@ export class OrbScene {
   dispose() {
     this.orb.geometry.dispose()
     ;(this.orb.material as THREE.Material).dispose()
+    ;(this.halo.material as THREE.Material).dispose()
     this.renderer.dispose()
   }
 }
