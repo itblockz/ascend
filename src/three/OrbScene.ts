@@ -13,6 +13,9 @@ const MOBILE_BREAKPOINT = 768
 const MOBILE_CENTER_BELOW_EDGE = 0.1 // × radius
 const MOBILE_RADIUS_OF_WIDTH = 0.4
 
+const PARTICLE_COUNT = 12000
+const PARTICLE_SIZE_PX = 1.5
+
 const FOV = 35
 const CAMERA_Z = 10
 
@@ -20,17 +23,22 @@ export class OrbScene {
   private renderer: THREE.WebGLRenderer
   private scene = new THREE.Scene()
   private camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100)
-  private orb: THREE.Mesh
+  private orb: THREE.Points
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     this.camera.position.z = CAMERA_Z
 
-    // placeholder: thin wireframe sphere to check position and size
-    this.orb = new THREE.Mesh(
-      new THREE.SphereGeometry(1, 32, 16),
-      new THREE.MeshBasicMaterial({ color: 0x18191c, wireframe: true, transparent: true, opacity: 0.2 }),
+    this.orb = new THREE.Points(
+      fibonacciSphere(PARTICLE_COUNT),
+      new THREE.PointsMaterial({
+        color: 0x18191c,
+        size: PARTICLE_SIZE_PX * this.renderer.getPixelRatio(),
+        sizeAttenuation: false,
+        transparent: true,
+        opacity: 0.5,
+      }),
     )
     this.scene.add(this.orb)
 
@@ -64,4 +72,19 @@ export class OrbScene {
     ;(this.orb.material as THREE.Material).dispose()
     this.renderer.dispose()
   }
+}
+
+// Evenly spread points on a unit sphere (golden-angle spiral).
+function fibonacciSphere(count: number) {
+  const positions = new Float32Array(count * 3)
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5))
+  for (let i = 0; i < count; i++) {
+    const y = 1 - (2 * (i + 0.5)) / count
+    const r = Math.sqrt(1 - y * y)
+    const theta = goldenAngle * i
+    positions.set([Math.cos(theta) * r, y, Math.sin(theta) * r], i * 3)
+  }
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+  return geometry
 }
