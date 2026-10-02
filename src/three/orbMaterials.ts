@@ -81,10 +81,12 @@ export function orbSurfaceMaterial() {
       uGlow: { value: new THREE.Color(0xfef8ee) },
       uWarm: { value: new THREE.Color(0xf2c4ac) },
       uDissolveDir: { value: DISSOLVE_DIR },
+      uTime: { value: 0 },
     },
     vertexShader,
     fragmentShader: /* glsl */ `
       uniform vec3 uFace, uFaceLight, uGlow, uWarm, uDissolveDir;
+      uniform float uTime;
       varying vec3 vNormal;
       varying vec3 vView;
       varying vec3 vPos;
@@ -97,7 +99,9 @@ export function orbSurfaceMaterial() {
         // Measured on the orb itself (object space), like the noise and the dust in dust.ts,
         // so the holes, their ragged edges and the dust over them stay aligned.
         float erode = smoothstep(0.2, 0.75, dot(normalize(vPos), uDissolveDir));
-        float grain = snoise(vPos * 2.5) * 0.6 + snoise(vPos * 7.0) * 0.4;
+        // the noise slowly drifts through the surface, so the ragged edge keeps reshaping
+        vec3 flow = vec3(0.0, 0.0, uTime * 0.18);
+        float grain = snoise(vPos * 2.5 + flow) * 0.6 + snoise(vPos * 7.0 + flow * 2.0) * 0.4;
         if (grain * 0.5 + 0.5 < erode * 1.15 - 0.05) discard;
         float lit = litSide(n);
         float edge = 1.0 - max(dot(n, normalize(vView)), 0.0);

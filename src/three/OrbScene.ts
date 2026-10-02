@@ -44,6 +44,32 @@ export class OrbScene {
     this.scene.add(this.orb)
 
     this.resize()
+
+    // animate unless the visitor asked for less motion; then the orb stays as a still image
+    this.reducedMotion.addEventListener('change', this.updateMotion)
+    this.updateMotion()
+  }
+
+  private clock = new THREE.Clock()
+  private reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+  private updateMotion = () => {
+    // setAnimationLoop runs on requestAnimationFrame, which the browser pauses in hidden tabs
+    this.renderer.setAnimationLoop(this.reducedMotion.matches ? null : this.frame)
+    this.render()
+  }
+
+  private frame = () => {
+    const t = this.clock.getElapsedTime()
+    ;(this.orb.material as THREE.ShaderMaterial).uniforms.uTime.value = t
+    this.dust.material.uniforms.uTime.value = t
+    // the whole orb turns gently back and forth, so the foam's relief catches the light
+    this.orb.rotation.y = Math.sin(t * 0.3) * 0.15
+    this.render()
+  }
+
+  private render() {
+    this.renderer.render(this.scene, this.camera)
   }
 
   resize() {
@@ -67,10 +93,12 @@ export class OrbScene {
     // dust grains keep their size relative to the orb
     this.dust.material.uniforms.uPointScale.value = this.renderer.getPixelRatio() * (radiusPx / MOCK_RADIUS_PX)
 
-    this.renderer.render(this.scene, this.camera)
+    this.render()
   }
 
   dispose() {
+    this.renderer.setAnimationLoop(null)
+    this.reducedMotion.removeEventListener('change', this.updateMotion)
     this.orb.geometry.dispose()
     ;(this.orb.material as THREE.Material).dispose()
     ;(this.halo.material as THREE.Material).dispose()

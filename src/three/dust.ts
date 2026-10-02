@@ -67,9 +67,11 @@ export function dustPoints() {
   geometry.setAttribute('alpha', new THREE.Float32BufferAttribute(alphas, 1))
 
   const material = new THREE.ShaderMaterial({
-    uniforms: { uPointScale: { value: 1 } },
+    uniforms: { uPointScale: { value: 1 }, uTime: { value: 0 }, uWind: { value: WIND_DIR } },
     vertexShader: /* glsl */ `
       uniform float uPointScale;
+      uniform float uTime;
+      uniform vec3 uWind;
       attribute vec3 color;
       attribute float size;
       attribute float alpha;
@@ -78,7 +80,15 @@ export function dustPoints() {
       void main() {
         vColor = color;
         vAlpha = alpha;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        // every grain sways on its own phase; grains that have flown off the surface also
+        // stream downwind on a loop, fading out at the end of each pass and back in at the start
+        float seed = fract(sin(dot(position, vec3(12.9898, 78.233, 37.719))) * 43758.5453);
+        float away = max(length(position) - 1.0, 0.0);
+        float loose = smoothstep(0.02, 0.15, away);
+        float pass = fract(uTime * 0.09 + seed);
+        vec3 p = position + uWind * (sin(uTime * 1.3 + seed * 6.2832) * (0.012 + away * 0.2) + pass * loose * 0.35);
+        vAlpha *= 1.0 - loose * (smoothstep(0.75, 1.0, pass) + 1.0 - smoothstep(0.0, 0.15, pass));
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
         gl_PointSize = max(size * uPointScale, 1.0);
       }
     `,
