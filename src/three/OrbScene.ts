@@ -1,12 +1,14 @@
 import * as THREE from 'three'
+import { dustPoints } from './dust'
 import { orbHaloMaterial, orbSurfaceMaterial } from './orbMaterials'
 
-// Where the orb sits on screen, as fractions of the viewport (from the mock at 1672px wide).
+// Where the orb sits on screen, measured on the mock (1672×940, orb radius 245px).
+const MOCK_RADIUS_PX = 245
 const CENTER_X = 0.64
 const CENTER_Y = 0.48
-const RADIUS_OF_WIDTH = 245 / 1672
+const RADIUS_OF_WIDTH = MOCK_RADIUS_PX / 1672
 // on short/wide screens, cap by height so the orb never crowds the header
-const RADIUS_OF_HEIGHT = 245 / 940
+const RADIUS_OF_HEIGHT = MOCK_RADIUS_PX / 940
 
 // narrow screens: text spans the width, so the orb sits centered below it,
 // its lower half below the bottom edge (rising into view)
@@ -25,18 +27,20 @@ export class OrbScene {
   private camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100)
   private orb: THREE.Mesh
   private halo: THREE.Mesh
+  private dust: THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial>
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     this.camera.position.z = CAMERA_Z
 
-    // smooth milky surface; the dust (dispersedSphere) comes back once the surface dissolves
     const geometry = new THREE.SphereGeometry(1, 96, 64)
     this.orb = new THREE.Mesh(geometry, orbSurfaceMaterial())
     this.halo = new THREE.Mesh(geometry, orbHaloMaterial())
     this.halo.scale.setScalar(HALO_SCALE)
     this.orb.add(this.halo)
+    this.dust = dustPoints()
+    this.orb.add(this.dust)
     this.scene.add(this.orb)
 
     this.resize()
@@ -60,6 +64,8 @@ export class OrbScene {
 
     this.orb.scale.setScalar(radiusPx * unitsPerPx)
     this.orb.position.set((cx - 0.5) * w * unitsPerPx, (0.5 - cy) * h * unitsPerPx, 0)
+    // dust grains keep their size relative to the orb
+    this.dust.material.uniforms.uPointScale.value = this.renderer.getPixelRatio() * (radiusPx / MOCK_RADIUS_PX)
 
     this.renderer.render(this.scene, this.camera)
   }
@@ -68,6 +74,8 @@ export class OrbScene {
     this.orb.geometry.dispose()
     ;(this.orb.material as THREE.Material).dispose()
     ;(this.halo.material as THREE.Material).dispose()
+    this.dust.geometry.dispose()
+    this.dust.material.dispose()
     this.renderer.dispose()
   }
 }

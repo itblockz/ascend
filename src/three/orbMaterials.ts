@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { DISSOLVE_DIR } from './dust'
 
 // Both shaders work in view space: N·V is 1 facing the camera and 0 at the silhouette.
 // The mock's glow wraps the left and bottom of the orb, so the lit side is down-left.
@@ -71,7 +72,7 @@ const vertexShader = /* glsl */ `
 `
 
 /** Cool grey face with a bright cream rim that wraps the lower-left edge; the upper-right
- * side dissolves into ragged holes (the dust that breaks off comes in a later layer). */
+ * side dissolves into ragged holes under the dust (dust.ts). */
 export function orbSurfaceMaterial() {
   return new THREE.ShaderMaterial({
     uniforms: {
@@ -79,10 +80,11 @@ export function orbSurfaceMaterial() {
       uFaceLight: { value: new THREE.Color(0xe3dfda) },
       uGlow: { value: new THREE.Color(0xfef8ee) },
       uWarm: { value: new THREE.Color(0xf2c4ac) },
+      uDissolveDir: { value: DISSOLVE_DIR },
     },
     vertexShader,
     fragmentShader: /* glsl */ `
-      uniform vec3 uFace, uFaceLight, uGlow, uWarm;
+      uniform vec3 uFace, uFaceLight, uGlow, uWarm, uDissolveDir;
       varying vec3 vNormal;
       varying vec3 vView;
       varying vec3 vPos;
@@ -91,9 +93,10 @@ export function orbSurfaceMaterial() {
       void main() {
         vec3 n = normalize(vNormal);
 
-        // dissolve: 0 on the calm side, rising toward the screen's upper right;
-        // noise on the surface (object space, so the holes stick to the orb) breaks it up
-        float erode = smoothstep(-0.2, 0.75, dot(n, normalize(vec3(0.75, 0.6, 0.3))));
+        // dissolve: 0 on the calm side, rising toward uDissolveDir (the screen's upper right).
+        // Measured on the orb itself (object space), like the noise and the dust in dust.ts,
+        // so the holes, their ragged edges and the dust over them stay aligned.
+        float erode = smoothstep(0.2, 0.75, dot(normalize(vPos), uDissolveDir));
         float grain = snoise(vPos * 2.5) * 0.6 + snoise(vPos * 7.0) * 0.4;
         if (grain * 0.5 + 0.5 < erode * 1.15 - 0.05) discard;
         float lit = litSide(n);
@@ -115,10 +118,10 @@ export function orbSurfaceMaterial() {
 /** Soft cream glow spilling outside the silhouette on the lit side. */
 export function orbHaloMaterial() {
   return new THREE.ShaderMaterial({
-    uniforms: { uColor: { value: new THREE.Color(0xfbe2d2) } },
+    uniforms: { uColor: { value: new THREE.Color(0xfbe2d2) }, uDissolveDir: { value: DISSOLVE_DIR } },
     vertexShader,
     fragmentShader: /* glsl */ `
-      uniform vec3 uColor;
+      uniform vec3 uColor, uDissolveDir;
       varying vec3 vNormal;
       varying vec3 vView;
       ${LIT_SIDE}
@@ -127,7 +130,7 @@ export function orbHaloMaterial() {
         // back faces: N·V is 0 at the shell's outer edge and grows negative toward the orb
         float glow = pow(clamp(-dot(n, normalize(vView)) * 1.6, 0.0, 1.0), 2.0);
         // no glow where the surface has dissolved
-        float intact = 1.0 - smoothstep(-0.1, 0.6, dot(n.xy, normalize(vec2(0.75, 0.6))));
+        float intact = 1.0 - smoothstep(-0.1, 0.6, dot(n.xy, normalize(uDissolveDir.xy)));
         gl_FragColor = vec4(uColor, glow * (0.25 + 0.95 * litSide(n)) * intact);
         #include <colorspace_fragment>
       }
