@@ -1,8 +1,10 @@
 import { Logo } from './components/Logo'
+import { Orb } from './components/Orb'
 
 export default function App() {
   return (
     <>
+      <Orb />
       <header className="flex h-16 items-center px-5 md:h-24 md:px-20">
         <a href="/">
           <Logo className="h-5 md:h-7" />
