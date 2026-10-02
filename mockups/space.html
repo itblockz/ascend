@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ASCEND space mood</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg: #e3dfd9; --ink: #18191c; --muted: #6b6761; --accent: #ef5224; --line: rgba(24,25,28,.15); }
+  body.dark { --bg: #05070d; --ink: #f2f0ec; --muted: #9aa0ad; --line: rgba(242,240,236,.15); }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: Montserrat, sans-serif; transition: background .6s, color .6s; }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  header { position: fixed; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 28px 80px; z-index: 3; }
+  .logo { font-weight: 300; letter-spacing: .14em; font-size: 26px; }
+  nav { display: flex; gap: 36px; font-size: 11px; font-weight: 600; letter-spacing: .16em; }
+  button { font: 600 11px Montserrat; letter-spacing: .16em; padding: 10px 18px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; border-radius: 6px; }
+  .rail { position: fixed; left: 32px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 22px; z-index: 3; }
+  .rail i { width: 8px; height: 8px; border: 1px solid var(--muted); transform: rotate(45deg); display: block; transition: .3s; }
+  .rail i.on { border-color: var(--accent); background: var(--accent); }
+  main { position: relative; z-index: 2; }
+  section { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 160px; }
+  section.right { align-items: flex-end; text-align: right; }
+  .eyebrow { color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 16px; }
+  h1, h2 { font-weight: 300; letter-spacing: -.02em; line-height: 1.1; }
+  h1 { font-size: 60px; } h2 { font-size: 44px; }
+  p { color: var(--muted); max-width: 26rem; line-height: 1.6; margin-top: 24px; }
+  .copy { opacity: 0; transform: translateY(30px); transition: opacity .8s, transform .8s; }
+  .copy.in { opacity: 1; transform: none; }
+  .hint { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: .3em; color: var(--muted); z-index: 3; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">ΛSCEND</div>
+  <nav><span>ABOUT</span><span>SOLUTIONS</span><span>PROJECTS</span><span>CAREERS</span></nav>
+  <button id="theme">SWITCH: DARK</button>
+</header>
+<div class="rail" id="rail"></div>
+<div class="hint">SCROLL</div>
+<main id="main">
+  <section><div class="copy"><div class="eyebrow">The future of digital experiences</div><h1>Build Worlds.<br />Shape Experiences.</h1><p>We create immersive digital experiences where AI, games, learning and technology converge.</p></div></section>
+  <section class="right"><div class="copy"><div class="eyebrow">Trusted by</div><h2>Partners across<br />the world.</h2><p>Governments, institutions and brands building with us.</p></div></section>
+  <section><div class="copy"><div class="eyebrow">01 · Metaverse</div><h2>Worlds people<br />gather in.</h2><p>Digital worlds and communities.</p></div></section>
+  <section class="right"><div class="copy"><div class="eyebrow">02 · Game-based learning</div><h2>Play. Learn.<br />Grow.</h2><p>Learning that feels like a game.</p></div></section>
+  <section><div class="copy"><div class="eyebrow">03 · AI platform</div><h2>Intelligent<br />agents.</h2><p>AI avatars and automation.</p></div></section>
+  <section class="right"><div class="copy"><div class="eyebrow">04 · Projects</div><h2>Step through.</h2><p>Immersive work, AR / VR / XR.</p></div></section>
+  <section><div class="copy"><div class="eyebrow">Arrival</div><h2>Let's build<br />your world.</h2><p>Tell us what you want to create.</p></div></section>
+</main>
+
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }</script>
+<script type="module">
+import * as THREE from 'three'
+
+const SCENES = 7
+const canvas = document.createElement('canvas'); document.body.prepend(canvas)
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
+const scene = new THREE.Scene()
+scene.fog = new THREE.Fog(0xe3dfd9, 25, 75) // far things melt into the page color: only the current stop reads
+const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 400)
+
+// stops scattered along a winding route (left/right, up/down), not one straight line
+const STOPS = [
+  [0, 0, 0], [-34, 10, -45], [12, -8, -90], [44, 12, -128], [6, 22, -172], [-28, 2, -212], [0, -8, -258],
+].map(p => new THREE.Vector3(...p))
+// text sits left on even scenes, right on odd: aim the camera beside the landmark so it lands on the other side
+const lookAts = STOPS.map((p, i) => p.clone().add(new THREE.Vector3(i % 2 ? 6 : -6, 0, 0)))
+const views = STOPS.map((p, i) => p.clone().add(new THREE.Vector3(i % 2 ? 3 : -3, 2, 17)))
+const camPath = new THREE.CatmullRomCurve3(views, false, 'catmullrom', 0.5)
+const lookPath = new THREE.CatmullRomCurve3(lookAts, false, 'catmullrom', 0.5)
+
+// star / dust field filling the whole route
+const N = 12000, pos = new Float32Array(N * 3), size = new Float32Array(N)
+for (let i = 0; i < N; i++) {
+  pos.set([(Math.random() - .5) * 160, (Math.random() - .5) * 90, 40 - Math.random() * 340], i * 3)
+  size[i] = 0.5 + Math.random() * 2
+}
+const starGeo = new THREE.BufferGeometry()
+starGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+starGeo.setAttribute('size', new THREE.BufferAttribute(size, 1))
+const starMat = new THREE.ShaderMaterial({
+  uniforms: { uColor: { value: new THREE.Color() }, uSpeed: { value: 0 }, uPx: { value: renderer.getPixelRatio() } },
+  vertexShader: `attribute float size; uniform float uSpeed, uPx; varying float vFade;
+    void main(){ vec4 mv = modelViewMatrix * vec4(position,1.); gl_Position = projectionMatrix * mv;
+      gl_PointSize = size * uPx * (40. / -mv.z) * (1. + uSpeed * 2.); vFade = smoothstep(70., 10., -mv.z); }`,
+  fragmentShader: `uniform vec3 uColor; varying float vFade;
+    void main(){ float d = length(gl_PointCoord - .5); if (d > .5) discard; gl_FragColor = vec4(uColor, vFade * smoothstep(.5,.1,d)); }`,
+  transparent: true, depthWrite: false,
+})
+scene.add(new THREE.Points(starGeo, starMat))
+
+// one landmark per stop, each with its own materials so it can fade on its own
+const landmarks = []
+function stop(i) {
+  const g = new THREE.Group(); g.position.copy(STOPS[i]); scene.add(g)
+  const m = {
+    line: new THREE.LineBasicMaterial({ transparent: true }),
+    wire: new THREE.MeshBasicMaterial({ wireframe: true, transparent: true }),
+    dot: new THREE.PointsMaterial({ size: .09, transparent: true }),
+    node: new THREE.PointsMaterial({ size: .3, transparent: true }),
+  }
+  landmarks.push({ g, m }); return [g, m]
+}
+const pointsOf = pts => new THREE.BufferGeometry().setFromPoints(pts)
+function links(pts, max) { const v = []; pts.forEach((a, i) => pts.slice(i + 1).forEach(b => { if (a.distanceTo(b) < max) v.push(a, b) })); return pointsOf(v) }
+{ const [g, m] = stop(0); g.add(new THREE.Points(new THREE.SphereGeometry(5, 64, 40), m.dot)) }
+{ const [g, m] = stop(1); const pts = Array.from({ length: 16 }, () => new THREE.Vector3((Math.random() - .5) * 12, (Math.random() - .5) * 7, (Math.random() - .5) * 4))
+  g.add(new THREE.LineSegments(links(pts, 4.5), m.line)); g.add(new THREE.Points(pointsOf(pts), m.node)) }
+{ const [g, m] = stop(2); g.add(new THREE.Points(new THREE.IcosahedronGeometry(3.5, 14), m.dot))
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(5.5, .02, 8, 160), m.wire); ring.rotation.x = 1.2; g.add(ring) }
+{ const [g, m] = stop(3); for (let i = 0; i < 9; i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), m.wire); const a = i / 9 * Math.PI * 2; b.position.set(Math.cos(a) * 4, Math.sin(a * 2) * 1.5, Math.sin(a) * 4); g.add(b) } }
+{ const [g, m] = stop(4); const pts = Array.from({ length: 70 }, () => new THREE.Vector3().randomDirection().multiplyScalar(2 + Math.random() * 3))
+  g.add(new THREE.LineSegments(links(pts, 1.8), m.line)); g.add(new THREE.Points(pointsOf(pts), m.node)) }
+{ const [g, m] = stop(5); for (let i = 0; i < 3; i++) g.add(new THREE.Mesh(new THREE.TorusGeometry(5 + i * .6, .03, 8, 200), m.wire)) }
+{ const [g, m] = stop(6); g.add(new THREE.Points(new THREE.SphereGeometry(7, 96, 48), m.dot)) }
+
+// theme
+const themes = { light: { bg: '#e3dfd9', star: '#2a2d36', line: '#6b6f7c' }, dark: { bg: '#05070d', star: '#e8ecf5', line: '#7f8db0' } }
+let dark = false
+function applyTheme() {
+  document.body.classList.toggle('dark', dark)
+  const t = themes[dark ? 'dark' : 'light']
+  scene.fog.color.set(t.bg); starMat.uniforms.uColor.value.set(t.star)
+  landmarks.forEach(({ m }) => { m.line.color.set(t.line); m.wire.color.set(t.line); m.dot.color.set(t.star); m.node.color.set(t.star) })
+  document.getElementById('theme').textContent = dark ? 'SWITCH: CREAM' : 'SWITCH: DARK'
+}
+document.getElementById('theme').onclick = () => { dark = !dark; applyTheme() }
+applyTheme()
+
+// rail + text reveal
+const rail = document.getElementById('rail'); for (let i = 0; i < SCENES; i++) rail.append(document.createElement('i'))
+const io = new IntersectionObserver(es => es.forEach(e => e.target.querySelector('.copy').classList.toggle('in', e.isIntersecting)), { threshold: .5 })
+document.querySelectorAll('section').forEach(s => io.observe(s))
+
+let target = 0, current = 0, mx = 0, my = 0
+addEventListener('scroll', () => { target = scrollY / (document.body.scrollHeight - innerHeight) * (SCENES - 1) })
+addEventListener('mousemove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5 })
+function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix() }
+addEventListener('resize', resize); resize()
+
+const smooth = (a, b, x) => { const t = Math.min(Math.max((x - a) / (b - a), 0), 1); return t * t * (3 - 2 * t) }
+const look = new THREE.Vector3()
+const clock = new THREE.Clock()
+renderer.setAnimationLoop(() => {
+  const t = clock.getElapsedTime()
+  const prev = current; current += (target - current) * .06
+  // hold at each stop while its text is up, then glide to the next
+  const i = Math.min(Math.floor(current), SCENES - 2), f = current - i
+  const u = (i + smooth(.3, .85, f)) / (SCENES - 1)
+  camera.position.copy(camPath.getPoint(u)).add(new THREE.Vector3(mx * 1.5, -my, 0))
+  lookPath.getPoint(u, look); camera.lookAt(look.x + mx * 2, look.y - my * 1.5, look.z)
+  starMat.uniforms.uSpeed.value = Math.min(Math.abs(current - prev) * 8, 1)
+
+  // only the stop you're at is visible; the next one fades in on approach
+  landmarks.forEach(({ g, m }, k) => {
+    const vis = 1 - smooth(.45, .9, Math.abs(current - k))
+    g.visible = vis > .01
+    m.line.opacity = .45 * vis; m.wire.opacity = .5 * vis; m.dot.opacity = .8 * vis; m.node.opacity = vis
+    g.rotation.y = t * .12 * (k % 2 ? -1 : 1)
+  })
+  const on = Math.round(current)
+  rail.querySelectorAll('i').forEach((el, k) => el.classList.toggle('on', k === on))
+  renderer.render(scene, camera)
+})
+</script>
+</body>
+</html>
