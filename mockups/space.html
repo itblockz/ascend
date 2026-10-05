@@ -33,7 +33,7 @@
   .copy.in p { opacity: 1; transform: none; }
   section.center { align-items: center; justify-content: flex-end; text-align: center; padding-bottom: 12vh; }
   section.center p { margin-inline: auto; }
-  #bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 4; width: 0; box-shadow: 0 0 12px var(--accent); }
+  #bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 4; width: 0; }
   .hint::after { content: ''; display: block; width: 1px; height: 32px; margin: 10px auto 0; background: var(--accent); animation: drip 1.8s infinite; transform-origin: top; }
   @keyframes drip { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
   .hint { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: .3em; color: var(--muted); z-index: 3; }
@@ -75,13 +75,15 @@ const STOPS = [
   [0, 0, 0], [-34, 10, -45], [12, -8, -90], [44, 12, -128], [6, 22, -172], [-28, 2, -212], [0, -8, -258],
 ].map(p => new THREE.Vector3(...p))
 // text sits left on even scenes, right on odd: aim the camera beside the landmark so it lands on the other side
-const lookAts = STOPS.map((p, i) => p.clone().add(new THREE.Vector3(i === SCENES - 1 ? 0 : i % 2 ? 6 : -6, 0, 0)))
-const views = STOPS.map((p, i) => p.clone().add(new THREE.Vector3(i === SCENES - 1 ? 0 : i % 2 ? 3 : -3, 2, 17)))
+// the side offset is applied per frame (sideOff) and fades to centre while travelling, so fast scrolls don't flip left/right
+const sideOf = i => i >= SCENES - 1 ? 0 : i % 2 ? 1 : -1
+const lookAts = STOPS.map(p => p.clone())
+const views = STOPS.map(p => p.clone().add(new THREE.Vector3(0, 2, 17)))
 const camPath = new THREE.CatmullRomCurve3(views, false, 'catmullrom', 0.5)
 const lookPath = new THREE.CatmullRomCurve3(lookAts, false, 'catmullrom', 0.5)
 
 // star / dust field filling the whole route
-const N = 12000, pos = new Float32Array(N * 3), size = new Float32Array(N)
+const N = 3000, pos = new Float32Array(N * 3), size = new Float32Array(N)
 for (let i = 0; i < N; i++) {
   pos.set([(Math.random() - .5) * 160, (Math.random() - .5) * 90, 40 - Math.random() * 340], i * 3)
   size[i] = 0.5 + Math.random() * 2
@@ -115,7 +117,8 @@ const warpMat = new THREE.ShaderMaterial({
     void main(){ gl_FragColor = vec4(mix(uColor, uAccent, vT), vA * (1. - vT) * .7); }`,
   transparent: true, depthWrite: false,
 })
-scene.add(new THREE.LineSegments(warpGeo, warpMat))
+// warp streaks off for a calmer, minimal look
+// scene.add(new THREE.LineSegments(warpGeo, warpMat))
 
 // ---------- one hero particle cloud that morphs into a new shape at every stop ----------
 const P = 22000
@@ -162,10 +165,10 @@ for (let i = 0; i < P; i++) { new V().randomDirection().multiplyScalar(30 + Math
 cloudGeo.setAttribute('position', aA); cloudGeo.setAttribute('aA', aA); cloudGeo.setAttribute('aB', aB)
 cloudGeo.setAttribute('aS', new THREE.BufferAttribute(aS, 3)); cloudGeo.setAttribute('aR', new THREE.BufferAttribute(aR, 1))
 const cloudMat = new THREE.ShaderMaterial({
-  uniforms: { uMix: { value: 0 }, uTime: { value: 0 }, uIntro: { value: 0 }, uPulse: { value: 0 }, uMouse: { value: new THREE.Vector2(9, 9) }, uClick: { value: new THREE.Vector2(9, 9) }, uClickT: { value: 0 },
+  uniforms: { uMix: { value: 0 }, uTime: { value: 0 }, uIntro: { value: 0 }, uPulse: { value: 0 }, uMouse: { value: new THREE.Vector2(9, 9) }, uClick: { value: [0,1,2,3].map(() => new THREE.Vector2(9, 9)) }, uClickT: { value: [0, 0, 0, 0] },
     uAspect: { value: 1 }, uPx: { value: renderer.getPixelRatio() }, uInk: { value: new THREE.Color() }, uAccent: { value: new THREE.Color('#ef5224') } },
   vertexShader: `attribute vec3 aA, aB, aS; attribute float aR;
-    uniform float uMix, uTime, uIntro, uPulse, uAspect, uPx; uniform vec2 uMouse, uClick; uniform float uClickT;
+    uniform float uMix, uTime, uIntro, uPulse, uAspect, uPx; uniform vec2 uMouse, uClick[4]; uniform float uClickT[4];
     varying float vAcc, vA;
     mat2 rot(float a){ return mat2(cos(a), -sin(a), sin(a), cos(a)); }
     void main(){
@@ -182,12 +185,16 @@ const cloudMat = new THREE.ShaderMaterial({
       vec4 mv = modelViewMatrix * vec4(p, 1.); vec4 cp = projectionMatrix * mv;
       vec2 ndc = cp.xy / cp.w, d = (ndc - uMouse) * vec2(uAspect, 1.);
       ndc += normalize(d + 1e-5) / vec2(uAspect, 1.) * smoothstep(.3, 0., length(d)) * .09;  // cursor repels
-      vec2 c = (ndc - uClick) * vec2(uAspect, 1.); float cl = length(c);
-      float ring = uClickT * exp(-pow(cl - (1. - uClickT) * 1.4, 2.) * 60.);   // click: ring shockwave from the cursor
-      ndc += normalize(c + 1e-5) / vec2(uAspect, 1.) * (ring * .12 + uClickT * smoothstep(.4, 0., cl) * .15);
+      float ring = 0.; vec2 push = vec2(0.);
+      for (int k = 0; k < 4; k++) {                                          // click: up to 4 overlapping ring shockwaves
+        vec2 c = (ndc - uClick[k]) * vec2(uAspect, 1.); float cl = length(c), T = uClickT[k];
+        float rk = T * exp(-pow(cl - (1. - T) * 1.4, 2.) * 60.); ring += rk;
+        push += normalize(c + 1e-5) * (rk * .12 + T * smoothstep(.4, 0., cl) * .15);
+      }
+      ring = min(ring, 1.); ndc += push / vec2(uAspect, 1.);
       cp.xy = ndc * cp.w; gl_Position = cp;
-      vAcc = step(.93, aR) + burst * step(.85, aR) + ring * 2.;
-      vA = smoothstep(90., 10., -mv.z) * (.6 + .4 * sin(uTime * 2.5 + aR * 80.));
+      vAcc = step(.985, aR) + ring;
+      vA = smoothstep(90., 10., -mv.z) * (.85 + .15 * sin(uTime * 1.2 + aR * 80.));
       gl_PointSize = min((1. + aR * 2.2 + vAcc + ring * 2.) * uPx * (32. / -mv.z) * (1. + burst * .3), 6. * uPx);
     }`,
   fragmentShader: `uniform vec3 uInk, uAccent; varying float vAcc, vA;
@@ -228,7 +235,8 @@ document.querySelectorAll('section').forEach(s => io.observe(s))
 
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches
 addEventListener('pointerdown', e => { if (e.target.closest('button, nav, .rail')) return
-  cloudMat.uniforms.uClick.value.set(e.clientX / innerWidth * 2 - 1, 1 - e.clientY / innerHeight * 2); cloudMat.uniforms.uClickT.value = 1 })
+  const U = cloudMat.uniforms, T = U.uClickT.value, k = T.indexOf(Math.min(...T)) // reuse the most-faded slot; older rings keep going
+  U.uClick.value[k].set(e.clientX / innerWidth * 2 - 1, 1 - e.clientY / innerHeight * 2); T[k] = 1 })
 rail.querySelectorAll('i').forEach((el, k) => el.onclick = () => scrollTo({ top: k / (SCENES - 1) * (document.body.scrollHeight - innerHeight), behavior: 'smooth' }))
 let target = 0, current = 0, mx = 0, my = 0, pulsed = 0
 const bar = document.getElementById('bar')
@@ -240,20 +248,23 @@ addEventListener('resize', resize); resize()
 const smooth = (a, b, x) => { const t = Math.min(Math.max((x - a) / (b - a), 0), 1); return t * t * (3 - 2 * t) }
 const look = new THREE.Vector3(), lastCam = new THREE.Vector3(), vel = new THREE.Vector3()
 const clock = new THREE.Clock()
-let bank = 0
+let bank = 0, sideOff = -1
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), .1), t = clock.elapsedTime
-  current += (target - current) * (1 - Math.exp(-dt * 3.6))
+  const step = (target - current) * (1 - Math.exp(-dt * 2.2)), cap = dt * .7 // max ~0.7 scene/sec so fast scrolls don't strobe
+  current += Math.max(-cap, Math.min(cap, step))
   const i = Math.min(Math.floor(current), SCENES - 2), f = current - i
   const e = smooth(.3, .85, f), u = (i + e) / (SCENES - 1)
 
   lastCam.copy(camera.position)
-  camera.position.copy(camPath.getPoint(u)).add(new THREE.Vector3(mx * 1.5, -my, 0))
-  lookPath.getPoint(u, look); camera.lookAt(look.x + mx * 2, look.y - my * 1.5, look.z)
+  const near = Math.round(target), goal = Math.abs(target - current) > .6 ? 0 : sideOf(near)
+  sideOff += (goal - sideOff) * (1 - Math.exp(-dt * 1.2))
+  camera.position.copy(camPath.getPoint(u)).add(new THREE.Vector3(sideOff * 3 + mx * 1.5, -my, 0))
+  lookPath.getPoint(u, look); camera.lookAt(look.x + sideOff * 6 + mx * 2, look.y - my * 1.5, look.z)
   vel.subVectors(camera.position, lastCam); if (vel.length() > 3) vel.set(0, 0, 0)
   // bank into the turns like a ship
   const side = vel.clone().applyQuaternion(camera.quaternion.clone().invert()).x
-  bank += (-side * .6 - bank) * .08; camera.rotateZ(still ? 0 : bank)
+  bank += (-side * .6 - bank) * .04; camera.rotateZ(still ? 0 : bank)
   warpMat.uniforms.uVel.value.lerp(vel, .2)
   starMat.uniforms.uSpeed.value = Math.min(vel.length() * 2, 1)
 
@@ -269,7 +280,7 @@ renderer.setAnimationLoop(() => {
   // shockwave each time the camera settles on a stop
   const on = Math.round(current)
   if (Math.abs(current - on) < .03 && on !== pulsed && !still) { pulsed = on; U.uPulse.value = 1 }
-  U.uPulse.value *= Math.exp(-dt * 2.1); U.uClickT.value *= Math.exp(-dt * 1.8)
+  U.uPulse.value *= Math.exp(-dt * 2.1); U.uClickT.value.forEach((v, k, a) => a[k] = v * Math.exp(-dt * 1.1))
   rail.querySelectorAll('i').forEach((el, k) => el.classList.toggle('on', k === on))
   renderer.render(scene, camera)
 })
