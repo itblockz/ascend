@@ -16,7 +16,7 @@
   nav { display: flex; gap: 36px; font-size: 11px; font-weight: 600; letter-spacing: .16em; }
   button { font: 600 11px Montserrat; letter-spacing: .16em; padding: 10px 18px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; border-radius: 6px; }
   .rail { position: fixed; left: 32px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 22px; z-index: 3; }
-  .rail i { width: 8px; height: 8px; border: 1px solid var(--muted); transform: rotate(45deg); display: block; transition: .3s; }
+  .rail i { cursor: pointer; width: 8px; height: 8px; border: 1px solid var(--muted); transform: rotate(45deg); display: block; transition: .3s; }
   .rail i.on { border-color: var(--accent); background: var(--accent); }
   main { position: relative; z-index: 2; }
   section { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 160px; }
@@ -25,8 +25,17 @@
   h1, h2 { font-weight: 300; letter-spacing: -.02em; line-height: 1.1; }
   h1 { font-size: 60px; } h2 { font-size: 44px; }
   p { color: var(--muted); max-width: 26rem; line-height: 1.6; margin-top: 24px; }
-  .copy { opacity: 0; transform: translateY(30px); transition: opacity .8s, transform .8s; }
-  .copy.in { opacity: 1; transform: none; }
+    .ch { display: inline-block; white-space: pre; opacity: 0; transform: translateY(.7em) rotate(10deg); filter: blur(10px); transition: opacity .9s, transform 1.1s cubic-bezier(.2,.9,.2,1), filter .9s; transition-delay: calc(var(--i) * 28ms); }
+  .copy.in .ch { opacity: 1; transform: none; filter: none; }
+  .copy .eyebrow { letter-spacing: .8em; opacity: 0; transition: letter-spacing 1.4s cubic-bezier(.2,.9,.2,1), opacity 1s; }
+  .copy.in .eyebrow { letter-spacing: .16em; opacity: 1; }
+  .copy p { opacity: 0; transform: translateY(20px); transition: 1s .5s; }
+  .copy.in p { opacity: 1; transform: none; }
+  section.center { align-items: center; justify-content: flex-end; text-align: center; padding-bottom: 12vh; }
+  section.center p { margin-inline: auto; }
+  #bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 4; width: 0; box-shadow: 0 0 12px var(--accent); }
+  .hint::after { content: ''; display: block; width: 1px; height: 32px; margin: 10px auto 0; background: var(--accent); animation: drip 1.8s infinite; transform-origin: top; }
+  @keyframes drip { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
   .hint { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: .3em; color: var(--muted); z-index: 3; }
 </style>
 </head>
@@ -37,6 +46,7 @@
   <button id="theme">SWITCH: DARK</button>
 </header>
 <div class="rail" id="rail"></div>
+<div id="bar"></div>
 <div class="hint">SCROLL</div>
 <main id="main">
   <section><div class="copy"><div class="eyebrow">The future of digital experiences</div><h1>Build Worlds.<br />Shape Experiences.</h1><p>We create immersive digital experiences where AI, games, learning and technology converge.</p></div></section>
@@ -45,7 +55,7 @@
   <section class="right"><div class="copy"><div class="eyebrow">02 · Game-based learning</div><h2>Play. Learn.<br />Grow.</h2><p>Learning that feels like a game.</p></div></section>
   <section><div class="copy"><div class="eyebrow">03 · AI platform</div><h2>Intelligent<br />agents.</h2><p>AI avatars and automation.</p></div></section>
   <section class="right"><div class="copy"><div class="eyebrow">04 · Projects</div><h2>Step through.</h2><p>Immersive work, AR / VR / XR.</p></div></section>
-  <section><div class="copy"><div class="eyebrow">Arrival</div><h2>Let's build<br />your world.</h2><p>Tell us what you want to create.</p></div></section>
+  <section class="center"><div class="copy"><div class="eyebrow">Arrival</div><h2>Let's build<br />your world.</h2><p>Tell us what you want to create.</p></div></section>
 </main>
 
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }</script>
@@ -65,8 +75,8 @@ const STOPS = [
   [0, 0, 0], [-34, 10, -45], [12, -8, -90], [44, 12, -128], [6, 22, -172], [-28, 2, -212], [0, -8, -258],
 ].map(p => new THREE.Vector3(...p))
 // text sits left on even scenes, right on odd: aim the camera beside the landmark so it lands on the other side
-const lookAts = STOPS.map((p, i) => p.clone().add(new THREE.Vector3(i % 2 ? 6 : -6, 0, 0)))
-const views = STOPS.map((p, i) => p.clone().add(new THREE.Vector3(i % 2 ? 3 : -3, 2, 17)))
+const lookAts = STOPS.map((p, i) => p.clone().add(new THREE.Vector3(i === SCENES - 1 ? 0 : i % 2 ? 6 : -6, 0, 0)))
+const views = STOPS.map((p, i) => p.clone().add(new THREE.Vector3(i === SCENES - 1 ? 0 : i % 2 ? 3 : -3, 2, 17)))
 const camPath = new THREE.CatmullRomCurve3(views, false, 'catmullrom', 0.5)
 const lookPath = new THREE.CatmullRomCurve3(lookAts, false, 'catmullrom', 0.5)
 
@@ -83,83 +93,183 @@ const starMat = new THREE.ShaderMaterial({
   uniforms: { uColor: { value: new THREE.Color() }, uSpeed: { value: 0 }, uPx: { value: renderer.getPixelRatio() } },
   vertexShader: `attribute float size; uniform float uSpeed, uPx; varying float vFade;
     void main(){ vec4 mv = modelViewMatrix * vec4(position,1.); gl_Position = projectionMatrix * mv;
-      gl_PointSize = size * uPx * (40. / -mv.z) * (1. + uSpeed * 2.); vFade = smoothstep(70., 10., -mv.z); }`,
+      gl_PointSize = min(size * uPx * (40. / -mv.z) * (1. + uSpeed * 2.), 5. * uPx); vFade = smoothstep(70., 10., -mv.z); }`,
   fragmentShader: `uniform vec3 uColor; varying float vFade;
     void main(){ float d = length(gl_PointCoord - .5); if (d > .5) discard; gl_FragColor = vec4(uColor, vFade * smoothstep(.5,.1,d)); }`,
   transparent: true, depthWrite: false,
 })
 scene.add(new THREE.Points(starGeo, starMat))
 
-// one landmark per stop, each with its own materials so it can fade on its own
-const landmarks = []
-function stop(i) {
-  const g = new THREE.Group(); g.position.copy(STOPS[i]); scene.add(g)
-  const m = {
-    line: new THREE.LineBasicMaterial({ transparent: true }),
-    wire: new THREE.MeshBasicMaterial({ wireframe: true, transparent: true }),
-    dot: new THREE.PointsMaterial({ size: .09, transparent: true }),
-    node: new THREE.PointsMaterial({ size: .3, transparent: true }),
-  }
-  landmarks.push({ g, m }); return [g, m]
-}
-const pointsOf = pts => new THREE.BufferGeometry().setFromPoints(pts)
-function links(pts, max) { const v = []; pts.forEach((a, i) => pts.slice(i + 1).forEach(b => { if (a.distanceTo(b) < max) v.push(a, b) })); return pointsOf(v) }
-{ const [g, m] = stop(0); g.add(new THREE.Points(new THREE.SphereGeometry(5, 64, 40), m.dot)) }
-{ const [g, m] = stop(1); const pts = Array.from({ length: 16 }, () => new THREE.Vector3((Math.random() - .5) * 12, (Math.random() - .5) * 7, (Math.random() - .5) * 4))
-  g.add(new THREE.LineSegments(links(pts, 4.5), m.line)); g.add(new THREE.Points(pointsOf(pts), m.node)) }
-{ const [g, m] = stop(2); g.add(new THREE.Points(new THREE.IcosahedronGeometry(3.5, 14), m.dot))
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(5.5, .02, 8, 160), m.wire); ring.rotation.x = 1.2; g.add(ring) }
-{ const [g, m] = stop(3); for (let i = 0; i < 9; i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), m.wire); const a = i / 9 * Math.PI * 2; b.position.set(Math.cos(a) * 4, Math.sin(a * 2) * 1.5, Math.sin(a) * 4); g.add(b) } }
-{ const [g, m] = stop(4); const pts = Array.from({ length: 70 }, () => new THREE.Vector3().randomDirection().multiplyScalar(2 + Math.random() * 3))
-  g.add(new THREE.LineSegments(links(pts, 1.8), m.line)); g.add(new THREE.Points(pointsOf(pts), m.node)) }
-{ const [g, m] = stop(5); for (let i = 0; i < 3; i++) g.add(new THREE.Mesh(new THREE.TorusGeometry(5 + i * .6, .03, 8, 200), m.wire)) }
-{ const [g, m] = stop(6); g.add(new THREE.Points(new THREE.SphereGeometry(7, 96, 48), m.dot)) }
+// ---------- warp streaks: each star also owns a line whose tail stretches with camera speed ----------
+const lpos = new Float32Array(N * 6), ltail = new Float32Array(N * 2)
+for (let i = 0; i < N; i++) { lpos.set(pos.subarray(i * 3, i * 3 + 3), i * 6); lpos.set(pos.subarray(i * 3, i * 3 + 3), i * 6 + 3); ltail[i * 2 + 1] = 1 }
+const warpGeo = new THREE.BufferGeometry()
+warpGeo.setAttribute('position', new THREE.BufferAttribute(lpos, 3))
+warpGeo.setAttribute('aTail', new THREE.BufferAttribute(ltail, 1))
+const warpMat = new THREE.ShaderMaterial({
+  uniforms: { uVel: { value: new THREE.Vector3() }, uColor: starMat.uniforms.uColor, uAccent: { value: new THREE.Color('#ef5224') } },
+  vertexShader: `attribute float aTail; uniform vec3 uVel; varying float vA; varying float vT;
+    void main(){ vec3 p = position - uVel * aTail * 14.; vec4 mv = modelViewMatrix * vec4(p,1.); gl_Position = projectionMatrix * mv;
+      vA = smoothstep(60., 6., -mv.z) * min(length(uVel) * 6., 1.); vT = aTail; }`,
+  fragmentShader: `uniform vec3 uColor, uAccent; varying float vA; varying float vT;
+    void main(){ gl_FragColor = vec4(mix(uColor, uAccent, vT), vA * (1. - vT) * .7); }`,
+  transparent: true, depthWrite: false,
+})
+scene.add(new THREE.LineSegments(warpGeo, warpMat))
+
+// ---------- one hero particle cloud that morphs into a new shape at every stop ----------
+const P = 22000
+const rnd = (a = 1) => (Math.random() - .5) * 2 * a
+const V = THREE.Vector3
+function fromGeo(geo, jitter = .05) { const a = geo.attributes.position; return () => { const k = Math.random() * a.count | 0; return new V(a.getX(k) + rnd(jitter), a.getY(k) + rnd(jitter), a.getZ(k) + rnd(jitter)) } }
+const shapes = [
+  // 0 · origin orb
+  (i) => { const y = 1 - 2 * (i + .5) / P, r = Math.sqrt(1 - y * y), a = i * 2.39996; const R = 5 + (Math.random() < .08 ? Math.random() * 1.5 : 0); return new V(Math.cos(a) * r * R, y * R, Math.sin(a) * r * R) },
+  // 1 · globe with flight arcs
+  (() => { const cities = Array.from({ length: 16 }, () => new V().randomDirection()); return () => {
+    if (Math.random() < .55) { const lat = (Math.floor(Math.random() * 13) / 12 - .5) * Math.PI, lon = Math.random() * Math.PI * 2; return new V(Math.cos(lat) * Math.cos(lon), Math.sin(lat), Math.cos(lat) * Math.sin(lon)).multiplyScalar(4.5) }
+    const a = cities[Math.random() * 16 | 0], b = cities[Math.random() * 16 | 0], t = Math.random()
+    return a.clone().lerp(b, t).normalize().multiplyScalar(4.5 + Math.sin(Math.PI * t) * 1.8) } })(),
+  // 2 · metaverse city
+  (() => { const blocks = []; for (let x = -3; x <= 3; x++) for (let z = -3; z <= 3; z++) blocks.push([x * 1.5, z * 1.5, .4 + Math.random() ** 2 * 5]); return () => {
+    if (Math.random() < .2) return new V(rnd(6), -2.5, rnd(6))
+    const [x, z, h] = blocks[Math.random() * blocks.length | 0], f = Math.random() * 3 | 0, s = .55
+    const p = new V(rnd(s), Math.random() * h, rnd(s)); if (f === 0) p.x = Math.sign(p.x || 1) * s; else if (f === 1) p.z = Math.sign(p.z || 1) * s; else p.y = h
+    return p.add(new V(x, -2.5, z)) } })(),
+  // 3 · game: torus knot
+  fromGeo(new THREE.TorusKnotGeometry(3.4, .9, 400, 32, 2, 3), .08),
+  // 4 · AI brain: two folded lobes
+  () => { const s = Math.random() < .5 ? -1 : 1, d = new V().randomDirection(); const fold = 1 + .14 * Math.sin(d.x * 11) * Math.sin(d.y * 13) * Math.sin(d.z * 9)
+    return new V(d.x * 2.6 * fold + s * 1.5, d.y * 2.8 * fold, d.z * 3.8 * fold) },
+  // 5 · projects: portal tunnel
+  () => { if (Math.random() < .45) { const a = Math.random() * Math.PI * 2, r = 5 + Math.floor(Math.random() * 4) * .35; return new V(Math.cos(a) * r, Math.sin(a) * r, rnd(.05)) }
+    const t = Math.random(), a = t * 70 + (Math.random() * 6 | 0) * Math.PI / 3, r = 4.6 * (1 - t * .7); return new V(Math.cos(a) * r, Math.sin(a) * r, -t * 22) },
+  // 6 · arrival: the wordmark (filled below once the font is ready)
+  null,
+]
+await document.fonts.load('300 200px Montserrat')
+{ const c = document.createElement('canvas'); c.width = 1400; c.height = 300; const x = c.getContext('2d')
+  x.font = '300 220px Montserrat'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('ΛSCEND', 700, 150)
+  const d = x.getImageData(0, 0, 1400, 300).data, px = []
+  for (let y = 0; y < 300; y += 2) for (let k = 0; k < 1400; k += 2) if (d[(y * 1400 + k) * 4 + 3] > 128) px.push([k, y])
+  shapes[6] = () => { const [k, y] = px[Math.random() * px.length | 0]; return new V((k - 700) / 62, (150 - y) / 62 + 2.5, rnd(.25)) } }
+const shapeData = shapes.map(fn => { const a = new Float32Array(P * 3); for (let i = 0; i < P; i++) fn(i).toArray(a, i * 3); return a })
+
+const cloudGeo = new THREE.BufferGeometry()
+const aA = new THREE.BufferAttribute(shapeData[0].slice(), 3), aB = new THREE.BufferAttribute(shapeData[1].slice(), 3)
+const aS = new Float32Array(P * 3), aR = new Float32Array(P)
+for (let i = 0; i < P; i++) { new V().randomDirection().multiplyScalar(30 + Math.random() * 60).toArray(aS, i * 3); aR[i] = Math.random() }
+cloudGeo.setAttribute('position', aA); cloudGeo.setAttribute('aA', aA); cloudGeo.setAttribute('aB', aB)
+cloudGeo.setAttribute('aS', new THREE.BufferAttribute(aS, 3)); cloudGeo.setAttribute('aR', new THREE.BufferAttribute(aR, 1))
+const cloudMat = new THREE.ShaderMaterial({
+  uniforms: { uMix: { value: 0 }, uTime: { value: 0 }, uIntro: { value: 0 }, uPulse: { value: 0 }, uMouse: { value: new THREE.Vector2(9, 9) }, uClick: { value: new THREE.Vector2(9, 9) }, uClickT: { value: 0 },
+    uAspect: { value: 1 }, uPx: { value: renderer.getPixelRatio() }, uInk: { value: new THREE.Color() }, uAccent: { value: new THREE.Color('#ef5224') } },
+  vertexShader: `attribute vec3 aA, aB, aS; attribute float aR;
+    uniform float uMix, uTime, uIntro, uPulse, uAspect, uPx; uniform vec2 uMouse, uClick; uniform float uClickT;
+    varying float vAcc, vA;
+    mat2 rot(float a){ return mat2(cos(a), -sin(a), sin(a), cos(a)); }
+    void main(){
+      float m = smoothstep(0., 1., clamp(uMix * 1.4 - aR * .4, 0., 1.));     // particles leave one by one
+      vec3 p = mix(aA, aB, m);
+      float burst = sin(m * 3.14159);
+      p += normalize(aS) * burst * (1. + aR * 4.);                          // explode mid-transit
+      p.xz = rot(burst * (aR - .5) * 4.) * p.xz;                              // and swirl
+      p += .07 * vec3(sin(uTime * 1.3 + aR * 40.), cos(uTime * 1.1 + aR * 31.), sin(uTime * .9 + aR * 23.));
+      float r = length(p), front = (1. - uPulse) * 14.;
+      p *= 1. + uPulse * .35 * exp(-(r - front) * (r - front) * .4);         // arrival shockwave
+      float ie = 1. - pow(1. - clamp(uIntro * 1.3 - aR * .3, 0., 1.), 3.);
+      p = mix(aS + vec3(0., 0., 20.), p, ie);                                 // opening: assemble from deep space
+      vec4 mv = modelViewMatrix * vec4(p, 1.); vec4 cp = projectionMatrix * mv;
+      vec2 ndc = cp.xy / cp.w, d = (ndc - uMouse) * vec2(uAspect, 1.);
+      ndc += normalize(d + 1e-5) / vec2(uAspect, 1.) * smoothstep(.3, 0., length(d)) * .09;  // cursor repels
+      vec2 c = (ndc - uClick) * vec2(uAspect, 1.); float cl = length(c);
+      float ring = uClickT * exp(-pow(cl - (1. - uClickT) * 1.4, 2.) * 60.);   // click: ring shockwave from the cursor
+      ndc += normalize(c + 1e-5) / vec2(uAspect, 1.) * (ring * .12 + uClickT * smoothstep(.4, 0., cl) * .15);
+      cp.xy = ndc * cp.w; gl_Position = cp;
+      vAcc = step(.93, aR) + burst * step(.85, aR) + ring * 2.;
+      vA = smoothstep(90., 10., -mv.z) * (.6 + .4 * sin(uTime * 2.5 + aR * 80.));
+      gl_PointSize = min((1. + aR * 2.2 + vAcc + ring * 2.) * uPx * (32. / -mv.z) * (1. + burst * .3), 6. * uPx);
+    }`,
+  fragmentShader: `uniform vec3 uInk, uAccent; varying float vAcc, vA;
+    void main(){ float d = length(gl_PointCoord - .5); if (d > .5) discard;
+      gl_FragColor = vec4(mix(uInk, uAccent, clamp(vAcc, 0., 1.)), vA * smoothstep(.5, .05, d)); }`,
+  transparent: true, depthWrite: false,
+})
+const cloud = new THREE.Points(cloudGeo, cloudMat); cloud.frustumCulled = false
+const cloudHolder = new THREE.Group(); cloudHolder.add(cloud); scene.add(cloudHolder)
+const stopPath = new THREE.CatmullRomCurve3(STOPS, false, 'catmullrom', .5)
+let pair = -1
+function setPair(i) { if (i === pair) return; pair = i; aA.array.set(shapeData[i]); aB.array.set(shapeData[Math.min(i + 1, SCENES - 1)]); aA.needsUpdate = aB.needsUpdate = true }
 
 // theme
-const themes = { light: { bg: '#e3dfd9', star: '#2a2d36', line: '#6b6f7c' }, dark: { bg: '#05070d', star: '#e8ecf5', line: '#7f8db0' } }
+const themes = { light: { bg: '#e3dfd9', star: '#2a2d36', ink: '#1d2027' }, dark: { bg: '#05070d', star: '#e8ecf5', ink: '#dfe6f5' } }
 let dark = false
 function applyTheme() {
   document.body.classList.toggle('dark', dark)
   const t = themes[dark ? 'dark' : 'light']
-  scene.fog.color.set(t.bg); starMat.uniforms.uColor.value.set(t.star)
-  landmarks.forEach(({ m }) => { m.line.color.set(t.line); m.wire.color.set(t.line); m.dot.color.set(t.star); m.node.color.set(t.star) })
+  scene.fog.color.set(t.bg); starMat.uniforms.uColor.value.set(t.star); cloudMat.uniforms.uInk.value.set(t.ink)
+  for (const m of [starMat, warpMat, cloudMat]) { m.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending; m.needsUpdate = true }
   document.getElementById('theme').textContent = dark ? 'SWITCH: CREAM' : 'SWITCH: DARK'
 }
 document.getElementById('theme').onclick = () => { dark = !dark; applyTheme() }
 applyTheme()
+
+// split headings into letters for the staggered reveal
+document.querySelectorAll('h1, h2').forEach(h => { let n = 0
+  ;[...h.childNodes].forEach(node => { if (node.nodeType !== 3) return
+    const frag = document.createDocumentFragment()
+    for (const c of node.textContent) { const s = document.createElement('span'); s.className = 'ch'; s.style.setProperty('--i', n++); s.textContent = c; frag.append(s) }
+    node.replaceWith(frag) }) })
 
 // rail + text reveal
 const rail = document.getElementById('rail'); for (let i = 0; i < SCENES; i++) rail.append(document.createElement('i'))
 const io = new IntersectionObserver(es => es.forEach(e => e.target.querySelector('.copy').classList.toggle('in', e.isIntersecting)), { threshold: .5 })
 document.querySelectorAll('section').forEach(s => io.observe(s))
 
-let target = 0, current = 0, mx = 0, my = 0
-addEventListener('scroll', () => { target = scrollY / (document.body.scrollHeight - innerHeight) * (SCENES - 1) })
-addEventListener('mousemove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5 })
-function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix() }
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+addEventListener('pointerdown', e => { if (e.target.closest('button, nav, .rail')) return
+  cloudMat.uniforms.uClick.value.set(e.clientX / innerWidth * 2 - 1, 1 - e.clientY / innerHeight * 2); cloudMat.uniforms.uClickT.value = 1 })
+rail.querySelectorAll('i').forEach((el, k) => el.onclick = () => scrollTo({ top: k / (SCENES - 1) * (document.body.scrollHeight - innerHeight), behavior: 'smooth' }))
+let target = 0, current = 0, mx = 0, my = 0, pulsed = 0
+const bar = document.getElementById('bar')
+addEventListener('scroll', () => { const k = scrollY / (document.body.scrollHeight - innerHeight); target = k * (SCENES - 1); bar.style.width = k * 100 + '%' })
+addEventListener('mousemove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; cloudMat.uniforms.uMouse.value.set(mx * 2, -my * 2) })
+function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); cloudMat.uniforms.uAspect.value = camera.aspect }
 addEventListener('resize', resize); resize()
 
 const smooth = (a, b, x) => { const t = Math.min(Math.max((x - a) / (b - a), 0), 1); return t * t * (3 - 2 * t) }
-const look = new THREE.Vector3()
+const look = new THREE.Vector3(), lastCam = new THREE.Vector3(), vel = new THREE.Vector3()
 const clock = new THREE.Clock()
+let bank = 0
 renderer.setAnimationLoop(() => {
-  const t = clock.getElapsedTime()
-  const prev = current; current += (target - current) * .06
-  // hold at each stop while its text is up, then glide to the next
+  const dt = Math.min(clock.getDelta(), .1), t = clock.elapsedTime
+  current += (target - current) * (1 - Math.exp(-dt * 3.6))
   const i = Math.min(Math.floor(current), SCENES - 2), f = current - i
-  const u = (i + smooth(.3, .85, f)) / (SCENES - 1)
+  const e = smooth(.3, .85, f), u = (i + e) / (SCENES - 1)
+
+  lastCam.copy(camera.position)
   camera.position.copy(camPath.getPoint(u)).add(new THREE.Vector3(mx * 1.5, -my, 0))
   lookPath.getPoint(u, look); camera.lookAt(look.x + mx * 2, look.y - my * 1.5, look.z)
-  starMat.uniforms.uSpeed.value = Math.min(Math.abs(current - prev) * 8, 1)
+  vel.subVectors(camera.position, lastCam); if (vel.length() > 3) vel.set(0, 0, 0)
+  // bank into the turns like a ship
+  const side = vel.clone().applyQuaternion(camera.quaternion.clone().invert()).x
+  bank += (-side * .6 - bank) * .08; camera.rotateZ(still ? 0 : bank)
+  warpMat.uniforms.uVel.value.lerp(vel, .2)
+  starMat.uniforms.uSpeed.value = Math.min(vel.length() * 2, 1)
 
-  // only the stop you're at is visible; the next one fades in on approach
-  landmarks.forEach(({ g, m }, k) => {
-    const vis = 1 - smooth(.45, .9, Math.abs(current - k))
-    g.visible = vis > .01
-    m.line.opacity = .45 * vis; m.wire.opacity = .5 * vis; m.dot.opacity = .8 * vis; m.node.opacity = vis
-    g.rotation.y = t * .12 * (k % 2 ? -1 : 1)
-  })
+  // the cloud rides the route and morphs shape between stops
+  setPair(i)
+  cloudHolder.position.copy(stopPath.getPoint(u))
+  const calm = 1 - smooth(4.6, 5.6, current) // stop wobbling so the final wordmark reads
+  cloudHolder.rotation.y = Math.sin(t * .25) * .5 * calm
+  cloudHolder.rotation.x = Math.sin(t * .17) * .15 * calm
+  const U = cloudMat.uniforms
+  U.uMix.value = e; U.uTime.value = t; U.uIntro.value = still ? 1 : Math.min(t / 3.2, 1)
+
+  // shockwave each time the camera settles on a stop
   const on = Math.round(current)
+  if (Math.abs(current - on) < .03 && on !== pulsed && !still) { pulsed = on; U.uPulse.value = 1 }
+  U.uPulse.value *= Math.exp(-dt * 2.1); U.uClickT.value *= Math.exp(-dt * 1.8)
   rail.querySelectorAll('i').forEach((el, k) => el.classList.toggle('on', k === on))
   renderer.render(scene, camera)
 })
