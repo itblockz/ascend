@@ -21,6 +21,13 @@ const HALO_SCALE = 1.14
 const FOV = 35
 const CAMERA_Z = 10
 
+// Scrolling flies the camera forward from where the hero frames the orb. It drifts left and a
+// little up on the way, so the orb grows and slides out past the right edge instead of being hit.
+const FLIGHT_START = new THREE.Vector3(0, 0, CAMERA_Z)
+const FLIGHT_END = new THREE.Vector3(-2.4, 0.3, -6)
+// how fast the camera catches up with the scroll position (per second)
+const FOLLOW = 3
+
 export class OrbScene {
   private renderer: THREE.WebGLRenderer
   private scene = new THREE.Scene()
@@ -28,11 +35,14 @@ export class OrbScene {
   private orb: THREE.Mesh
   private halo: THREE.Mesh
   private dust: THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial>
+  // how far along the flight the camera is (0–1), easing toward the scroll position
+  private flight = 0
+  private flightTarget = 0
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    this.camera.position.z = CAMERA_Z
+    this.camera.position.copy(FLIGHT_START)
 
     const geometry = new THREE.SphereGeometry(1, 96, 64)
     this.orb = new THREE.Mesh(geometry, orbSurfaceMaterial())
@@ -50,8 +60,13 @@ export class OrbScene {
     this.updateMotion()
   }
 
-  private clock = new THREE.Clock()
+  private timer = new THREE.Timer()
   private reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+  /** Scroll position along the page, 0–1. Under reduced motion the camera stays put. */
+  setProgress(progress: number) {
+    this.flightTarget = progress
+  }
 
   private updateMotion = () => {
     // setAnimationLoop runs on requestAnimationFrame, which the browser pauses in hidden tabs
@@ -59,8 +74,15 @@ export class OrbScene {
     this.render()
   }
 
-  private frame = () => {
-    const t = this.clock.getElapsedTime()
+  private frame = (time: number) => {
+    this.timer.update(time)
+    const t = this.timer.getElapsed()
+    // capped, so the first frame after the loop restarts doesn't jump
+    const dt = Math.min(this.timer.getDelta(), 0.1)
+
+    this.flight += (this.flightTarget - this.flight) * (1 - Math.exp(-FOLLOW * dt))
+    this.camera.position.lerpVectors(FLIGHT_START, FLIGHT_END, this.flight)
+
     ;(this.orb.material as THREE.ShaderMaterial).uniforms.uTime.value = t
     this.dust.material.uniforms.uTime.value = t
     // the whole orb turns gently back and forth, so the foam's relief catches the light
@@ -98,6 +120,7 @@ export class OrbScene {
 
   dispose() {
     this.renderer.setAnimationLoop(null)
+    this.timer.dispose()
     this.reducedMotion.removeEventListener('change', this.updateMotion)
     this.orb.geometry.dispose()
     ;(this.orb.material as THREE.Material).dispose()

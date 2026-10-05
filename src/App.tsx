@@ -32,6 +32,9 @@ export default function App() {
           </svg>
         </a>
       </main>
+
+      {/* scroll room for the camera's flight; the chapters will live here */}
+      <div className="h-[300vh]" aria-hidden />
     </>
   )
 }
